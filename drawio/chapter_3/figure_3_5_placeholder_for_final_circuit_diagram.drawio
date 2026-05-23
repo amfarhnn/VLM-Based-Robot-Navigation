@@ -8,7 +8,7 @@
         <mxCell id="2" value="Figure 3.5: Placeholder for final circuit diagram" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=16;" vertex="1" parent="1">
           <mxGeometry x="80" y="60" width="1000" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="Insert final circuit diagram picture here.&#10;&#10;Leave this space for the completed wiring diagram showing power, serial communication, ESP32 ultrasonic sensors, STM32 motor control, and common ground." style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;fillColor=#f8f9fa;strokeColor=#666666;fontSize=18;" vertex="1" parent="1">
+        <mxCell id="3" value="Insert final circuit diagram picture here.&#10;&#10;Leave this space for the completed wiring diagram showing power, serial communication, ESP32 ultrasonic sensors, motor driver control, and common ground." style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;fillColor=#f8f9fa;strokeColor=#666666;fontSize=18;" vertex="1" parent="1">
           <mxGeometry x="120" y="180" width="920" height="560" as="geometry" />
         </mxCell>
       </root>

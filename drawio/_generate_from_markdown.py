@@ -245,18 +245,18 @@ def render_figure_2_3(name: str, out_path: Path) -> None:
         90,
     )
     prototype = builder.add_vertex(
-        "Low-Cost FYP Prototype\nRDK X5 + STM32 Motor Control + ESP32 Ultrasonic Sensing + USB Webcam",
+        "Low-Cost FYP Prototype\nLaptop-only test, Raspberry Pi + remote GPU, or Google Dev Board\nESP32 motor and ultrasonic control for physical robot approaches",
         "rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=15;",
         560,
         710,
         420,
-        110,
+        140,
     )
     action = builder.add_vertex(
         "Simple Indoor Action Set\nmove_forward, turn_left, turn_right, stop, search",
         NOTE_STYLE,
         560,
-        920,
+        950,
         420,
         90,
     )
@@ -271,119 +271,128 @@ def render_figure_2_3(name: str, out_path: Path) -> None:
 
 def render_figure_3_1(name: str, out_path: Path) -> None:
     builder = DrawioBuilder(name, page_width=1500, page_height=1900)
-    hardware = builder.add_vertex(
-        "Prepare Low-Cost\nRobot Hardware",
+    schema = builder.add_vertex(
+        "Define Action Set\nand Prompt Schema",
         VERTEX_STYLE,
         360,
         40,
         330,
         70,
     )
-    jetson = builder.add_vertex(
-        "Set Up RDK X5,\nWebcam, Python, and OpenCV",
+    laptop = builder.add_vertex(
+        "Run Laptop-Only\nFeasibility Test",
         VERTEX_STYLE,
         360,
         140,
         330,
         70,
     )
-    esp32 = builder.add_vertex(
-        "Set Up STM32 Motor Control\nand ESP32 Ultrasonic Sensing",
+    latency = builder.add_vertex(
+        "Measure Model Latency\nand Prompt Validity",
         VERTEX_STYLE,
         360,
         240,
         330,
         80,
     )
-    prompt = builder.add_vertex(
-        "Create Prompt Templates",
+    compare = builder.add_vertex(
+        "Compare Physical\nRobot Approaches",
         VERTEX_STYLE,
         360,
         340,
         330,
-        60,
+        70,
     )
-    prompt_test = builder.add_vertex(
-        "Test Prompt Output with\nSample Instructions",
+    select = builder.add_vertex(
+        "Select Practical\nImplementation Path",
         VERTEX_STYLE,
         360,
-        430,
+        450,
         330,
         70,
     )
-    camera = builder.add_vertex(
-        "Capture Webcam Image",
+    integrate = builder.add_vertex(
+        "Integrate Webcam, ESP32,\nMotor Driver, and Model Output",
         VERTEX_STYLE,
         360,
-        530,
+        560,
         330,
-        60,
+        80,
     )
-    grounding = builder.add_vertex(
-        "Visual Grounding or\nAction Selection",
+    validate = builder.add_vertex(
+        "Validate Action with\nObstacle Status",
         VERTEX_STYLE,
         360,
-        620,
+        680,
         330,
         70,
     )
     valid = builder.add_vertex(
-        "Is the output valid\nand confident?",
+        "Is output valid,\nfast, and safe?",
         DECISION_STYLE,
         410,
-        740,
+        800,
         230,
         110,
     )
     command = builder.add_vertex(
-        "Send Command to STM32\nRobot Control Board",
+        "Execute or\nDisplay Action",
         VERTEX_STYLE,
         360,
-        900,
+        960,
         330,
         70,
-    )
-    movement = builder.add_vertex(
-        "Execute Robot Movement",
-        VERTEX_STYLE,
-        360,
-        1010,
-        330,
-        60,
     )
     evaluation = builder.add_vertex(
         "Evaluate Scenario Result",
         VERTEX_STYLE,
         360,
-        1100,
+        1070,
         330,
         60,
     )
+    pi = builder.add_vertex(
+        "Approach 1:\nRaspberry Pi + Remote GPU",
+        VERTEX_STYLE,
+        80,
+        360,
+        330,
+        80,
+    )
+    google = builder.add_vertex(
+        "Approach 2:\nGoogle Dev Board + ESP32",
+        VERTEX_STYLE,
+        760,
+        360,
+        330,
+        80,
+    )
     stop = builder.add_vertex(
-        "Stop Robot, Log Failure,\nand Refine Prompt or Grounding",
+        "Stop, Log Failure,\nand Adjust Prompt, Model, or Hardware",
         NOTE_STYLE,
         810,
-        750,
+        820,
         330,
         100,
     )
 
     for source, target in [
-        (hardware, jetson),
-        (jetson, esp32),
-        (esp32, prompt),
-        (prompt, prompt_test),
-        (prompt_test, camera),
-        (camera, grounding),
-        (grounding, valid),
-        (command, movement),
-        (movement, evaluation),
+        (schema, laptop),
+        (laptop, latency),
+        (latency, compare),
+        (compare, select),
+        (select, integrate),
+        (integrate, validate),
+        (validate, valid),
+        (command, evaluation),
     ]:
         builder.add_edge(source, target)
 
+    builder.add_edge(compare, pi)
+    builder.add_edge(compare, google)
     builder.add_edge(valid, command, value="Yes")
     builder.add_edge(valid, stop, value="No", style=FEEDBACK_EDGE_STYLE)
-    builder.add_edge(stop, prompt, style=FEEDBACK_EDGE_STYLE)
+    builder.add_edge(stop, schema, style=FEEDBACK_EDGE_STYLE)
     builder.write(out_path)
 
 
@@ -413,18 +422,18 @@ def render_placeholder_figure(name: str, out_path: Path, message: str) -> None:
 
 def render_figure_3_4(name: str, out_path: Path) -> None:
     builder = DrawioBuilder(name, page_width=1700, page_height=1200)
-    battery = builder.add_vertex("4x 18650\nBattery Pack", VERTEX_STYLE, 680, 40, 300, 80)
+    battery = builder.add_vertex("Battery Pack", VERTEX_STYLE, 680, 40, 300, 80)
     switch = builder.add_vertex("Main Power\nSwitch and Fuse", VERTEX_STYLE, 680, 170, 300, 80)
     motor_rail = builder.add_vertex("Motor Power Rail", NOTE_STYLE, 120, 340, 300, 80)
-    regulator = builder.add_vertex("Regulated 5 V\nSupply", NOTE_STYLE, 680, 340, 300, 80)
-    stm32 = builder.add_vertex("STM32 Robot\nControl Board", VERTEX_STYLE, 120, 500, 300, 90)
+    regulator = builder.add_vertex("Regulated Logic\nSupply", NOTE_STYLE, 680, 340, 300, 80)
+    motor_driver = builder.add_vertex("Motor Driver", VERTEX_STYLE, 120, 500, 300, 90)
     motors = builder.add_vertex("Four DC Motors\nand Wheels", VERTEX_STYLE, 120, 690, 300, 90)
-    rdk = builder.add_vertex("RDK X5\nHigh-Level Controller", VERTEX_STYLE, 680, 500, 300, 90)
+    compute = builder.add_vertex("Raspberry Pi or\nGoogle Dev Board", VERTEX_STYLE, 680, 500, 300, 90)
     webcam = builder.add_vertex("USB Webcam", VERTEX_STYLE, 500, 710, 260, 80)
     esp32 = builder.add_vertex("ESP32\nUltrasonic Hub", VERTEX_STYLE, 1060, 500, 300, 90)
-    sensors = builder.add_vertex("Four Ultrasonic Sensors\nFront, Left, Right, Rear", VERTEX_STYLE, 1060, 710, 300, 90)
+    sensors = builder.add_vertex("Ultrasonic Sensors\nFront, Left, Right, Rear", VERTEX_STYLE, 1060, 710, 300, 90)
     ground = builder.add_vertex(
-        "Common Ground Between RDK X5, ESP32, STM32 Board, Sensors, and Motor Driver",
+        "Common Ground Between Compute Board, ESP32, Sensors, Motor Driver, and Battery System",
         (
             "rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;"
             "strokeColor=#666666;fontStyle=1;fontSize=14;"
@@ -439,19 +448,19 @@ def render_figure_3_4(name: str, out_path: Path) -> None:
         (battery, switch),
         (switch, motor_rail),
         (switch, regulator),
-        (motor_rail, stm32),
-        (stm32, motors),
-        (regulator, rdk),
+        (motor_rail, motor_driver),
+        (motor_driver, motors),
+        (regulator, compute),
         (regulator, esp32),
-        (rdk, webcam),
+        (compute, webcam),
         (esp32, sensors),
     ]:
         builder.add_edge(source, target)
 
-    builder.add_edge(rdk, esp32, value="USB/UART status")
-    builder.add_edge(rdk, stm32, value="USB/UART motor command")
-    builder.add_edge(stm32, ground, style=FEEDBACK_EDGE_STYLE)
-    builder.add_edge(rdk, ground, style=FEEDBACK_EDGE_STYLE)
+    builder.add_edge(compute, esp32, value="USB/UART status and command")
+    builder.add_edge(esp32, motor_driver, value="motor control pins")
+    builder.add_edge(motor_driver, ground, style=FEEDBACK_EDGE_STYLE)
+    builder.add_edge(compute, ground, style=FEEDBACK_EDGE_STYLE)
     builder.add_edge(esp32, ground, style=FEEDBACK_EDGE_STYLE)
     builder.write(out_path)
 
@@ -621,7 +630,7 @@ def main() -> None:
             render_placeholder_figure(
                 figure_name,
                 output_path,
-                "Insert final circuit diagram picture here.\n\nLeave this space for the completed wiring diagram showing power, serial communication, ESP32 ultrasonic sensors, STM32 motor control, and common ground.",
+                "Insert final circuit diagram picture here.\n\nLeave this space for the completed wiring diagram showing power, serial communication, ESP32 ultrasonic sensors, motor driver control, and common ground.",
             )
         else:
             steps = [

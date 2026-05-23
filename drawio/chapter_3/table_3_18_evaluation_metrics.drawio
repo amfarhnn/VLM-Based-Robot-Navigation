@@ -44,29 +44,35 @@
         <mxCell id="14" value="Percentage of cases where the selected action matches the expected action" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="318" y="322" width="695" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="15" value="Robot movement success" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+        <mxCell id="15" value="Latency or response time" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
           <mxGeometry x="40" y="362" width="278" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="16" value="Percentage of scenarios where the robot performs the intended basic movement" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+        <mxCell id="16" value="Time from user instruction and frame capture to selected command" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
           <mxGeometry x="318" y="362" width="695" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="17" value="Safe stop rate" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="17" value="Robot movement success" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="40" y="402" width="278" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="18" value="Percentage of uncertain or invalid cases where the robot stops instead of executing unsafe output" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="18" value="Percentage of physical robot scenarios where the robot performs the intended basic movement" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="318" y="402" width="695" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="19" value="Latency or response time" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="442" width="278" height="40" as="geometry" />
+        <mxCell id="19" value="Human-followed scenario success" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="442" width="278" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="20" value="Time from user instruction to selected command" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="318" y="442" width="695" height="40" as="geometry" />
+        <mxCell id="20" value="Percentage of laptop-only scenarios where the displayed action reasonably guides the human operator" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="318" y="442" width="695" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="21" value="Failure-case count" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="482" width="278" height="53" as="geometry" />
+        <mxCell id="21" value="Safe stop rate" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="495" width="278" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="22" value="Number and type of failures such as wrong target, invalid JSON, weak grounding, wrong turn, motor error, or unsafe suggestion" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="318" y="482" width="695" height="53" as="geometry" />
+        <mxCell id="22" value="Percentage of uncertain, invalid, timeout, or obstacle cases where the system stops instead of executing unsafe output" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="318" y="495" width="695" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="Failure-case count" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="548" width="278" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="Number and type of failures such as wrong target, invalid JSON, weak grounding, wrong turn, communication error, motor error, or unsafe suggestion" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="318" y="548" width="695" height="53" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -6,9 +6,9 @@
 
 This chapter reviews literature related to `Prompt Engineering for Mobile Robot Navigation`. The project investigates how a mobile robot can receive a natural language instruction, extract useful navigation information, ground the instruction using visual input, and convert the result into simple movement commands. The work is positioned as a low-cost indoor Final Year Project (FYP) research prototype rather than an industry-level autonomous navigation system.
 
-The main baseline paper for this project is `LM-Nav: Robotic Navigation with Large Pre-Trained Models of Language, Vision, and Action` by Shah et al. (2023a). LM-Nav is important because it presents a modular architecture for language-guided navigation. Its pipeline separates the problem into language understanding, visual grounding, and navigation execution. This structure is suitable for this FYP because the same idea can be adapted into a simpler prototype using an RDK X5 development board with 8GB RAM, a ROS Robot Control Board V3.0 with STM32F103RCT6 for motor control, an ESP32 for ultrasonic obstacle sensing, an unbranded USB webcam, four ultrasonic sensors, four DC motors, a mobile robot chassis, and 18650 batteries.
+The main baseline paper for this project is `LM-Nav: Robotic Navigation with Large Pre-Trained Models of Language, Vision, and Action` by Shah et al. (2023a). LM-Nav is important because it presents a modular architecture for language-guided navigation. Its pipeline separates the problem into language understanding, visual grounding, and navigation execution. This structure is suitable for this FYP because the same idea can be adapted into three practical low-cost approaches: a Raspberry Pi robot with ESP32 motor and ultrasonic control plus remote GPU inference, a Google Dev Board robot with ESP32 motor and ultrasonic control, and a laptop-only feasibility setup using the laptop camera and local GPU before building the physical robot.
 
-The project does not attempt to reproduce the complete hardware capability of LM-Nav or newer large-scale navigation systems. Instead, the project adapts the core research idea into a student-level implementation. A user may give instructions such as "Go to the door", "Find the signboard", or "Move toward the chair near the table". The system then uses prompt engineering to produce a structured navigation output, uses the webcam image for visual grounding or action selection, and sends a simple command such as `move_forward`, `turn_left`, `turn_right`, `stop`, or `search` to the robot.
+The project does not attempt to reproduce the complete hardware capability of LM-Nav or newer large-scale navigation systems. Instead, the project adapts the core research idea into a student-level implementation. A user may give instructions such as "Go to the door", "Find the signboard", or "Move toward the chair near the table". The system then uses prompt engineering to produce a structured navigation output, uses the webcam image for visual grounding or action selection, and outputs a simple command such as `move_forward`, `turn_left`, `turn_right`, `stop`, or `search`. In the laptop-only phase, the command is displayed to the human operator; in the physical robot phase, it is validated and sent to the ESP32 motor-control layer.
 
 Several related works are reviewed to clarify the project scope. `VLMnav` is included as the main prompt and action-selection reference because it formulates navigation as a question-answering or action-choice task. `VLMaps` and `HOV-SG` are reviewed because they improve spatial grounding, but they require map construction, RGB-D sensing, or scene graph construction, so they are treated as future work rather than the main implementation. `ViNT` and `NoMaD` are reviewed as stronger navigation execution models, but they are not the main focus because this FYP emphasizes prompt engineering, visual grounding, and simple action control. More recent VLM and VLA navigation systems such as `NaVid`, `Uni-NaVid`, and `NaVILA` are also discussed as advanced research directions.
 
@@ -59,11 +59,11 @@ In an LM-Nav-style system, prompt engineering can be used to extract landmarks f
 | Target selection | `target: door` | Decide the main navigation goal |
 | Spatial relation extraction | `chair near table` | Preserve relations that affect grounding |
 | Route or action interpretation | `move_forward`, `turn_left` | Convert instruction meaning into simple action options |
-| Structured output formatting | JSON-style response | Allow Python code on the RDK X5 board to parse the result |
+| Structured output formatting | JSON-style response | Allow Python code on the selected compute platform to parse the result |
 | Uncertainty handling | `uncertainty: high` | Prevent unsafe execution when the model is unsure |
 | Visual grounding query generation | `door in indoor corridor` | Improve matching between text and webcam image |
 
-For this project, prompt engineering is treated as the interface between human language and robot action. The prompt must not only produce a correct sentence; it must produce an output that can be checked, logged, evaluated, and used by the RDK X5 decision logic.
+For this project, prompt engineering is treated as the interface between human language and robot action. The prompt must not only produce a correct sentence; it must produce an output that can be checked, logged, evaluated, and used by the decision logic on the laptop, Raspberry Pi, remote GPU server, or Google Dev Board.
 
 ## 2.4 Vision-Language Grounding for Indoor Landmarks
 
@@ -121,11 +121,11 @@ LM-Nav is also important because it demonstrates that pre-trained models can be 
 
 LM-Nav also has limitations that motivate this project. The language module mainly extracts landmarks. This may be insufficient for instructions that include spatial relations, route order, or constraints. For example, "move toward the chair near the table" should not be reduced only to `chair` and `table`; the relation `chair near table` is also important.
 
-Another limitation is hardware and navigation complexity. LM-Nav was demonstrated with a more capable outdoor robot platform and a visual navigation model. A student FYP robot using an RDK X5 development board, STM32-based robot control board, ESP32 ultrasonic sensor module, USB webcam, and DC motors cannot reproduce the full navigation capability directly. Therefore, this project uses LM-Nav as an architectural inspiration, not as a full implementation target.
+Another limitation is hardware and navigation complexity. LM-Nav was demonstrated with a more capable outdoor robot platform and a visual navigation model. A student FYP setup using a laptop camera, Raspberry Pi, Google Dev Board, ESP32 ultrasonic and motor control, USB webcam, and DC motors cannot reproduce the full navigation capability directly. Therefore, this project uses LM-Nav as an architectural inspiration, not as a full implementation target.
 
 ### 2.5.4 Relevance to This Project
 
-LM-Nav provides the central structure for the proposed prototype: language understanding, visual grounding, and action execution. The difference is that this project adapts the final execution stage into a simple action-control system. Instead of using a full visual navigation policy, the RDK X5 board will select one of a small set of actions, check obstacle status from the ESP32 ultrasonic module, and send validated movement commands to the STM32-based robot control board. This makes the project realistic for a low-cost indoor robot while preserving the research value of structured prompt engineering.
+LM-Nav provides the central structure for the proposed prototype: language understanding, visual grounding, and action execution. The difference is that this project adapts the final execution stage into a simple action-control system. Instead of using a full visual navigation policy, the selected compute setup will choose one of a small set of actions, check obstacle status from the ESP32 ultrasonic module in the physical robot approaches, and send validated commands to the ESP32 motor-control layer. In the laptop-only feasibility approach, the same action is displayed to a human operator instead of being sent to motors. This makes the project realistic for a low-cost indoor robot while preserving the research value of structured prompt engineering.
 
 ## 2.6 VLMnav as a Prompt-Based Action Selection Reference
 
@@ -133,7 +133,7 @@ LM-Nav provides the central structure for the proposed prototype: language under
 
 The strength of VLMnav is that it connects visual observation, language instruction, and action selection through prompting. This supports the idea that prompt design can affect not only landmark extraction but also robot movement decisions. For example, a prompt can ask whether the current webcam image contains the target, whether the robot should turn to search, or whether it should stop because the target has been found.
 
-The limitation is that direct VLM action selection may not be safe enough for unsupervised robot control. VLM outputs can be inconsistent, and the model may choose an action even when the target is not visible or the instruction is ambiguous. For this reason, the proposed FYP will validate the structured output, uncertainty level, and ESP32 ultrasonic obstacle status before sending commands to the STM32-based robot control board. VLMnav is therefore treated as a prompt/action-selection reference, while the robot remains a controlled research prototype.
+The limitation is that direct VLM action selection may not be safe enough for unsupervised robot control. VLM outputs can be inconsistent, and the model may choose an action even when the target is not visible or the instruction is ambiguous. For this reason, the proposed FYP will validate the structured output, uncertainty level, model latency, and ESP32 ultrasonic obstacle status before physical motor execution. VLMnav is therefore treated as a prompt/action-selection reference, while the robot remains a controlled research prototype.
 
 ## 2.7 Spatial Grounding Methods: VLMaps and HOV-SG
 
@@ -151,7 +151,7 @@ The execution stage determines how a robot physically moves toward a target. In 
 
 `ViNT: A Foundation Model for Visual Navigation` by Shah et al. (2023b) proposes a visual navigation foundation model trained across diverse robot datasets. Its strength is generalization across platforms and environments. Its limitation for this FYP is that deploying and validating a full visual navigation model is outside the main scope. This project focuses on prompt engineering, visual grounding, and simple action control, not training or deploying a foundation navigation policy.
 
-`NoMaD: Goal Masked Diffusion Policies for Navigation and Exploration` by Sridhar et al. (2023) uses a diffusion-based policy for goal-directed navigation and exploration. Its strength is stronger navigation behavior and exploration ability. Its limitation is that it requires a more complex policy deployment pipeline and suitable robot data. For the proposed project, NoMaD is therefore best treated as future work after the baseline RDK X5, ESP32, and STM32-controlled robot is functioning.
+`NoMaD: Goal Masked Diffusion Policies for Navigation and Exploration` by Sridhar et al. (2023) uses a diffusion-based policy for goal-directed navigation and exploration. Its strength is stronger navigation behavior and exploration ability. Its limitation is that it requires a more complex policy deployment pipeline and suitable robot data. For the proposed project, NoMaD is therefore best treated as future work after the baseline laptop feasibility test and ESP32-controlled physical robot pipeline are functioning.
 
 These works are important because they show how the simple action-control layer in this FYP could later be replaced by a stronger navigation model. However, they are not the main implementation because the research focus is prompt-engineered interpretation of natural language instructions.
 
@@ -196,16 +196,17 @@ A critical issue for this project is hardware feasibility. Many research systems
 | Component or Method from Literature | Used in Original Paper or Related Work | Suitability for This FYP | Decision |
 |---|---|---|---|
 | RGB camera or webcam | Used in LM-Nav and many VLM navigation works as visual input | Highly suitable because it is low-cost and easy to connect through USB | An unbranded 1080p USB webcam will be used as the main visual sensor |
-| RDK X5 development board with 8GB RAM | Not the main board in LM-Nav, but representative of low-cost embedded AI/robotics hardware | Suitable for running Python, webcam capture, prompt processing, visual grounding, and high-level decision logic | Will be used as the onboard computing unit |
-| ROS Robot Control Board V3.0 with STM32F103RCT6 | Not central in reviewed AI navigation papers | Suitable for low-level motor control and movement command execution | Will be used as the low-level motor control board |
-| ESP32 microcontroller | Not central in reviewed AI navigation papers, but common in low-cost sensor integration | Suitable for reading four ultrasonic sensors independently from the motor controller | Will be added as the ultrasonic sensor controller |
-| Four ultrasonic sensors | Not the main perception method in the reviewed VLM papers | Suitable as a low-cost proximity and safety aid when connected to the ESP32 | Will be used for simple obstacle or distance awareness |
+| Laptop with local GPU | Similar to server-side or workstation inference used by several recent VLM/VLA systems | Highly suitable for early feasibility testing before physical robot cost is added | Will be used for laptop-only model, camera, and latency testing |
+| Raspberry Pi with remote GPU laptop or desktop | Related to robot-client plus remote-model-server patterns used in larger VLM/VLA systems | Suitable if the selected model is too heavy for onboard embedded inference | Candidate physical robot approach |
+| Google Dev Board or Coral-style board | Related to low-power embedded AI deployment rather than the original LM-Nav platform | Suitable if the visual model can run as an embedded or TFLite-style model | Candidate physical robot approach |
+| ESP32 microcontroller | Not central in reviewed AI navigation papers, but common in low-cost sensor and motor integration | Suitable for reading ultrasonic sensors and controlling a motor driver independently from model inference | Will be used as the motor and ultrasonic controller in physical approaches |
+| Four ultrasonic sensors | Not the main perception method in the reviewed VLM papers | Suitable as a low-cost proximity and safety aid when connected to the ESP32 | Will be used for simple obstacle or distance awareness in physical approaches |
 | Four DC motors and chassis | Common in low-cost mobile robots but not the focus of high-level papers | Suitable for simple wheeled movement | Will be used for movement execution |
 | 18650 battery pack | Standard power source for small mobile robot prototypes | Suitable for mobile operation when voltage and current requirements are handled safely | Will be used as the robot power source |
 | RGB-D camera | Used or required by mapping-based works such as VLMaps and HOV-SG-style pipelines | Useful but increases cost and complexity | Optional future improvement |
 | LiDAR | Used in some advanced robot navigation and scene understanding systems | Useful for safety and mapping but too costly for the first prototype | Not used in the baseline prototype |
 | Full 3D scene graph | Used in HOV-SG and related spatial reasoning systems | Strong for spatial reasoning but requires 3D perception and mapping | Future improvement only |
-| Large VLA model or server GPU | Used in advanced VLA systems such as NaVILA or Uni-NaVid-style pipelines | Powerful but not realistic for a low-cost first prototype | Not used in first implementation |
+| Large VLA model or server GPU | Used in advanced VLA systems such as NaVILA or Uni-NaVid-style pipelines | Powerful but may require remote inference instead of onboard deployment | Can be tested through the laptop-only setup or remote GPU approach |
 | CLIP, OpenCLIP, or VLM grounding | Used in LM-Nav-style grounding and VLM navigation | Suitable for prototype testing with indoor images | Will be used or evaluated depending on available compute |
 | Learned navigation policy such as ViNT or NoMaD | Used in advanced navigation execution research | Useful but outside the main prompt-engineering scope | Future replacement for simple action control |
 
@@ -225,7 +226,8 @@ Language Understanding -> Visual Grounding -> Navigation Execution
         |
         v
 Low-Cost FYP Prototype
-RDK X5 + STM32 Motor Control + ESP32 Ultrasonic Sensing + USB Webcam
+Laptop-only test, Raspberry Pi + remote GPU, or Google Dev Board
+ESP32 motor and ultrasonic control for physical robot approaches
         |
         v
 Simple Indoor Action Set
@@ -240,21 +242,21 @@ Prompt/action selection reference: VLMnav
 
 The literature shows that language-guided robot navigation is an active research area, but several gaps remain for a low-cost FYP prototype.
 
-First, existing systems can perform language-guided navigation, but many require expensive hardware, complex mapping, large models, or server-level compute. These systems are valuable research contributions, but they are not directly suitable for a student prototype using an RDK X5 board, STM32-based motor control board, ESP32 ultrasonic sensing, webcam input, and simple motor control.
+First, existing systems can perform language-guided navigation, but many require expensive hardware, complex mapping, large models, or server-level compute. These systems are valuable research contributions, but they are not directly suitable for a student prototype that must begin with available hardware such as a laptop GPU, webcam, Raspberry Pi, Google Dev Board, ESP32, ultrasonic sensors, motor driver, and simple DC motors.
 
 Second, LM-Nav provides a strong modular baseline, but its language stage mainly extracts landmarks. Natural language instructions often include spatial relations and route information, such as "near the table", "turn left after the door", or "find the signboard". A low-cost prototype still needs to preserve this information, even if the first grounding module is simple.
 
 Third, many advanced methods improve spatial grounding or navigation execution, but they do not directly answer how structured prompt engineering can support a simple indoor robot. VLMaps and HOV-SG show the value of maps and scene graphs, while ViNT and NoMaD show stronger navigation execution. However, this project begins earlier in the pipeline by asking how natural language can be converted into structured, validated robot action information.
 
-Fourth, there is a need for a baseline prototype that future researchers can extend. A working RDK X5, ESP32, and STM32-controlled robot with webcam grounding, ultrasonic safety sensing, and simple actions provides a practical platform for later improvements such as RGB-D sensing, LiDAR, scene graph mapping, ViNT, NoMaD, or advanced VLM/VLA models.
+Fourth, there is a need for a baseline prototype that future researchers can extend. A staged workflow beginning with laptop-only feasibility testing and continuing toward an ESP32-controlled physical robot with webcam grounding, ultrasonic safety sensing, and simple actions provides a practical platform for later improvements such as RGB-D sensing, LiDAR, scene graph mapping, ViNT, NoMaD, or advanced VLM/VLA models.
 
 **Table 2.4: Research gap synthesis and project strategy**
 
 | Research Gap | Supporting Literature | Project Strategy |
 |---|---|---|
-| Many language-guided navigation systems use costly or complex hardware | LM-Nav, HOV-SG, NaVILA, Uni-NaVid | Build a low-cost indoor prototype using RDK X5, STM32 motor control, ESP32 ultrasonic sensing, webcam, and DC motors |
+| Many language-guided navigation systems use costly or complex hardware | LM-Nav, HOV-SG, NaVILA, Uni-NaVid | Use a staged low-cost strategy: laptop-only feasibility testing, Raspberry Pi with remote GPU, or Google Dev Board with ESP32-based motor and ultrasonic control |
 | Landmark extraction alone may lose spatial relations and route information | LM-Nav, VLMaps, HOV-SG | Use structured prompt output with target, landmarks, spatial relation, action goal, suggested action, and uncertainty |
-| VLM action selection needs validation before real robot execution | VLMnav | Check ESP32 ultrasonic status and restrict output to a small validated action set before sending commands to the STM32 robot control board |
+| VLM action selection needs validation before real robot execution | VLMnav | Check uncertainty, latency, approved actions, and ESP32 ultrasonic status before sending commands to the ESP32 motor-control layer |
 | Mapping and scene-graph systems are useful but complex | VLMaps, HOV-SG | Treat RGB-D mapping and scene graphs as future work |
 | Strong navigation policies are beyond the first prototype | ViNT, NoMaD | Start with simple action control and document future replacement options |
 
@@ -268,7 +270,7 @@ This chapter reviewed literature related to prompt engineering for mobile robot 
 
 The chapter also reviewed VLMaps and HOV-SG as spatial grounding improvements, ViNT and NoMaD as stronger navigation execution models, and NaVid, Uni-NaVid, and NaVILA as advanced VLM/VLA navigation directions. These works show the potential of language-guided navigation, but they also reveal limitations related to cost, sensing requirements, compute resources, and implementation complexity.
 
-The research gap is that there is a need for a low-cost indoor prototype that studies structured prompt engineering for simple mobile robot navigation. Chapter 3 explains how this project addresses the gap through a proposed RDK X5, ROS Robot Control Board V3.0 with STM32F103RCT6, ESP32 ultrasonic sensing module, USB webcam, and four-motor mobile robot system.
+The research gap is that there is a need for a low-cost indoor prototype that studies structured prompt engineering for simple mobile robot navigation. Chapter 3 explains how this project addresses the gap through three updated approaches: laptop-only feasibility testing, Raspberry Pi with remote GPU inference and ESP32 motor/sensor control, and Google Dev Board with ESP32 motor/sensor control.
 
 ## REFERENCE
 

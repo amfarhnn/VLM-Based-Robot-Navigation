@@ -1,96 +1,144 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <mxfile host="app.diagrams.net" modified="2026-05-09T00:00:00.000Z" agent="Codex" version="24.7.17">
   <diagram id="table_3_14_source_code_modules_for_baseline_implementation" name="Table 3.14: Source Code Modules for Baseline Implementation">
-    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2084" pageHeight="800" math="0" shadow="0">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1726" pageHeight="800" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="2" value="Table 3.14: Source Code Modules for Baseline Implementation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="40" y="40" width="2004" height="58" as="geometry" />
+          <mxGeometry x="40" y="40" width="1646" height="58" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="File" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="40" y="116" width="549" height="46" as="geometry" />
+        <mxCell id="3" value="File or Module" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="116" width="539" height="46" as="geometry" />
         </mxCell>
         <mxCell id="4" value="Hardware Target" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="589" y="116" width="452" height="46" as="geometry" />
+          <mxGeometry x="579" y="116" width="188" height="46" as="geometry" />
         </mxCell>
         <mxCell id="5" value="Purpose" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1041" y="116" width="727" height="46" as="geometry" />
+          <mxGeometry x="767" y="116" width="760" height="46" as="geometry" />
         </mxCell>
         <mxCell id="6" value="Status" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1768" y="116" width="276" height="46" as="geometry" />
+          <mxGeometry x="1527" y="116" width="159" height="46" as="geometry" />
         </mxCell>
-        <mxCell id="7" value="`src/rdk_x5/robot_navigation_controller.py`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="162" width="549" height="53" as="geometry" />
+        <mxCell id="7" value="`docs/approach_1_raspberry_pi_esp32_remote_gpu.md`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="162" width="539" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="8" value="RDK X5" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="589" y="162" width="452" height="53" as="geometry" />
+        <mxCell id="8" value="Documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="579" y="162" width="188" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="9" value="Runs prompt parsing, webcam capture, ESP32 status reading, action validation, STM32 command sending, and logging" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1041" y="162" width="727" height="53" as="geometry" />
+        <mxCell id="9" value="Full build guide for Raspberry Pi, ESP32, webcam, motor driver, and remote GPU setup" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="767" y="162" width="760" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="10" value="Baseline implementation provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1768" y="162" width="276" height="53" as="geometry" />
+        <mxCell id="10" value="Provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="162" width="159" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="11" value="`src/rdk_x5/config.example.json`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="215" width="549" height="40" as="geometry" />
+        <mxCell id="11" value="`docs/approach_2_google_dev_board_esp32.md`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="202" width="539" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="12" value="RDK X5" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="589" y="215" width="452" height="40" as="geometry" />
+        <mxCell id="12" value="Documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="579" y="202" width="188" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="13" value="Stores webcam index, serial ports, baud rate, safety threshold, and log paths" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1041" y="215" width="727" height="40" as="geometry" />
+        <mxCell id="13" value="Full build guide for Google Dev Board, ESP32, webcam, motor driver, and ultrasonic setup" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="767" y="202" width="760" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="14" value="Example configuration provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1768" y="215" width="276" height="40" as="geometry" />
+        <mxCell id="14" value="Provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="202" width="159" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="15" value="`src/rdk_x5/requirements.txt`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="255" width="549" height="40" as="geometry" />
+        <mxCell id="15" value="`docs/approach_3_laptop_only_model_test.md`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="242" width="539" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="16" value="RDK X5" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="589" y="255" width="452" height="40" as="geometry" />
+        <mxCell id="16" value="Documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="579" y="242" width="188" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="17" value="Lists Python packages for webcam capture and serial communication" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1041" y="255" width="727" height="40" as="geometry" />
+        <mxCell id="17" value="Full build guide for laptop-only feasibility testing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="767" y="242" width="760" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="18" value="Baseline dependency list provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1768" y="255" width="276" height="40" as="geometry" />
+        <mxCell id="18" value="Provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="242" width="159" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="19" value="`firmware/esp32_ultrasonic_hub/esp32_ultrasonic_hub.ino`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="295" width="549" height="40" as="geometry" />
+        <mxCell id="19" value="`src/laptop_only_test/live_navigation_test.py`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="282" width="539" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="20" value="ESP32" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="589" y="295" width="452" height="40" as="geometry" />
+        <mxCell id="20" value="GPU laptop" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="579" y="282" width="188" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="21" value="Reads four ultrasonic sensors and outputs JSON distance and obstacle status" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1041" y="295" width="727" height="40" as="geometry" />
+        <mxCell id="21" value="Planned main program for laptop-only camera, model inference, action display, and logging" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="767" y="282" width="760" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="22" value="Baseline firmware provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1768" y="295" width="276" height="40" as="geometry" />
+        <mxCell id="22" value="Planned" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="282" width="159" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="23" value="`firmware/stm32_motor_controller/stm32_motor_controller_arduino.ino`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="335" width="549" height="40" as="geometry" />
+        <mxCell id="23" value="`src/raspberry_pi_robot/robot_client.py`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="322" width="539" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="24" value="STM32 robot control board or compatible STM32duino setup" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="589" y="335" width="452" height="40" as="geometry" />
+        <mxCell id="24" value="Raspberry Pi" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="579" y="322" width="188" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="25" value="Receives `FWD`, `LEFT`, `RIGHT`, `STOP`, and `SEARCH` commands and converts them to motor outputs" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1041" y="335" width="727" height="40" as="geometry" />
+        <mxCell id="25" value="Planned robot-side client for camera capture, ESP32 communication, remote GPU request, and safety validation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="767" y="322" width="760" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="26" value="Pin-configurable template provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1768" y="335" width="276" height="40" as="geometry" />
+        <mxCell id="26" value="Planned" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="322" width="159" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="27" value="`docs/circuit_wiring_guide.md`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="375" width="549" height="40" as="geometry" />
+        <mxCell id="27" value="`src/gpu_server/server.py`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="375" width="539" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="28" value="Documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="589" y="375" width="452" height="40" as="geometry" />
+        <mxCell id="28" value="GPU laptop or desktop" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="579" y="375" width="188" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="29" value="Provides text-form wiring guidance for the proposed circuit architecture" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1041" y="375" width="727" height="40" as="geometry" />
+        <mxCell id="29" value="Planned remote model server for Approach 1" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="767" y="375" width="760" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="30" value="Draft wiring guide provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1768" y="375" width="276" height="40" as="geometry" />
+        <mxCell id="30" value="Planned" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="375" width="159" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="`src/google_dev_board_robot/robot_controller.py`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="415" width="539" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="Google Dev Board" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="579" y="415" width="188" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="Planned onboard controller for camera capture, embedded inference, ESP32 communication, and validation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="767" y="415" width="760" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="Planned" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="415" width="159" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="35" value="`firmware/esp32_robot_controller/esp32_robot_controller.ino`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="455" width="539" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="36" value="ESP32" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="579" y="455" width="188" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="37" value="Firmware template for ultrasonic sensing and motor-driver command control" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="767" y="455" width="760" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="38" value="Provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="455" width="159" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="39" value="`firmware/esp32_ultrasonic_hub/esp32_ultrasonic_hub.ino`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="495" width="539" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="40" value="ESP32" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="579" y="495" width="188" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="41" value="Optional sensor-only firmware for testing ultrasonic JSON output before motor integration" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="767" y="495" width="760" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="42" value="Provided" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="495" width="159" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="43" value="`docs/circuit_wiring_guide.md`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="535" width="539" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="44" value="Documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="579" y="535" width="188" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="45" value="Text-form wiring guidance for the updated physical robot architecture" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="767" y="535" width="760" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="46" value="Draft guide" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1527" y="535" width="159" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

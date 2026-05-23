@@ -6,9 +6,13 @@
 
 Chapter 2 identified a research gap in low-cost language-guided mobile robot navigation. Existing systems such as LM-Nav, VLMaps, HOV-SG, ViNT, NoMaD, VLMnav, NaVid, Uni-NaVid, and NaVILA show that language, vision, and action can be combined for robot navigation. However, many of these systems require expensive robot platforms, RGB-D cameras, LiDAR, mapping pipelines, server-level models, or complex navigation policies. This creates a practical gap for student-level implementation.
 
-This chapter describes how the project addresses that gap through a low-cost indoor research prototype. The proposed system uses an RDK X5 development board with 8GB RAM as the onboard computing unit, a ROS Robot Control Board V3.0 with STM32F103RCT6 as the low-level motor controller, an ESP32 as the ultrasonic sensor controller, an unbranded 1080p USB webcam as the visual input sensor, four ultrasonic sensors as simple proximity sensors, four DC motors, a mobile robot chassis, and 18650 batteries. The robot is designed for controlled indoor testing in environments such as a corridor, room, laboratory, door area, signboard area, table area, and chair area.
+The earlier single-board hardware direction is removed from the methodology because the board is not currently available for the project. The methodology is therefore updated around three practical implementation approaches:
 
-The methodology is inspired by the modular structure of LM-Nav and the prompt-based action-selection idea of VLMnav. However, the methodology is adapted for this specific FYP prototype. The project does not attempt to build an industry-level autonomous navigation system. Instead, it studies whether structured prompt engineering can convert simple natural language instructions into useful navigation information, visually ground the target using a webcam image, and generate simple validated robot actions.
+- **Approach 1:** Raspberry Pi, ESP32, USB webcam, motor driver, ultrasonic sensors, and a GPU laptop or desktop connected through WiFi.
+- **Approach 2:** Google Dev Board, ESP32, USB webcam, motor driver, and ultrasonic sensors.
+- **Approach 3:** Laptop-only feasibility test using the built-in laptop camera and local GPU, where the human operator follows the model's suggested movement actions.
+
+The methodology is inspired by the modular structure of LM-Nav and the prompt-based action-selection idea of VLMnav. LM-Nav motivates the separation between language understanding, visual grounding, and navigation execution. VLMnav motivates asking a model to choose from a fixed set of navigation actions. This project adapts those ideas into a low-cost indoor prototype and a feasibility-testing workflow.
 
 The intended action set is limited to:
 
@@ -18,13 +22,13 @@ The intended action set is limited to:
 - `stop`
 - `search`
 
-This restricted action set is suitable for the project because it allows the AI decision layer on the RDK X5 board to check obstacle readings from the ESP32 and communicate safely with the STM32-based motor controller. The main contribution of the methodology is therefore the design, implementation, and evaluation of a baseline prompt-engineered indoor navigation prototype that future researchers can improve.
+This restricted action set is suitable because it can be tested in the laptop-only setup and later mapped to motor commands in the physical robot approaches. The main contribution of the methodology is the design, implementation, and evaluation of a prompt-engineered indoor navigation pipeline that can be tested first with a laptop and then transferred to a low-cost robot platform.
 
 ## 3.2 Research Design and Project Workflow
 
-The project follows an iterative prototyping methodology. This approach is suitable because the system contains hardware, software, AI processing, visual grounding, and motor-control components. Each component must be tested separately before the complete robot is evaluated in indoor navigation scenarios.
+The project follows an iterative prototyping methodology. This approach is suitable because the system contains prompt engineering, computer vision, model inference, safety validation, and optional physical motor-control components. Each component must be tested separately before the complete robot is evaluated in indoor navigation scenarios.
 
-The methodology is organized around three main activities. First, the robot hardware and software platform are prepared. Second, prompt templates are designed to convert user instructions into structured navigation outputs. Third, the structured output, webcam image, and ESP32 ultrasonic readings are used to select a simple robot action, which is sent from the RDK X5 board to the STM32-based motor controller.
+The methodology is organized around three main activities. First, the laptop-only setup is used to test model latency, prompt output, live camera processing, and action-selection behavior. Second, the physical robot alternatives are prepared and compared. Third, the selected physical approach connects webcam input, model output, ESP32 ultrasonic readings, and motor-driver commands to evaluate simple indoor robot movement.
 
 ### 3.2.1 Methodology Alignment with Research Objectives
 
@@ -34,77 +38,77 @@ The methodology is aligned with the project objectives as shown in Table 3.1.
 
 | Research Objective | Method Used | Expected Output | Evaluation |
 |---|---|---|---|
-| Objective 1: To design a low-cost indoor mobile robot platform for prompt-based navigation | Build an RDK X5, STM32 motor control board, ESP32 ultrasonic sensing module, USB webcam, four-motor, chassis-based prototype | Functional robot platform for controlled indoor testing | Hardware setup test, webcam test, ESP32 ultrasonic sensor test, controller communication test, motor movement test |
-| Objective 2: To develop prompt templates that extract structured navigation information from natural language | Design baseline, structured, relation-aware, and action-choice prompts | JSON-style output containing target, landmarks, spatial relation, action goal, suggested action, and uncertainty | Prompt output validity, landmark extraction accuracy, spatial relation extraction accuracy |
-| Objective 3: To connect prompt output, webcam input, and obstacle sensing to simple robot actions | Use visual grounding or VLM-based action selection to choose from `move_forward`, `turn_left`, `turn_right`, `stop`, and `search`, then validate against ESP32 distance readings | Validated action command sent from RDK X5 to the STM32 motor control board | Visual grounding correctness, action selection accuracy, obstacle stop behavior, robot movement success, latency, failure analysis |
+| Objective 1: To test whether the selected model can process live camera input and prompt-based navigation decisions | Use the laptop-only feasibility setup with the built-in laptop camera and local GPU | Model latency, structured prompt output, and action recommendation results | Camera capture test, prompt validity test, action selection test, latency measurement |
+| Objective 2: To compare practical low-cost implementation approaches for the physical robot | Compare Raspberry Pi with remote GPU, Google Dev Board onboard inference, and laptop-only feasibility testing | Selected implementation path or justified development sequence | Hardware availability, model compatibility, latency, cost, wiring complexity, reliability |
+| Objective 3: To connect prompt output, webcam input, and obstacle sensing to simple robot actions | Use visual grounding or VLM-based action selection to choose from `move_forward`, `turn_left`, `turn_right`, `stop`, and `search`, then validate against ESP32 distance readings in physical approaches | Validated action command sent to the ESP32 motor-control layer | Visual grounding correctness, action selection accuracy, obstacle stop behavior, movement success, latency, failure analysis |
 
 ### 3.2.2 Overall Project Workflow
 
-The overall project workflow begins with the preparation of the robot hardware and software environment. After the robot platform is functional, the prompt templates are developed and tested using sample instructions. The RDK X5 then captures a webcam image, processes the user instruction, performs visual grounding or action selection, receives ultrasonic distance readings from the ESP32 for basic safety, validates the output, and sends a simple command to the STM32-based motor control board. The robot control board drives the four DC motors according to the selected action.
+The workflow begins with the laptop-only test. This first phase checks whether the available GPU laptop can process live video and produce useful navigation actions quickly enough. If the model is too slow, the prompt, model, image resolution, or inference strategy must be adjusted before building the robot.
+
+After the laptop-only test, the physical robot approaches are compared. Approach 1 uses a Raspberry Pi on the robot and a GPU laptop or desktop as a remote model server. Approach 2 uses a Google Dev Board for more standalone onboard inference. Both physical approaches use an ESP32 to handle the motor driver and ultrasonic sensors.
 
 The workflow is summarized in Figure 3.1.
 
 **Figure 3.1: Proposed project workflow**
 
 ```text
-Prepare Low-Cost Robot Hardware
+Define Navigation Action Set and Prompt Output Schema
         |
         v
-Set Up RDK X5, Webcam, Python, and OpenCV
+Run Laptop-Only Feasibility Test
         |
         v
-Set Up STM32 Motor Control and ESP32 Ultrasonic Sensing
+Measure Model Latency and Prompt Validity
         |
         v
-Create Prompt Templates
+Compare Physical Robot Approaches
+        |
+        +--> Raspberry Pi + ESP32 + Remote GPU
+        |
+        +--> Google Dev Board + ESP32
         |
         v
-Test Prompt Output with Sample Instructions
+Select Practical Implementation Path
         |
         v
-Capture Webcam Image
+Integrate Webcam, ESP32, Motor Driver, and Model Output
         |
         v
-Visual Grounding or Action Selection
+Validate Action with Obstacle Status
         |
         v
-Is the output valid and confident?
-    | yes
-    v
-Send Motor Command to STM32 Robot Control Board
-        |
-        v
-Execute Robot Movement
+Execute or Display Action
         |
         v
 Evaluate Scenario Result
 
-If output is invalid or uncertain:
-        -> stop robot, log failure, refine prompt or grounding method
+If output is invalid, uncertain, too slow, or unsafe:
+        -> stop, log failure, adjust prompt, model, or hardware approach
 ```
 
 ### 3.2.3 Development Workflow
 
-The development workflow is divided into stages so that hardware and software risks can be reduced before full integration.
+The development workflow is divided into stages so that model and hardware risks can be reduced before full robot integration.
 
 **Table 3.2: Development Workflow**
 
 | Stage | Activity | Expected Output |
 |---|---|---|
-| Stage 1 | Prepare robot hardware, including chassis, four DC motors, RDK X5, STM32 robot control board, ESP32, USB webcam, four ultrasonic sensors, and 18650 batteries | Assembled prototype robot |
-| Stage 2 | Install and configure RDK X5 software, Python, OpenCV, webcam capture, and required AI libraries or API access | Working onboard computing environment |
-| Stage 3 | Configure STM32 robot control board motor control and command handling | STM32 board can receive commands and control motors |
-| Stage 4 | Configure ESP32 ultrasonic sensor reading and communication with RDK X5 | ESP32 can report obstacle or distance status |
-| Stage 5 | Create prompt templates for landmark extraction, spatial relation extraction, and action selection | Tested prompt templates |
-| Stage 6 | Test prompt output using sample instructions such as "Go to the door" and "Find the signboard" | Valid structured outputs |
-| Stage 7 | Test webcam image capture and visual grounding with indoor landmarks | Grounding result or action recommendation |
-| Stage 8 | Connect AI decision logic to ESP32 obstacle status and STM32 motor commands | End-to-end command flow from instruction to safe motor action |
-| Stage 9 | Test indoor navigation scenarios in controlled areas | Scenario results and movement observations |
+| Stage 1 | Define the navigation action set, structured output fields, and test instructions | Fixed schema and approved action list |
+| Stage 2 | Build the laptop-only feasibility test using laptop camera and local GPU | Working live-camera action-selection test |
+| Stage 3 | Measure model latency, prompt validity, action selection behavior, and failure cases | Evidence for whether the GPU laptop can support real-time testing |
+| Stage 4 | Prepare Approach 1 design: Raspberry Pi, ESP32, webcam, motor driver, ultrasonic sensors, and remote GPU server | Physical robot architecture using remote inference |
+| Stage 5 | Prepare Approach 2 design: Google Dev Board, ESP32, webcam, motor driver, and ultrasonic sensors | Physical robot architecture using onboard embedded inference |
+| Stage 6 | Compare both physical approaches using cost, availability, latency, model compatibility, and wiring complexity | Selected physical implementation path |
+| Stage 7 | Flash ESP32 firmware for ultrasonic sensing and motor-driver control | ESP32 can report distance and execute basic movement commands |
+| Stage 8 | Integrate camera capture, model output, ESP32 status, and safety validation | End-to-end command flow from instruction to safe action |
+| Stage 9 | Test controlled indoor scenarios with door, signboard, chair, table, and corridor targets | Scenario results and movement observations |
 | Stage 10 | Collect, analyse, and report results, limitations, and future improvements | Final evaluation and discussion |
 
 ## 3.3 Proposed System Architecture
 
-The proposed system architecture adapts the LM-Nav idea into a low-cost indoor robot system. LM-Nav separates language understanding, visual grounding, and navigation execution. In this project, these stages are implemented as user prompt processing, structured navigation output generation, webcam-based visual grounding or action selection, RDK X5 decision logic, ESP32 ultrasonic safety checking, STM32 motor command handling, and robot movement.
+The proposed system architecture adapts the LM-Nav idea into a practical low-cost workflow. LM-Nav separates language understanding, visual grounding, and navigation execution. In this project, those stages are implemented as prompt processing, structured navigation output generation, webcam-based visual grounding or VLM action selection, safety validation, and either displayed human-followed actions or ESP32-based motor-driver control.
 
 **Figure 3.2: Proposed system architecture**
 
@@ -112,59 +116,53 @@ The proposed system architecture adapts the LM-Nav idea into a low-cost indoor r
 User Natural Language Prompt
         |
         v
-RDK X5 Prompt Engineering Module
+Prompt Engineering Module
         |
         v
 Structured Navigation Output
         |
         v
-USB Webcam Image Capture
+Webcam Image Capture
         |
         v
-Visual Grounding or Action Selection
+Visual Grounding or VLM Action Selection
         |
         v
-RDK X5 Decision and Validation Logic
+Decision and Safety Validation Logic
         |
-        v
-Check ESP32 Ultrasonic Obstacle Status
+        +--> Laptop-Only Test: Display Action to Human Operator
         |
-        v
-Command to STM32 Robot Control Board
-        |
-        v
-Four DC Motors and Chassis Movement
-        |
-        v
-Robot Movement in Indoor Test Area
+        +--> Physical Robot: Check ESP32 Ultrasonic Status
+                    |
+                    v
+              Send Command to ESP32
+                    |
+                    v
+              Motor Driver and DC Motors
+                    |
+                    v
+              Robot Movement in Indoor Test Area
 ```
 
-The architecture is intentionally modular. If the robot fails to reach the target, the failure can be traced to a specific component: prompt output, visual grounding, action selection, serial communication, motor control, or physical movement. This is important for an FYP because the project must be evaluated systematically rather than only judged by whether the robot moves.
+The architecture is intentionally modular. If the system fails, the failure can be traced to a specific component: prompt output, visual grounding, action selection, model latency, ESP32 communication, motor-driver control, or physical movement. This is important for an FYP because the project must be evaluated systematically rather than only judged by whether the robot moves.
 
-### 3.3.1 Hardware Roles
+### 3.3.1 Implementation Approaches and Hardware Roles
 
-The hardware components and their roles are shown in Table 3.3.
+The three implementation approaches are shown in Table 3.3.
 
-**Table 3.3: Proposed Hardware Components and Roles**
+**Table 3.3: Proposed Implementation Approaches and Hardware Roles**
 
-| Component | Role in the System | Reason for Selection |
-|---|---|---|
-| RDK X5 development board with 8GB RAM | Runs Python, receives the user instruction, captures webcam image, performs prompt processing or AI decision, receives obstacle status from ESP32, validates the selected action, and sends motor commands to the STM32 robot control board | Low-cost embedded AI/robotics computing board suitable for the high-level prototype pipeline |
-| ROS Robot Control Board V3.0 with STM32F103RCT6 | Receives simple motor commands from the RDK X5 board and controls the DC motors | Suitable low-level controller for motor execution |
-| ESP32 | Reads the four ultrasonic sensors and sends distance or obstacle status to the RDK X5 board | Suitable low-cost microcontroller for separating sensor timing from motor control |
-| Unbranded 1080p USB webcam | Captures the indoor scene for visual grounding or action selection; supports USB plug-and-play, CMOS imaging, manual focus, auto white balance, and low-light correction | Low-cost RGB visual input suitable for indoor landmark testing |
-| Four ultrasonic sensors | Provide simple distance or obstacle awareness around the robot through the ESP32 | Low-cost safety aid for controlled indoor testing |
-| Four DC motors | Provide wheeled robot movement | Simple and low-cost movement mechanism for indoor prototype |
-| Chassis | Holds the RDK X5 board, STM32 robot control board, ESP32, webcam, ultrasonic sensors, motors, and batteries | Affordable robot body for FYP development |
-| Four 18650 batteries | Power the motors and electronics according to safe voltage requirements | Required for mobile operation |
+| Approach | Main Components | Role in the Project | Main Risk |
+|---|---|---|---|
+| Approach 1: Raspberry Pi with remote GPU | Raspberry Pi, USB webcam, ESP32, motor driver, ultrasonic sensors, DC motors, chassis, GPU laptop or desktop over WiFi | Real robot approach where the Raspberry Pi handles robot-side camera, communication, and safety validation while the GPU computer performs model inference | WiFi latency and dependence on external GPU computer |
+| Approach 2: Google Dev Board with ESP32 | Google Dev Board, USB webcam, ESP32, motor driver, ultrasonic sensors, DC motors, chassis | More standalone physical robot approach where the Google Dev Board runs onboard model or TFLite-style inference and ESP32 handles motors and sensors | Model compatibility and embedded inference speed |
+| Approach 3: Laptop-only feasibility test | GPU laptop and built-in laptop camera or external webcam | Early feasibility approach for testing prompts, live camera input, model latency, and action choice before buying or wiring full robot hardware | Not a physical robot and has no motor or ultrasonic sensing |
 
-The RDK X5 is responsible for high-level decision making, the STM32-based robot control board is responsible for low-level motor execution, and the ESP32 is responsible for ultrasonic sensor handling. This separation prevents the AI processing loop from directly controlling motor pins or ultrasonic timing and makes the system easier to test.
-
-The webcam is used only as the visual input device for indoor scene observation. Although the selected webcam includes a microphone and supports video-compression features such as H.264/H.265, the main requirement for this project is its 1920 x 1080 RGB image capture through a plug-and-play USB connection. Audio input is not part of the baseline methodology unless voice-command input is added as future work.
+For the physical robot approaches, the ESP32 is responsible for real-time ultrasonic reading and motor-driver control. This keeps timing-sensitive tasks separate from AI inference. The AI layer should only send validated high-level commands such as `FWD`, `LEFT`, `RIGHT`, `SEARCH`, and `STOP`.
 
 ## 3.4 System Requirements, Constraints, and Acceptance Criteria
 
-The system requirements are defined according to the actual scope of the project. The prototype must be able to accept a simple navigation instruction, process the instruction into a structured format, use webcam input for grounding or action selection, and move the robot using validated commands.
+The system requirements are defined according to the actual scope of the updated project. The prototype must be able to accept a simple navigation instruction, process the instruction into a structured format, use webcam input for grounding or action selection, and either display a recommended movement in the laptop-only setup or move the robot using validated ESP32 commands in the physical setup.
 
 **Table 3.4: Requirements and Acceptance Criteria**
 
@@ -174,14 +172,14 @@ The system requirements are defined according to the actual scope of the project
 | Structured prompt output | The prompt produces a machine-readable response | JSON validation | Required fields are present and parseable |
 | Landmark extraction | The system identifies target objects such as door, signboard, chair, table, or corridor | Comparison with expected labels | Correct target or landmark is extracted |
 | Spatial relation extraction | The system identifies relations such as near, beside, after, or toward when present | Manual annotation comparison | Relevant relation is represented correctly |
-| Webcam capture | RDK X5 captures the current indoor scene from the USB webcam | OpenCV camera test | Image frame is captured successfully |
+| Webcam capture | Laptop, Raspberry Pi, or Google Dev Board captures the current indoor scene | OpenCV or camera test | Image frame is captured successfully |
 | Visual grounding or action selection | The system connects the prompt output and image to an action decision | Scenario-based test | Selected action is relevant to the instruction and current view |
-| Ultrasonic sensing | ESP32 reads four ultrasonic sensors and reports basic proximity status to the RDK X5 | ESP32 sensor reading and serial/status test | Distance values are received by the RDK X5 and can trigger stop behavior |
-| Controller communication | RDK X5 receives ESP32 obstacle status and sends motor commands to the STM32 robot control board | Serial or command log inspection | ESP32 status and STM32 command strings are received correctly |
-| Motor control | STM32 robot control board controls the motors according to command | Movement test | Robot performs the intended basic motion |
-| Safety validation | Uncertain or invalid AI output is not executed directly | Failure-case test | Robot stops or requests refinement instead of moving unsafely |
+| Model latency | The selected model produces an action within an acceptable delay | Latency logging | Delay is acceptable for slow indoor testing |
+| Ultrasonic sensing | ESP32 reads ultrasonic sensors and reports basic proximity status in physical approaches | ESP32 serial/status test | Distance values are received and can trigger stop behavior |
+| Motor-driver control | ESP32 sends valid output to the motor driver in physical approaches | Movement test | Robot performs the intended basic motion |
+| Safety validation | Uncertain, invalid, or unsafe AI output is not executed directly | Failure-case test | System stops or refuses uncertain action instead of moving unsafely |
 
-The project has several constraints. The robot operates only in a controlled indoor environment. The webcam does not provide depth information. The project does not include full SLAM, LiDAR mapping, large VLA model deployment, or advanced learned navigation policies. These constraints are acceptable because the goal is to build and evaluate a baseline prompt-engineered prototype.
+The project has several constraints. The physical robot operates only in controlled indoor environments. The webcam does not provide direct depth information. The baseline project does not include full SLAM, LiDAR mapping, large VLA model deployment, or advanced learned navigation policies. These constraints are acceptable because the goal is to build and evaluate a baseline prompt-engineered prototype.
 
 ## 3.5 Data, Test Environment, and Experimental Materials
 
@@ -207,33 +205,35 @@ The indoor test environment will include simple visual landmarks such as a door,
 | Navigation instruction list | Input for prompt engineering experiments |
 | Expected landmark labels | Ground truth for extraction accuracy |
 | Webcam images or live camera frames | Input for visual grounding and action selection |
-| RDK X5 development board with 8GB RAM | Runs the high-level Python decision pipeline |
-| ROS Robot Control Board V3.0 with STM32F103RCT6 | Runs low-level motor control for the four DC motors |
-| ESP32 | Reads the four ultrasonic sensors and sends obstacle or distance status to the RDK X5 |
-| Unbranded 1080p USB webcam | Provides RGB image input for grounding and action selection |
-| Four ultrasonic sensors | Provide simple obstacle or proximity readings through the ESP32 |
-| Four DC motors | Execute movement commands |
-| Mobile robot chassis | Physical robot platform |
-| Four 18650 batteries | Provide mobile power supply |
+| GPU laptop | Runs laptop-only testing and may run the remote model server for Approach 1 |
+| Built-in laptop camera or external webcam | Provides RGB input for the laptop-only feasibility setup |
+| Raspberry Pi | Robot-side controller for Approach 1 |
+| Google Dev Board | Onboard embedded inference controller for Approach 2 |
+| ESP32 | Reads ultrasonic sensors and controls the motor driver in physical robot approaches |
+| Motor driver | Receives ESP32 control signals and drives DC motors |
+| Ultrasonic sensors | Provide simple obstacle or proximity readings through the ESP32 |
+| Four DC motors and chassis | Physical robot movement platform |
+| Battery pack and voltage regulators | Provide mobile power for the robot electronics and motors |
 | Result log file | Stores instructions, prompt outputs, selected actions, movement results, latency, and failures |
 
 **Table 3.7: Software, Model, and Platform Requirements**
 
 | Item | Purpose | Planned Tool or Example |
 |---|---|---|
-| Operating environment | Run the robot software on RDK X5 | Linux-based RDK X5 environment |
-| Programming language | Implement prompt processing, camera capture, decision logic, and logging | Python |
+| Programming language | Implement prompt processing, camera capture, decision logic, communication, and logging | Python |
 | Webcam processing | Capture and process RGB frames | OpenCV |
-| Prompt processing model | Extract structured navigation information | GPT-style model, local LLM, or available API model |
-| Visual grounding model | Match text target with webcam image or answer visual questions | CLIP, OpenCLIP, or VLM depending on available compute |
-| Controller communication | Send obstacle status from ESP32 to RDK X5 and motor commands from RDK X5 to STM32 robot control board | Serial or supported robot control interface |
-| ESP32 firmware | Read four ultrasonic sensors and report distance or obstacle status | Arduino IDE, PlatformIO, or ESP-IDF depending on development preference |
-| STM32 robot control firmware | Receive motor commands and control the four DC motors | ROS Robot Control Board V3.0 firmware or compatible development workflow |
+| Prompt processing model | Extract structured navigation information | GPT-style model, local LLM, rule-based parser, or available API model |
+| Visual grounding model | Match text target with webcam image or answer visual questions | CLIP, OpenCLIP, VLM, TFLite model, or rule-based fallback |
+| Laptop-only runtime | Run early feasibility test with camera and GPU | Python, OpenCV, PyTorch or selected model runtime |
+| Remote GPU server | Run heavier model inference for Approach 1 | FastAPI or Flask server on GPU laptop or desktop |
+| Raspberry Pi robot client | Capture frames, call GPU server, read ESP32 status, and validate action | Python, OpenCV, pyserial, requests or httpx |
+| Google Dev Board runtime | Run onboard embedded inference for Approach 2 | Python, OpenCV, TFLite runtime, PyCoral if applicable |
+| ESP32 firmware | Read ultrasonic sensors and control motor driver | Arduino IDE, PlatformIO, or ESP-IDF |
 | Result storage | Record output and evaluation data | CSV, JSON, Markdown table, or spreadsheet |
 
 ## 3.6 Prompt Engineering Design
 
-Prompt engineering is the central research element of the project. The prompt must convert a user instruction into a structured navigation representation that can be parsed by the RDK X5 board. The output should be simple enough for the robot to use, but detailed enough to preserve target, landmark, relation, action goal, and uncertainty information.
+Prompt engineering is the central research element of the project. The prompt must convert a user instruction into a structured navigation representation that can be parsed by the selected compute platform. The output should be simple enough for laptop-only testing and physical robot execution, but detailed enough to preserve target, landmark, relation, action goal, and uncertainty information.
 
 **Table 3.8: Prompt Templates for Evaluation**
 
@@ -282,11 +282,11 @@ For a relation-based instruction, the expected output may be:
 | `suggested_action` | Proposed action from the fixed action set | `move_forward` |
 | `uncertainty` | Confidence label used for safety validation | `low`, `medium`, or `high` |
 
-The RDK X5 will validate this output before execution. If required fields are missing, if the action is outside the approved action set, if uncertainty is high, or if ESP32 ultrasonic readings indicate that the path is too close to an obstacle, the robot should stop and log the failure instead of moving.
+The selected compute platform will validate this output before execution or display. If required fields are missing, if the action is outside the approved action set, if uncertainty is high, or if ESP32 ultrasonic readings indicate that the path is too close to an obstacle, the system should stop and log the failure instead of moving.
 
 ## 3.7 Webcam-Based Visual Grounding and Action Selection
 
-After the prompt output is generated, the system captures an image from the USB webcam. The image is used to decide whether the target appears in the current view and which action should be taken. The visual grounding stage may use CLIP, OpenCLIP, a VLM, or a simplified image-based method depending on available compute and implementation constraints.
+After the prompt output is generated, the system captures an image from the webcam. The image is used to decide whether the target appears in the current view and which action should be taken. The visual grounding stage may use CLIP, OpenCLIP, a VLM, a TFLite model, or a simplified image-based method depending on the selected implementation approach.
 
 For CLIP or OpenCLIP-style grounding, the text query may be the target alone, such as `door`, or a prompt-expanded query, such as `an indoor door in a corridor`. The basic score is:
 
@@ -302,52 +302,52 @@ For VLM-style action selection, the model may be asked to choose the best action
 |---|---|---|
 | Direct target grounding | Compare webcam image with the target word such as `door` or `chair` | Simple baseline for single-landmark instructions |
 | Prompt-expanded grounding | Use a richer text query such as `a signboard on an indoor wall` | Useful when target needs more context |
-| Relation-aware grounding | Include relation text such as `chair near table` | Useful for relation-based instructions, but may be harder with single RGB image |
+| Relation-aware grounding | Include relation text such as `chair near table` | Useful for relation-based instructions, but may be harder with a single RGB image |
 | VLM action-choice prompt | Ask the model to choose from the fixed action set using image and instruction | Useful for direct decision making, but output must be validated |
+| TFLite or Edge TPU model | Use a lightweight classifier or detector on the Google Dev Board | Suitable if the model is compatible with embedded inference |
 | Rule-based fallback | If target is uncertain, use `search` or `stop` | Important for safety and baseline robustness |
 
 The grounding result is not treated as perfect. The system will log cases where the target is not visible, the model selects the wrong action, or the robot needs to search.
 
 ## 3.8 Robot Action Set and Motor Command Mapping
 
-The robot uses a small action set because the prototype is intended for controlled indoor testing. The RDK X5 selects a high-level action and sends the corresponding command string to the STM32-based robot control board. The robot control board then translates the command into motor signals.
+The robot uses a small action set because the prototype is intended for controlled indoor testing. In the laptop-only approach, the selected action is displayed to the human operator. In the physical robot approaches, the selected high-level action is mapped to an ESP32 command, and the ESP32 controls the motor driver.
 
 **Table 3.11: Action Set and Motor Command Mapping**
 
-| Action | Meaning | STM32 Robot Control Board Behavior |
-|---|---|---|
-| `move_forward` | Move the robot forward slowly | All four motors rotate forward at controlled speed |
-| `turn_left` | Rotate or steer the robot left | Left-side motors slow or reverse, right-side motors move forward |
-| `turn_right` | Rotate or steer the robot right | Right-side motors slow or reverse, left-side motors move forward |
-| `stop` | Stop movement immediately | All motors stop |
-| `search` | Rotate slowly or scan for target | Robot turns slowly while webcam continues checking scene |
+| Action | Meaning | Laptop-Only Behavior | ESP32 Motor-Driver Command |
+|---|---|---|---|
+| `move_forward` | Move forward slowly | Human operator walks forward slowly | `FWD` |
+| `turn_left` | Rotate or steer left | Human operator turns laptop/body left | `LEFT` |
+| `turn_right` | Rotate or steer right | Human operator turns laptop/body right | `RIGHT` |
+| `stop` | Stop movement immediately | Human operator stops | `STOP` |
+| `search` | Rotate slowly or scan for target | Human operator slowly scans the area | `SEARCH` |
 
-This action set is intentionally limited. It does not include full path planning, obstacle avoidance, or continuous velocity control. The purpose is to test whether language and visual information can be converted into simple, safe movement commands.
+The ESP32 should stop the motors if it receives an unknown command, if no command is received within a timeout, or if an obstacle is detected within the selected safety threshold.
 
-## 3.9 Baseline Prototype and Future Improvement Scope
+## 3.9 Approach Comparison and Selection Criteria
 
-The baseline implementation focuses on simple indoor navigation using prompt engineering and webcam-based grounding. More advanced methods from the literature are treated as future improvements.
+The project does not assume that all three approaches are final physical robots. Instead, they are used as a staged development and selection strategy. Approach 3 reduces early hardware cost and tests whether the model is fast enough. Approach 1 is the strongest physical robot option if heavy model inference is needed. Approach 2 is the most standalone option if the selected model can run efficiently on the Google Dev Board.
 
-**Table 3.12: Baseline and Future Improvement Methods**
+**Table 3.12: Comparison of Implementation Approaches**
 
-| Method | Role in This Project | Decision |
-|---|---|---|
-| LM-Nav-style modular pipeline | Provides the conceptual structure of language understanding, visual grounding, and execution | Used as the main baseline inspiration |
-| VLMnav-style action-choice prompt | Supports selecting from a fixed action set | Used as a prompt/action-selection reference |
-| CLIP or OpenCLIP grounding | Allows text target and image comparison | Used if compute and implementation are practical |
-| RGB-D mapping | Improves depth and spatial understanding | Future work |
-| LiDAR-based obstacle detection | Improves safety and mapping | Future work due to cost and complexity |
-| VLMaps or HOV-SG-style spatial memory | Supports map and scene-graph reasoning | Future work |
-| ViNT or NoMaD navigation policy | Replaces simple action control with stronger navigation execution | Future work |
-| Large VLM or VLA model pipeline | Improves reasoning but requires more compute | Future work or optional remote testing |
+| Criterion | Approach 1: Raspberry Pi + Remote GPU | Approach 2: Google Dev Board | Approach 3: Laptop-Only Test |
+|---|---|---|---|
+| Physical robot movement | Yes | Yes | No |
+| Motor and ultrasonic sensing | ESP32 handles both | ESP32 handles both | Not included |
+| Camera source | Robot-mounted USB webcam | Robot-mounted USB webcam | Built-in laptop camera or external webcam |
+| Model compute | GPU laptop or desktop over WiFi | Onboard embedded board | Local GPU laptop |
+| Main strength | Supports heavier models while keeping robot hardware simple | More standalone embedded robot design | Lowest-cost feasibility test |
+| Main weakness | WiFi latency and external-computer dependence | Model compatibility and limited onboard compute | Not a true robot platform |
+| Best use | Main physical robot if VLM or CLIP inference is heavy | Physical robot if lightweight model is sufficient | Phase 1 model and latency testing |
 
-This table clarifies the scope of the FYP. The project is not evaluated as a complete industrial navigation stack. It is evaluated as a baseline research prototype that can support later improvements.
+The final physical approach should be chosen based on hardware availability, measured latency, model compatibility, and implementation time.
 
 ## 3.10 Mechanical Design and Physical Integration
 
-The mobile robot chassis will be designed as a purpose-built low-cost platform for the project. The design is prepared in Autodesk Fusion 360 so that the RDK X5 board, STM32 robot control board, ESP32, webcam, ultrasonic sensors, battery holder, and four DC motors can be mounted in a controlled and repeatable layout. The 3D model is not treated as the main research contribution, but it is important because the sensor placement and component arrangement affect the reliability of the indoor navigation experiment.
+The physical robot chassis will be designed as a purpose-built low-cost platform if Approach 1 or Approach 2 is selected for physical testing. The design is prepared in Autodesk Fusion 360 so that the Raspberry Pi or Google Dev Board, ESP32, webcam, ultrasonic sensors, motor driver, battery holder, and four DC motors can be mounted in a controlled and repeatable layout. The 3D model is not treated as the main research contribution, but it is important because the sensor placement and component arrangement affect the reliability of the indoor navigation experiment.
 
-The proposed chassis should provide mounting space for the webcam at the front of the robot, four ultrasonic sensors around the robot body, and accessible mounting positions for the controller boards. The battery holder should be placed low on the chassis to improve stability. The design should also allow the wiring to be routed safely so that cables do not touch the wheels or motors.
+The proposed chassis should provide mounting space for the webcam at the front of the robot, ultrasonic sensors around the robot body, and accessible mounting positions for the controller boards. The battery holder should be placed low on the chassis to improve stability. The design should also allow the wiring to be routed safely so that cables do not touch the wheels or motors.
 
 **Figure 3.3: Placeholder for proposed Fusion 360 3D robot model**
 
@@ -356,23 +356,23 @@ Insert Fusion 360 3D model image here.
 
 Suggested image content:
 - Isometric view of the complete 3D-printed chassis
-- Mounting position for RDK X5
-- Mounting position for STM32 robot control board
+- Mounting position for Raspberry Pi or Google Dev Board
 - Mounting position for ESP32
+- Mounting position for motor driver
 - Webcam position
-- Four ultrasonic sensor positions
+- Ultrasonic sensor positions
 - Four DC motor and wheel positions
 - Battery holder position
 ```
 
 ### 3.10.1 Suggested Circuit Architecture
 
-The circuit architecture is divided into three layers: computing, sensing, and motion. The RDK X5 performs high-level prompt processing and decision logic. The ESP32 handles the timing-sensitive ultrasonic sensor readings. The STM32-based robot control board receives validated motor commands and controls the motors. This separation is suitable for an FYP prototype because each layer can be tested independently before full integration.
+The circuit architecture is divided into three layers: computing, sensing/control, and motion. The Raspberry Pi or Google Dev Board performs high-level prompt processing and decision logic in the physical robot approaches. The ESP32 handles ultrasonic sensor readings and motor-driver commands. This separation is suitable for an FYP prototype because each layer can be tested independently before full integration.
 
 **Figure 3.4: Suggested circuit architecture**
 
 ```text
-4x 18650 Battery Pack
+Battery Pack
         |
         v
 Main Power Switch and Fuse
@@ -380,20 +380,19 @@ Main Power Switch and Fuse
         +--> Motor Power Rail
         |       |
         |       v
-        |   STM32 Robot Control Board or Motor Driver
+        |   Motor Driver
         |       |
         |       +--> Front Left DC Motor
         |       +--> Front Right DC Motor
         |       +--> Rear Left DC Motor
         |       +--> Rear Right DC Motor
         |
-        +--> Regulated 5 V Supply
+        +--> Regulated Logic Supply
                 |
-                +--> RDK X5 Development Board
+                +--> Raspberry Pi or Google Dev Board
                 |       |
                 |       +--> USB Webcam
                 |       +--> USB or UART link to ESP32
-                |       +--> USB or UART link to STM32 Robot Control Board
                 |
                 +--> ESP32
                         |
@@ -401,11 +400,12 @@ Main Power Switch and Fuse
                         +--> Left Ultrasonic Sensor
                         +--> Right Ultrasonic Sensor
                         +--> Rear Ultrasonic Sensor
+                        +--> Motor Driver Input Pins
 
 All grounds are connected to a common ground reference.
 ```
 
-The final circuit diagram should show the battery connection, power switch, regulator, RDK X5, ESP32, STM32 robot control board, ultrasonic sensors, motor driver outputs, and motors. If the ultrasonic sensors are powered at 5 V, the echo signals should be reduced to 3.3 V before entering ESP32 input pins. This can be done using a voltage divider or logic-level shifter. The exact pin numbers should be confirmed after the physical boards and connectors are finalized.
+The final circuit diagram should show the battery connection, power switch, regulator, selected compute board, ESP32, ultrasonic sensors, motor driver outputs, and motors. If the ultrasonic sensors are powered at 5 V, the echo signals should be reduced to 3.3 V before entering ESP32 input pins. This can be done using a voltage divider or logic-level shifter. The exact pin numbers should be confirmed after the physical boards and connectors are finalized.
 
 **Figure 3.5: Placeholder for final circuit diagram**
 
@@ -414,67 +414,71 @@ Insert final circuit diagram picture here.
 
 Suggested circuit diagram content:
 - Battery pack, switch, fuse, and regulator
-- RDK X5 power input and USB webcam connection
-- RDK X5 serial connection to ESP32
-- RDK X5 serial connection to STM32 robot control board
-- ESP32 trigger and echo pins to four ultrasonic sensors
-- STM32 robot control board or motor driver output to four DC motors
+- Raspberry Pi or Google Dev Board power input and USB webcam connection
+- Compute board serial connection to ESP32
+- ESP32 trigger and echo pins to ultrasonic sensors
+- ESP32 motor-control pins to motor driver input
+- Motor driver output to four DC motors
 - Common ground connection
 - Emergency stop or manual power switch
 ```
 
 ## 3.11 Company, Software, and Tool Involvement
 
-The project does not involve industrial sponsorship. However, several hardware and software vendors, chip manufacturers, and open-source tools are used in the prototype. Table 3.13 identifies the companies or organizations related to the selected components and software tools. For final submission, the exact supplier name should be checked against the purchase receipt or product label, especially for unbranded or third-party robot-control boards.
+The project does not involve industrial sponsorship. However, several hardware and software vendors, chip manufacturers, and open-source tools are used in the prototype. Table 3.13 identifies the companies or organizations related to the selected components and software tools. For final submission, the exact supplier name should be checked against the purchase receipt or product label, especially for unbranded or third-party motor-driver boards.
 
 **Table 3.13: Company, Component, and Software Involvement**
 
 | Component or Tool | Company or Organization | Involvement in This Project | Notes for Final Report |
 |---|---|---|---|
-| RDK X5 development board | D-Robotics | Main onboard computing board for Python, webcam capture, and AI decision logic | Use the exact board documentation or supplier listing when confirming specifications |
-| STM32F103RCT6 microcontroller | STMicroelectronics | Microcontroller used on the ROS Robot Control Board V3.0 | Used indirectly through the robot control board firmware |
-| ROS Robot Control Board V3.0 | Yahboom listing or exact supplier to be confirmed from purchase source | Low-level motor command execution and motor-driver interface | Record exact supplier, product store, and board revision after purchase confirmation |
-| ESP32 microcontroller | Espressif Systems | Ultrasonic sensor controller and serial status transmitter | Used to separate sensor timing from high-level AI processing |
-| USB webcam | Unbranded manufacturer | RGB visual input for indoor scene capture | Webcam is treated as a low-cost plug-and-play RGB camera |
+| Raspberry Pi | Raspberry Pi Ltd | Candidate robot-side controller for Approach 1 | Used if remote GPU architecture is selected |
+| Google Dev Board or Coral-style board | Google | Candidate onboard embedded AI controller for Approach 2 | Exact board and inference support must be confirmed |
+| ESP32 microcontroller | Espressif Systems | Ultrasonic sensor controller and motor-driver command controller | Used in physical robot approaches |
+| GPU laptop or desktop | Exact manufacturer depends on available machine | Runs laptop-only feasibility test and may run the remote model server | Record GPU model and memory for latency reporting |
+| USB webcam or built-in laptop camera | Manufacturer depends on available camera | RGB visual input for indoor scene capture | Webcam is treated as a low-cost RGB camera |
+| Motor driver | Supplier to be confirmed | Converts ESP32 motor-control signals into motor power output | Exact driver should be recorded after purchase |
 | Autodesk Fusion 360 | Autodesk | 3D modelling software for the robot chassis design | Used for mechanical design documentation |
-| Python | Python Software Foundation | Main programming language for RDK X5 control logic | Used for prompt parsing, decision logic, camera capture, and logging |
+| Python | Python Software Foundation | Main programming language for prompt parsing, decision logic, camera capture, communication, and logging | Used in all three approaches |
 | OpenCV | OpenCV project | Webcam frame capture and basic image processing | Used before advanced CLIP or VLM grounding is added |
-| Arduino IDE, PlatformIO, or ESP-IDF | Arduino, PlatformIO Labs, or Espressif Systems | Firmware development for ESP32 and possible STM32 template testing | Tool choice depends on the final firmware workflow |
+| Arduino IDE, PlatformIO, or ESP-IDF | Arduino, PlatformIO Labs, or Espressif Systems | Firmware development for ESP32 | Tool choice depends on the final firmware workflow |
 | diagrams.net or draw.io | JGraph or diagrams.net project | Diagram preparation for system architecture and circuit documentation | Used for report figures and flowcharts |
 
 ## 3.12 Software Implementation and Coding
 
-The baseline coding is divided according to the hardware roles. The RDK X5 runs the main Python control program. The ESP32 runs firmware that reads four ultrasonic sensors and sends JSON status messages. The STM32 robot control board receives simple motor commands. If the selected STM32 board already provides vendor firmware, the vendor firmware should be used and the RDK X5 command strings should be mapped to the supported command protocol. If custom firmware is required, the provided STM32 template can be adapted after confirming the board pinout.
-
-The full baseline source code is provided in the project repository so that the methodology is supported by an implementable software structure rather than only a conceptual flowchart.
+The baseline coding is divided according to the three approaches. The laptop-only program runs the camera, model, and action display on the GPU laptop. The Raspberry Pi approach uses a robot-side client and a remote GPU server. The Google Dev Board approach uses an onboard embedded inference controller. The ESP32 firmware is shared by the two physical robot approaches and handles ultrasonic sensing and motor-driver control.
 
 **Table 3.14: Source Code Modules for Baseline Implementation**
 
-| File | Hardware Target | Purpose | Status |
+| File or Module | Hardware Target | Purpose | Status |
 |---|---|---|---|
-| `src/rdk_x5/robot_navigation_controller.py` | RDK X5 | Runs prompt parsing, webcam capture, ESP32 status reading, action validation, STM32 command sending, and logging | Baseline implementation provided |
-| `src/rdk_x5/config.example.json` | RDK X5 | Stores webcam index, serial ports, baud rate, safety threshold, and log paths | Example configuration provided |
-| `src/rdk_x5/requirements.txt` | RDK X5 | Lists Python packages for webcam capture and serial communication | Baseline dependency list provided |
-| `firmware/esp32_ultrasonic_hub/esp32_ultrasonic_hub.ino` | ESP32 | Reads four ultrasonic sensors and outputs JSON distance and obstacle status | Baseline firmware provided |
-| `firmware/stm32_motor_controller/stm32_motor_controller_arduino.ino` | STM32 robot control board or compatible STM32duino setup | Receives `FWD`, `LEFT`, `RIGHT`, `STOP`, and `SEARCH` commands and converts them to motor outputs | Pin-configurable template provided |
-| `docs/circuit_wiring_guide.md` | Documentation | Provides text-form wiring guidance for the proposed circuit architecture | Draft wiring guide provided |
+| `docs/approach_1_raspberry_pi_esp32_remote_gpu.md` | Documentation | Full build guide for Raspberry Pi, ESP32, webcam, motor driver, and remote GPU setup | Provided |
+| `docs/approach_2_google_dev_board_esp32.md` | Documentation | Full build guide for Google Dev Board, ESP32, webcam, motor driver, and ultrasonic setup | Provided |
+| `docs/approach_3_laptop_only_model_test.md` | Documentation | Full build guide for laptop-only feasibility testing | Provided |
+| `src/laptop_only_test/live_navigation_test.py` | GPU laptop | Planned main program for laptop-only camera, model inference, action display, and logging | Planned |
+| `src/raspberry_pi_robot/robot_client.py` | Raspberry Pi | Planned robot-side client for camera capture, ESP32 communication, remote GPU request, and safety validation | Planned |
+| `src/gpu_server/server.py` | GPU laptop or desktop | Planned remote model server for Approach 1 | Planned |
+| `src/google_dev_board_robot/robot_controller.py` | Google Dev Board | Planned onboard controller for camera capture, embedded inference, ESP32 communication, and validation | Planned |
+| `firmware/esp32_robot_controller/esp32_robot_controller.ino` | ESP32 | Firmware template for ultrasonic sensing and motor-driver command control | Provided |
+| `firmware/esp32_ultrasonic_hub/esp32_ultrasonic_hub.ino` | ESP32 | Optional sensor-only firmware for testing ultrasonic JSON output before motor integration | Provided |
+| `docs/circuit_wiring_guide.md` | Documentation | Text-form wiring guidance for the updated physical robot architecture | Draft guide |
 
-The RDK X5 controller follows the control logic shown below:
+The common control logic follows the structure shown below:
 
 ```text
 Receive user instruction
 Generate structured prompt output
 Capture webcam frame
-Read ESP32 ultrasonic distance status
+Run visual grounding or action-selection model
 Select proposed action from fixed action set
-If output is invalid, uncertainty is high, or obstacle is detected:
-    execute stop
+If output is invalid, uncertainty is high, latency is unacceptable, or obstacle is detected:
+    execute or display stop
 Else:
-    send validated command to STM32 robot control board
-Log instruction, structured output, sensor status, final action, and latency
+    display action in laptop-only setup
+    or send validated command to ESP32 in physical setup
+Log instruction, structured output, sensor status if available, final action, and latency
 ```
 
-This coding structure is influenced by LM-Nav and VLMnav but simplified for the proposed hardware. LM-Nav motivates the separation between language understanding, visual grounding, and execution. VLMnav motivates the use of action-choice prompting from a fixed action set. CLIP or OpenCLIP can be added later to replace the current baseline grounding function. VLMaps, HOV-SG, ViNT, NoMaD, NaVid, Uni-NaVid, and NaVILA are not implemented in the first prototype because they require additional sensors, mapping, model deployment, or compute resources beyond the initial FYP scope.
+This coding structure is influenced by LM-Nav and VLMnav but simplified for the proposed hardware. CLIP, OpenCLIP, TFLite, or a VLM can be added depending on the selected approach. VLMaps, HOV-SG, ViNT, NoMaD, NaVid, Uni-NaVid, and NaVILA are not implemented in the first prototype because they require additional sensors, mapping, model deployment, or compute resources beyond the initial FYP scope.
 
 ## 3.13 Equations and Decision Rules
 
@@ -488,11 +492,11 @@ The project uses simple equations and decision rules to evaluate the prototype. 
 | `S(I,T) = cosine(E_image(I), E_text(T))` | CLIP or OpenCLIP similarity between image embedding and text embedding | Optional visual grounding score when CLIP-style grounding is used |
 | `Prompt Validity = N_valid / N_total * 100 percent` | Percentage of prompt outputs that contain required fields and valid JSON structure | Measures structured output reliability |
 | `Accuracy = N_correct / N_total * 100 percent` | General accuracy formula for landmark extraction, relation extraction, grounding, or action selection | Allows consistent metric reporting |
-| `T_total = T_prompt + T_capture + T_grounding + T_sensor + T_serial` | Total response time from instruction input to command output | Measures system latency |
-| `a_exec = stop if invalid output, high uncertainty, unsafe distance, or invalid action; otherwise a_selected` | Safety validation rule before motor command execution | Prevents uncertain AI output from becoming unsafe movement |
-| `Movement Success Rate = N_success / N_scenarios * 100 percent` | Percentage of indoor scenarios where the robot performs the intended simple action | Measures physical robot performance |
+| `T_total = T_prompt + T_capture + T_grounding + T_sensor + T_comm` | Total response time from instruction input to action output | Measures system latency |
+| `a_exec = stop if invalid output, high uncertainty, unsafe distance, timeout, or invalid action; otherwise a_selected` | Safety validation rule before displaying or executing an action | Prevents uncertain AI output from becoming unsafe movement |
+| `Movement Success Rate = N_success / N_scenarios * 100 percent` | Percentage of indoor scenarios where the robot or human-followed test performs the intended simple action | Measures scenario performance |
 
-For ultrasonic sensing, an obstacle is considered present when the smallest valid distance from the ESP32 is lower than the selected safety threshold. In the baseline configuration, the threshold is set to 25 cm, but this value can be adjusted during testing depending on robot speed, braking distance, and sensor reliability.
+For ultrasonic sensing, an obstacle is considered present when the smallest valid distance from the ESP32 is lower than the selected safety threshold. In the baseline configuration, the threshold may begin at 25 cm, but this value should be adjusted during testing depending on robot speed, braking distance, and sensor reliability.
 
 ## 3.14 Implementation Procedure
 
@@ -502,20 +506,20 @@ The implementation procedure follows ten stages. Each stage has a verification m
 
 | Stage | Activity | Verification | Expected Result |
 |---|---|---|---|
-| Stage 1 | Prepare robot hardware, including chassis, four DC motors, RDK X5, ROS Robot Control Board V3.0 with STM32F103RCT6, ESP32, webcam, four ultrasonic sensors, and 18650 batteries | Physical inspection and wiring check | Robot hardware is assembled safely |
-| Stage 2 | Set up RDK X5, Python environment, OpenCV, webcam access, and required model or API access | Run camera capture and Python test scripts | RDK X5 can capture images and run the decision pipeline |
-| Stage 3 | Set up STM32 robot control board firmware, motor control, and command handling | Send test commands from computer or RDK X5 | Robot control board receives commands and drives motors correctly |
-| Stage 4 | Set up ESP32 firmware, ultrasonic sensor reading, and communication with the RDK X5 | Compare serial/status output with measured distances | ESP32 reports usable distance or obstacle status |
-| Stage 5 | Create prompt templates for baseline, structured, relation-aware, action-choice, and safety-aware outputs | Prompt tests using sample instructions | Prompt returns parseable structured output |
-| Stage 6 | Test prompt output using sample instructions | Compare output with expected labels | Landmark, relation, action, and uncertainty fields are correct |
-| Stage 7 | Test webcam image capture and visual grounding | Compare grounding output with known target image or scene | Target or action decision is reasonable |
-| Stage 8 | Connect AI decision to ESP32 obstacle status and STM32 motor action | Send selected command to STM32 robot control board after validation | Robot moves only when the action is valid and the path is safe enough |
-| Stage 9 | Test indoor navigation scenarios with door, signboard, chair, table, and corridor | Scenario checklist and video/log review | Robot performs basic movement toward or search behavior |
+| Stage 1 | Define action set, prompt schema, test instructions, and logging format | Review schema and sample instructions | Common evaluation format is ready |
+| Stage 2 | Set up laptop-only camera capture and model runtime | Run camera and model test scripts | Laptop captures images and produces action output |
+| Stage 3 | Measure laptop-only latency and prompt output quality | Log response time and JSON validity | Model feasibility is confirmed or limitations are identified |
+| Stage 4 | Prepare Raspberry Pi and remote GPU server design | Test network request from Pi to GPU server | Approach 1 communication path is verified |
+| Stage 5 | Prepare Google Dev Board model runtime | Test camera and embedded inference | Approach 2 onboard processing feasibility is verified |
+| Stage 6 | Flash and test ESP32 firmware for ultrasonic sensing and motor-driver control | Compare sensor output with measured distances and send motor commands | ESP32 reports usable distance and controls motor outputs |
+| Stage 7 | Compare physical approaches and select implementation path | Decision table and latency/cost comparison | Selected physical prototype path is justified |
+| Stage 8 | Integrate selected compute platform, webcam, ESP32 status, and action validation | End-to-end dry-run test | System produces safe validated commands |
+| Stage 9 | Test indoor navigation scenarios with door, signboard, chair, table, and corridor | Scenario checklist and video/log review | System performs basic movement or action recommendations |
 | Stage 10 | Collect and analyse results | Metric calculation and failure-case analysis | Final performance, limitations, and future work are documented |
 
 ## 3.15 Testing and Validation Plan
 
-Testing is divided into module testing, integration testing, and scenario testing. Module testing checks the prompt, webcam, grounding, ESP32 ultrasonic sensing, controller communication, and motor control separately. Integration testing checks whether the system can process an instruction, capture an image, select an action, check ESP32 proximity readings, and send a command to the STM32 robot control board. Scenario testing evaluates the robot in controlled indoor environments.
+Testing is divided into module testing, integration testing, and scenario testing. Module testing checks the prompt, webcam, model inference, ESP32 ultrasonic sensing, communication, and motor-driver control separately. Integration testing checks whether the system can process an instruction, capture an image, select an action, check ESP32 proximity readings when available, and display or execute a safe command. Scenario testing evaluates the system in controlled indoor environments.
 
 **Table 3.17: Testing and Validation Matrix**
 
@@ -524,15 +528,15 @@ Testing is divided into module testing, integration testing, and scenario testin
 | Prompt format test | Input instructions only | Prompt output validity | Output follows required JSON fields |
 | Landmark extraction test | Instructions with known targets | Landmark extraction accuracy | Correct target and landmark list are extracted |
 | Spatial relation test | Instructions with relation labels | Spatial relation extraction accuracy | Relation such as `chair near table` is represented correctly |
-| Webcam capture test | USB webcam connected to RDK X5 | Frame capture success | Image frame is captured reliably |
+| Laptop camera test | Built-in laptop camera or external webcam | Frame capture success | Image frame is captured reliably |
+| Physical robot webcam test | USB webcam connected to Raspberry Pi or Google Dev Board | Frame capture success | Image frame is captured reliably |
+| Model latency test | Laptop GPU, remote GPU, or Google Dev Board | Response time | Command is produced within acceptable delay for prototype testing |
 | Visual grounding test | Webcam image and target text | Grounding correctness | Correct target is identified or uncertainty is reported |
 | Action selection test | Instruction and current webcam view | Action selection accuracy | Selected action matches expected behavior |
-| Ultrasonic sensor test | Four ultrasonic sensors connected to ESP32 | Distance reading availability | ESP32 readings are available for simple safety checks |
-| Controller communication test | ESP32 reports status to RDK X5 and RDK X5 sends command to STM32 robot control board | Status and command delivery | RDK X5 receives valid obstacle status and robot control board receives valid command string |
-| Motor movement test | STM32 robot control board controls motors | Movement correctness | Robot moves forward, turns, searches, or stops correctly |
-| Full scenario test | Indoor target such as door, signboard, chair, table, or corridor | Robot movement success | Robot performs the intended simple navigation behavior |
-| Safety test | Ambiguous or invalid instruction | Safe failure behavior | Robot stops or refuses uncertain action |
-| Latency test | Full instruction-to-command pipeline | Response time | Command is produced within acceptable delay for prototype testing |
+| ESP32 ultrasonic test | Ultrasonic sensors connected to ESP32 | Distance reading availability | ESP32 readings are available for simple safety checks |
+| ESP32 motor-driver test | ESP32 connected to motor driver | Movement correctness | Motors move forward, turn, search, or stop correctly |
+| Full scenario test | Indoor target such as door, signboard, chair, table, or corridor | Scenario success | System performs the intended simple navigation behavior |
+| Safety test | Ambiguous instruction, invalid model output, obstacle, or timeout | Safe failure behavior | System stops or refuses uncertain action |
 
 ## 3.16 Evaluation Metrics
 
@@ -547,29 +551,32 @@ The evaluation focuses on both AI output quality and robot behavior. This is imp
 | Spatial relation extraction accuracy | Percentage of relation-based instructions where the relation is correctly represented |
 | Visual grounding correctness | Percentage of cases where the target is correctly matched or identified in the webcam view |
 | Action selection accuracy | Percentage of cases where the selected action matches the expected action |
-| Robot movement success | Percentage of scenarios where the robot performs the intended basic movement |
-| Safe stop rate | Percentage of uncertain or invalid cases where the robot stops instead of executing unsafe output |
-| Latency or response time | Time from user instruction to selected command |
-| Failure-case count | Number and type of failures such as wrong target, invalid JSON, weak grounding, wrong turn, motor error, or unsafe suggestion |
+| Latency or response time | Time from user instruction and frame capture to selected command |
+| Robot movement success | Percentage of physical robot scenarios where the robot performs the intended basic movement |
+| Human-followed scenario success | Percentage of laptop-only scenarios where the displayed action reasonably guides the human operator |
+| Safe stop rate | Percentage of uncertain, invalid, timeout, or obstacle cases where the system stops instead of executing unsafe output |
+| Failure-case count | Number and type of failures such as wrong target, invalid JSON, weak grounding, wrong turn, communication error, motor error, or unsafe suggestion |
 
-Qualitative analysis will also be conducted. Failure cases will be grouped into prompt errors, grounding errors, action-selection errors, serial communication errors, motor-control errors, and environmental limitations. This helps identify whether future work should improve prompts, visual grounding, hardware, or navigation control.
+Qualitative analysis will also be conducted. Failure cases will be grouped into prompt errors, grounding errors, action-selection errors, latency errors, serial communication errors, motor-control errors, and environmental limitations. This helps identify whether future work should improve prompts, visual grounding, hardware, or navigation control.
 
 ## 3.17 Safety, Ethics, and Practical Considerations
 
-Safety is important even though the robot is a low-cost indoor prototype. The robot should move at low speed during testing. All tests should be conducted in a controlled indoor area with sufficient space. A manual stop or emergency stop method should be available during movement tests. The four ultrasonic sensors connected to the ESP32 should be used as a simple proximity safety layer, but testing must still be supervised manually because ultrasonic sensors do not provide complete obstacle understanding.
+Safety is important even though the robot is a low-cost indoor prototype. For the laptop-only setup, the human operator must walk slowly, avoid crowded or unsafe areas, and stop immediately if the action output is unclear. For the physical robot setup, the robot should move at low speed during testing. All tests should be conducted in a controlled indoor area with sufficient space. A manual stop or emergency power switch should be available during movement tests.
 
-The system should not execute uncertain AI output directly. If the structured output is invalid, if the selected action is not in the approved action set, or if the uncertainty is high, the robot should stop and log the case. This prevents a hallucinated or ambiguous model response from becoming an unsafe motor command.
+The ESP32 ultrasonic sensors should be used as a simple proximity safety layer in physical robot approaches, but testing must still be supervised manually because ultrasonic sensors do not provide complete obstacle understanding.
+
+The system should not execute uncertain AI output directly. If the structured output is invalid, if the selected action is not in the approved action set, if the uncertainty is high, if the model times out, or if the ESP32 reports an unsafe obstacle distance, the system should stop and log the case. This prevents a hallucinated or ambiguous model response from becoming an unsafe movement command.
 
 Privacy must also be considered when using a webcam. Testing should avoid capturing identifiable people unless permission is obtained. Images and logs should be used only for project evaluation.
 
 ## 3.18 Limitations and Future Work
 
-The proposed prototype has clear limitations. It uses a USB webcam, so it does not directly estimate dense depth or build a 3D map. The ESP32-based ultrasonic sensing module provides only simple distance cues and is not equivalent to LiDAR or RGB-D mapping. The system uses a simple action set, so it cannot perform full path planning. It does not include LiDAR, RGB-D SLAM, 3D scene graph mapping, or a learned navigation policy. It also depends on the reliability of prompt output and visual grounding.
+The proposed prototype has clear limitations. It uses a webcam, so it does not directly estimate dense depth or build a 3D map. The ESP32-based ultrasonic sensing module provides only simple distance cues and is not equivalent to LiDAR or RGB-D mapping. The system uses a simple action set, so it cannot perform full path planning. The laptop-only setup is useful for feasibility testing but is not a physical robot. The Raspberry Pi with remote GPU setup depends on WiFi. The Google Dev Board setup depends on model compatibility and embedded inference speed.
 
-These limitations are acceptable because the project is designed as a baseline research prototype. Future work can improve the system by adding an RGB-D camera, LiDAR, stronger obstacle sensing, map building, VLMaps-style visual-language maps, HOV-SG-style scene graphs, ViNT or NoMaD navigation policies, or more advanced VLM/VLA models. The baseline prototype provides a practical platform for these improvements by establishing the first connection between natural language prompts, webcam-based grounding, ESP32-based ultrasonic safety checking, and STM32-controlled robot movement.
+These limitations are acceptable because the project is designed as a baseline research prototype. Future work can improve the system by adding an RGB-D camera, LiDAR, stronger obstacle sensing, map building, VLMaps-style visual-language maps, HOV-SG-style scene graphs, ViNT or NoMaD navigation policies, or more advanced VLM/VLA models. The baseline prototype provides a practical platform for these improvements by establishing the connection between natural language prompts, webcam-based grounding, action selection, ESP32-based ultrasonic safety checking, and motor-driver-based robot movement.
 
 ## 3.19 Summary
 
-This chapter presented the methodology for the proposed low-cost indoor mobile robot navigation prototype. The system is inspired by LM-Nav and VLMnav but is adapted for an FYP-scale implementation using an RDK X5 development board with 8GB RAM, ROS Robot Control Board V3.0 with STM32F103RCT6 for motor control, ESP32 for ultrasonic sensing, unbranded USB webcam, four ultrasonic sensors, four DC motors, chassis, and 18650 batteries.
+This chapter presented the methodology for the updated low-cost indoor mobile robot navigation project. The previous unavailable-board plan was removed. The updated methodology is organized around three practical approaches: Raspberry Pi with ESP32 and remote GPU inference, Google Dev Board with ESP32 and onboard embedded inference, and laptop-only feasibility testing using the laptop camera and GPU.
 
-The methodology defines the system architecture, hardware roles, mechanical and circuit integration plan, software tools, source-code structure, prompt engineering design, structured output format, visual grounding and action-selection process, action set, implementation stages, testing plan, evaluation metrics, safety considerations, and future work. The project is positioned as a baseline prototype that investigates how structured prompt engineering can support simple indoor robot navigation, while leaving advanced mapping, sensing, and navigation policies for future researchers.
+The methodology defines the system architecture, implementation approaches, hardware roles, software tools, prompt engineering design, structured output format, visual grounding and action-selection process, action set, motor-command mapping, implementation stages, testing plan, evaluation metrics, safety considerations, and future work. The project is positioned as a baseline prototype that investigates how structured prompt engineering can support simple indoor navigation decisions while allowing the final physical robot approach to be chosen based on availability, latency, model compatibility, and cost.

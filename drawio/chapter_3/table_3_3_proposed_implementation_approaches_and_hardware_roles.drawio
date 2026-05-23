@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<mxfile host="app.diagrams.net" modified="2026-05-09T00:00:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="table_3_3_proposed_implementation_approaches_and_hardware_roles" name="Table 3.3: Proposed Implementation Approaches and Hardware Roles">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2254" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="Table 3.3: Proposed Implementation Approaches and Hardware Roles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="2174" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Approach" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="116" width="311" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Main Components" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="351" y="116" width="701" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="Role in the Project" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1052" y="116" width="701" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="Main Risk" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1753" y="116" width="461" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Approach 1: Raspberry Pi with remote GPU" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="162" width="311" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Raspberry Pi, USB webcam, ESP32, motor driver, ultrasonic sensors, DC motors, chassis, GPU laptop or desktop over WiFi" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="351" y="162" width="701" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="Real robot approach where the Raspberry Pi handles robot-side camera, communication, and safety validation while the GPU computer performs model inference" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1052" y="162" width="701" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="WiFi latency and dependence on external GPU computer" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1753" y="162" width="461" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="Approach 2: Google Dev Board with ESP32" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="215" width="311" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="Google Dev Board, USB webcam, ESP32, motor driver, ultrasonic sensors, DC motors, chassis" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="351" y="215" width="701" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="More standalone physical robot approach where the Google Dev Board runs onboard model or TFLite-style inference and ESP32 handles motors and sensors" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1052" y="215" width="701" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="Model compatibility and embedded inference speed" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1753" y="215" width="461" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="Approach 3: Laptop-only feasibility test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="268" width="311" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="GPU laptop and built-in laptop camera or external webcam" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="351" y="268" width="701" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="Early feasibility approach for testing prompts, live camera input, model latency, and action choice before buying or wiring full robot hardware" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1052" y="268" width="701" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="Not a physical robot and has no motor or ultrasonic sensing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1753" y="268" width="461" height="53" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

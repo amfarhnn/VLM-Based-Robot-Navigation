@@ -1,144 +1,156 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <mxfile host="app.diagrams.net" modified="2026-05-09T00:00:00.000Z" agent="Codex" version="24.7.17">
   <diagram id="table_3_13_company_component_and_software_involvement" name="Table 3.13: Company, Component, and Software Involvement">
-    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2188" pageHeight="800" math="0" shadow="0">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1957" pageHeight="800" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="2" value="Table 3.13: Company, Component, and Software Involvement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="40" y="40" width="2108" height="58" as="geometry" />
+          <mxGeometry x="40" y="40" width="1877" height="58" as="geometry" />
         </mxCell>
         <mxCell id="3" value="Component or Tool" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="40" y="116" width="276" height="46" as="geometry" />
+          <mxGeometry x="40" y="116" width="308" height="46" as="geometry" />
         </mxCell>
         <mxCell id="4" value="Company or Organization" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="316" y="116" width="552" height="46" as="geometry" />
+          <mxGeometry x="348" y="116" width="392" height="46" as="geometry" />
         </mxCell>
         <mxCell id="5" value="Involvement in This Project" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="868" y="116" width="615" height="46" as="geometry" />
+          <mxGeometry x="740" y="116" width="750" height="46" as="geometry" />
         </mxCell>
         <mxCell id="6" value="Notes for Final Report" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="116" width="665" height="46" as="geometry" />
+          <mxGeometry x="1490" y="116" width="427" height="46" as="geometry" />
         </mxCell>
-        <mxCell id="7" value="RDK X5 development board" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="162" width="276" height="40" as="geometry" />
+        <mxCell id="7" value="Raspberry Pi" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="162" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="8" value="D-Robotics" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="316" y="162" width="552" height="40" as="geometry" />
+        <mxCell id="8" value="Raspberry Pi Ltd" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="348" y="162" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="9" value="Main onboard computing board for Python, webcam capture, and AI decision logic" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="868" y="162" width="615" height="40" as="geometry" />
+        <mxCell id="9" value="Candidate robot-side controller for Approach 1" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="740" y="162" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="10" value="Use the exact board documentation or supplier listing when confirming specifications" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="162" width="665" height="40" as="geometry" />
+        <mxCell id="10" value="Used if remote GPU architecture is selected" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="162" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="11" value="STM32F103RCT6 microcontroller" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="202" width="276" height="40" as="geometry" />
+        <mxCell id="11" value="Google Dev Board or Coral-style board" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="202" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="12" value="STMicroelectronics" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="316" y="202" width="552" height="40" as="geometry" />
+        <mxCell id="12" value="Google" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="348" y="202" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="13" value="Microcontroller used on the ROS Robot Control Board V3.0" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="868" y="202" width="615" height="40" as="geometry" />
+        <mxCell id="13" value="Candidate onboard embedded AI controller for Approach 2" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="740" y="202" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="14" value="Used indirectly through the robot control board firmware" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="202" width="665" height="40" as="geometry" />
+        <mxCell id="14" value="Exact board and inference support must be confirmed" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="202" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="15" value="ROS Robot Control Board V3.0" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="242" width="276" height="40" as="geometry" />
+        <mxCell id="15" value="ESP32 microcontroller" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="242" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="16" value="Yahboom listing or exact supplier to be confirmed from purchase source" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="316" y="242" width="552" height="40" as="geometry" />
+        <mxCell id="16" value="Espressif Systems" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="348" y="242" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="17" value="Low-level motor command execution and motor-driver interface" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="868" y="242" width="615" height="40" as="geometry" />
+        <mxCell id="17" value="Ultrasonic sensor controller and motor-driver command controller" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="740" y="242" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="18" value="Record exact supplier, product store, and board revision after purchase confirmation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="242" width="665" height="40" as="geometry" />
+        <mxCell id="18" value="Used in physical robot approaches" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="242" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="19" value="ESP32 microcontroller" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="282" width="276" height="40" as="geometry" />
+        <mxCell id="19" value="GPU laptop or desktop" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="282" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="20" value="Espressif Systems" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="316" y="282" width="552" height="40" as="geometry" />
+        <mxCell id="20" value="Exact manufacturer depends on available machine" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="348" y="282" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="21" value="Ultrasonic sensor controller and serial status transmitter" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="868" y="282" width="615" height="40" as="geometry" />
+        <mxCell id="21" value="Runs laptop-only feasibility test and may run the remote model server" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="740" y="282" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="22" value="Used to separate sensor timing from high-level AI processing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="282" width="665" height="40" as="geometry" />
+        <mxCell id="22" value="Record GPU model and memory for latency reporting" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="282" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="23" value="USB webcam" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="322" width="276" height="40" as="geometry" />
+        <mxCell id="23" value="USB webcam or built-in laptop camera" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="322" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="24" value="Unbranded manufacturer" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="316" y="322" width="552" height="40" as="geometry" />
+        <mxCell id="24" value="Manufacturer depends on available camera" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="348" y="322" width="392" height="40" as="geometry" />
         </mxCell>
         <mxCell id="25" value="RGB visual input for indoor scene capture" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="868" y="322" width="615" height="40" as="geometry" />
+          <mxGeometry x="740" y="322" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="26" value="Webcam is treated as a low-cost plug-and-play RGB camera" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="322" width="665" height="40" as="geometry" />
+        <mxCell id="26" value="Webcam is treated as a low-cost RGB camera" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="322" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="27" value="Autodesk Fusion 360" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="362" width="276" height="40" as="geometry" />
+        <mxCell id="27" value="Motor driver" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="362" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="28" value="Autodesk" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="316" y="362" width="552" height="40" as="geometry" />
+        <mxCell id="28" value="Supplier to be confirmed" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="348" y="362" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="29" value="3D modelling software for the robot chassis design" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="868" y="362" width="615" height="40" as="geometry" />
+        <mxCell id="29" value="Converts ESP32 motor-control signals into motor power output" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="740" y="362" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="30" value="Used for mechanical design documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="362" width="665" height="40" as="geometry" />
+        <mxCell id="30" value="Exact driver should be recorded after purchase" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="362" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="31" value="Python" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="402" width="276" height="40" as="geometry" />
+        <mxCell id="31" value="Autodesk Fusion 360" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="402" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="32" value="Python Software Foundation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="316" y="402" width="552" height="40" as="geometry" />
+        <mxCell id="32" value="Autodesk" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="348" y="402" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="33" value="Main programming language for RDK X5 control logic" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="868" y="402" width="615" height="40" as="geometry" />
+        <mxCell id="33" value="3D modelling software for the robot chassis design" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="740" y="402" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="34" value="Used for prompt parsing, decision logic, camera capture, and logging" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="402" width="665" height="40" as="geometry" />
+        <mxCell id="34" value="Used for mechanical design documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="402" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="35" value="OpenCV" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="442" width="276" height="40" as="geometry" />
+        <mxCell id="35" value="Python" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="442" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="36" value="OpenCV project" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="316" y="442" width="552" height="40" as="geometry" />
+        <mxCell id="36" value="Python Software Foundation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="348" y="442" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="37" value="Webcam frame capture and basic image processing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="868" y="442" width="615" height="40" as="geometry" />
+        <mxCell id="37" value="Main programming language for prompt parsing, decision logic, camera capture, communication, and logging" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="740" y="442" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="38" value="Used before advanced CLIP or VLM grounding is added" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="442" width="665" height="40" as="geometry" />
+        <mxCell id="38" value="Used in all three approaches" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="442" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="39" value="Arduino IDE, PlatformIO, or ESP-IDF" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="482" width="276" height="40" as="geometry" />
+        <mxCell id="39" value="OpenCV" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="482" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="40" value="Arduino, PlatformIO Labs, or Espressif Systems" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="316" y="482" width="552" height="40" as="geometry" />
+        <mxCell id="40" value="OpenCV project" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="348" y="482" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="41" value="Firmware development for ESP32 and possible STM32 template testing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="868" y="482" width="615" height="40" as="geometry" />
+        <mxCell id="41" value="Webcam frame capture and basic image processing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="740" y="482" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="42" value="Tool choice depends on the final firmware workflow" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="482" width="665" height="40" as="geometry" />
+        <mxCell id="42" value="Used before advanced CLIP or VLM grounding is added" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="482" width="427" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="43" value="diagrams.net or draw.io" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="522" width="276" height="40" as="geometry" />
+        <mxCell id="43" value="Arduino IDE, PlatformIO, or ESP-IDF" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="522" width="308" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="44" value="JGraph or diagrams.net project" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="316" y="522" width="552" height="40" as="geometry" />
+        <mxCell id="44" value="Arduino, PlatformIO Labs, or Espressif Systems" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="348" y="522" width="392" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="45" value="Diagram preparation for system architecture and circuit documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="868" y="522" width="615" height="40" as="geometry" />
+        <mxCell id="45" value="Firmware development for ESP32" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="740" y="522" width="750" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="46" value="Used for report figures and flowcharts" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1483" y="522" width="665" height="40" as="geometry" />
+        <mxCell id="46" value="Tool choice depends on the final firmware workflow" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="522" width="427" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="47" value="diagrams.net or draw.io" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="562" width="308" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="48" value="JGraph or diagrams.net project" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="348" y="562" width="392" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="49" value="Diagram preparation for system architecture and circuit documentation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="740" y="562" width="750" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="50" value="Used for report figures and flowcharts" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="562" width="427" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

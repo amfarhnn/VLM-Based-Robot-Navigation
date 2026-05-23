@@ -23,7 +23,7 @@
         <mxCell id="7" value="LM-Nav, HOV-SG, NaVILA, Uni-NaVid" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="619" y="162" width="258" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="8" value="Build a low-cost indoor prototype using RDK X5, STM32 motor control, ESP32 ultrasonic sensing, webcam, and DC motors" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="8" value="Use a staged low-cost strategy: laptop-only feasibility testing, Raspberry Pi with remote GPU, or Google Dev Board with ESP32-based motor and ultrasonic control" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="877" y="162" width="706" height="53" as="geometry" />
         </mxCell>
         <mxCell id="9" value="Landmark extraction alone may lose spatial relations and route information" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
@@ -41,7 +41,7 @@
         <mxCell id="13" value="VLMnav" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="619" y="268" width="258" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="14" value="Check ESP32 ultrasonic status and restrict output to a small validated action set before sending commands to the STM32 robot control board" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="14" value="Check uncertainty, latency, approved actions, and ESP32 ultrasonic status before sending commands to the ESP32 motor-control layer" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="877" y="268" width="706" height="53" as="geometry" />
         </mxCell>
         <mxCell id="15" value="Mapping and scene-graph systems are useful but complex" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">

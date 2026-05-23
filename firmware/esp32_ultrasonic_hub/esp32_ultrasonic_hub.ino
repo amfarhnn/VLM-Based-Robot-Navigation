@@ -3,7 +3,7 @@
 
   Role:
   - Read four ultrasonic sensors.
-  - Send JSON distance/status data to the RDK X5 over USB serial.
+  - Send JSON distance/status data to the selected high-level controller over USB serial.
 
   Wiring note:
   If HC-SR04-style sensors are powered at 5 V, the Echo pins can output 5 V.

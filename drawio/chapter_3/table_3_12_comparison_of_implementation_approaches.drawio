@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<mxfile host="app.diagrams.net" modified="2026-05-09T00:00:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="table_3_12_comparison_of_implementation_approaches" name="Table 3.12: Comparison of Implementation Approaches">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1693" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="Table 3.12: Comparison of Implementation Approaches" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1613" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Criterion" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="116" width="255" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Approach 1: Raspberry Pi + Remote GPU" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="295" y="116" width="537" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="Approach 2: Google Dev Board" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="832" y="116" width="446" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="Approach 3: Laptop-Only Test" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="116" width="375" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Physical robot movement" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="162" width="255" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Yes" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="295" y="162" width="537" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="Yes" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="832" y="162" width="446" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="No" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="162" width="375" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="Motor and ultrasonic sensing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="202" width="255" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="ESP32 handles both" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="295" y="202" width="537" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="ESP32 handles both" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="832" y="202" width="446" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="Not included" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="202" width="375" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="Camera source" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="242" width="255" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="Robot-mounted USB webcam" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="295" y="242" width="537" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="Robot-mounted USB webcam" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="832" y="242" width="446" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="Built-in laptop camera or external webcam" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="242" width="375" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="Model compute" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="282" width="255" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="20" value="GPU laptop or desktop over WiFi" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="295" y="282" width="537" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="Onboard embedded board" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="832" y="282" width="446" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="Local GPU laptop" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="282" width="375" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="Main strength" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="322" width="255" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="Supports heavier models while keeping robot hardware simple" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="295" y="322" width="537" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="More standalone embedded robot design" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="832" y="322" width="446" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="26" value="Lowest-cost feasibility test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="322" width="375" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="27" value="Main weakness" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="362" width="255" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="28" value="WiFi latency and external-computer dependence" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="295" y="362" width="537" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="29" value="Model compatibility and limited onboard compute" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="832" y="362" width="446" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="Not a true robot platform" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="362" width="375" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="Best use" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="402" width="255" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="Main physical robot if VLM or CLIP inference is heavy" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="295" y="402" width="537" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="Physical robot if lightweight model is sufficient" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="832" y="402" width="446" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="Phase 1 model and latency testing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1278" y="402" width="375" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

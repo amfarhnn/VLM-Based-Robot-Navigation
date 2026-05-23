@@ -1,144 +1,144 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <mxfile host="app.diagrams.net" modified="2026-05-09T00:00:00.000Z" agent="Codex" version="24.7.17">
   <diagram id="table_3_4_requirements_and_acceptance_criteria" name="Table 3.4: Requirements and Acceptance Criteria">
-    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2045" pageHeight="800" math="0" shadow="0">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1941" pageHeight="800" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="2" value="Table 3.4: Requirements and Acceptance Criteria" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="40" y="40" width="1965" height="58" as="geometry" />
+          <mxGeometry x="40" y="40" width="1861" height="58" as="geometry" />
         </mxCell>
         <mxCell id="3" value="Requirement" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="40" y="116" width="293" height="46" as="geometry" />
+          <mxGeometry x="40" y="116" width="301" height="46" as="geometry" />
         </mxCell>
         <mxCell id="4" value="Specification" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="333" y="116" width="733" height="46" as="geometry" />
+          <mxGeometry x="341" y="116" width="737" height="46" as="geometry" />
         </mxCell>
         <mxCell id="5" value="Verification Method" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="116" width="350" height="46" as="geometry" />
+          <mxGeometry x="1078" y="116" width="259" height="46" as="geometry" />
         </mxCell>
         <mxCell id="6" value="Pass Criteria" style="shape=rectangle;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="116" width="589" height="46" as="geometry" />
+          <mxGeometry x="1337" y="116" width="564" height="46" as="geometry" />
         </mxCell>
         <mxCell id="7" value="Natural language input" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="162" width="293" height="40" as="geometry" />
+          <mxGeometry x="40" y="162" width="301" height="40" as="geometry" />
         </mxCell>
         <mxCell id="8" value="The system accepts simple indoor navigation instructions" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="333" y="162" width="733" height="40" as="geometry" />
+          <mxGeometry x="341" y="162" width="737" height="40" as="geometry" />
         </mxCell>
         <mxCell id="9" value="Instruction input test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="162" width="350" height="40" as="geometry" />
+          <mxGeometry x="1078" y="162" width="259" height="40" as="geometry" />
         </mxCell>
         <mxCell id="10" value="Instruction is received without manual rewriting" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="162" width="589" height="40" as="geometry" />
+          <mxGeometry x="1337" y="162" width="564" height="40" as="geometry" />
         </mxCell>
         <mxCell id="11" value="Structured prompt output" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="202" width="293" height="40" as="geometry" />
+          <mxGeometry x="40" y="202" width="301" height="40" as="geometry" />
         </mxCell>
         <mxCell id="12" value="The prompt produces a machine-readable response" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="333" y="202" width="733" height="40" as="geometry" />
+          <mxGeometry x="341" y="202" width="737" height="40" as="geometry" />
         </mxCell>
         <mxCell id="13" value="JSON validation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="202" width="350" height="40" as="geometry" />
+          <mxGeometry x="1078" y="202" width="259" height="40" as="geometry" />
         </mxCell>
         <mxCell id="14" value="Required fields are present and parseable" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="202" width="589" height="40" as="geometry" />
+          <mxGeometry x="1337" y="202" width="564" height="40" as="geometry" />
         </mxCell>
         <mxCell id="15" value="Landmark extraction" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="242" width="293" height="40" as="geometry" />
+          <mxGeometry x="40" y="242" width="301" height="40" as="geometry" />
         </mxCell>
         <mxCell id="16" value="The system identifies target objects such as door, signboard, chair, table, or corridor" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="333" y="242" width="733" height="40" as="geometry" />
+          <mxGeometry x="341" y="242" width="737" height="40" as="geometry" />
         </mxCell>
         <mxCell id="17" value="Comparison with expected labels" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="242" width="350" height="40" as="geometry" />
+          <mxGeometry x="1078" y="242" width="259" height="40" as="geometry" />
         </mxCell>
         <mxCell id="18" value="Correct target or landmark is extracted" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="242" width="589" height="40" as="geometry" />
+          <mxGeometry x="1337" y="242" width="564" height="40" as="geometry" />
         </mxCell>
         <mxCell id="19" value="Spatial relation extraction" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="282" width="293" height="40" as="geometry" />
+          <mxGeometry x="40" y="282" width="301" height="40" as="geometry" />
         </mxCell>
         <mxCell id="20" value="The system identifies relations such as near, beside, after, or toward when present" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="333" y="282" width="733" height="40" as="geometry" />
+          <mxGeometry x="341" y="282" width="737" height="40" as="geometry" />
         </mxCell>
         <mxCell id="21" value="Manual annotation comparison" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="282" width="350" height="40" as="geometry" />
+          <mxGeometry x="1078" y="282" width="259" height="40" as="geometry" />
         </mxCell>
         <mxCell id="22" value="Relevant relation is represented correctly" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="282" width="589" height="40" as="geometry" />
+          <mxGeometry x="1337" y="282" width="564" height="40" as="geometry" />
         </mxCell>
         <mxCell id="23" value="Webcam capture" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="322" width="293" height="40" as="geometry" />
+          <mxGeometry x="40" y="322" width="301" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="24" value="RDK X5 captures the current indoor scene from the USB webcam" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="333" y="322" width="733" height="40" as="geometry" />
+        <mxCell id="24" value="Laptop, Raspberry Pi, or Google Dev Board captures the current indoor scene" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="341" y="322" width="737" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="25" value="OpenCV camera test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="322" width="350" height="40" as="geometry" />
+        <mxCell id="25" value="OpenCV or camera test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1078" y="322" width="259" height="40" as="geometry" />
         </mxCell>
         <mxCell id="26" value="Image frame is captured successfully" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="322" width="589" height="40" as="geometry" />
+          <mxGeometry x="1337" y="322" width="564" height="40" as="geometry" />
         </mxCell>
         <mxCell id="27" value="Visual grounding or action selection" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="362" width="293" height="40" as="geometry" />
+          <mxGeometry x="40" y="362" width="301" height="40" as="geometry" />
         </mxCell>
         <mxCell id="28" value="The system connects the prompt output and image to an action decision" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="333" y="362" width="733" height="40" as="geometry" />
+          <mxGeometry x="341" y="362" width="737" height="40" as="geometry" />
         </mxCell>
         <mxCell id="29" value="Scenario-based test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="362" width="350" height="40" as="geometry" />
+          <mxGeometry x="1078" y="362" width="259" height="40" as="geometry" />
         </mxCell>
         <mxCell id="30" value="Selected action is relevant to the instruction and current view" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="362" width="589" height="40" as="geometry" />
+          <mxGeometry x="1337" y="362" width="564" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="31" value="Ultrasonic sensing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="402" width="293" height="40" as="geometry" />
+        <mxCell id="31" value="Model latency" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="402" width="301" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="32" value="ESP32 reads four ultrasonic sensors and reports basic proximity status to the RDK X5" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="333" y="402" width="733" height="40" as="geometry" />
+        <mxCell id="32" value="The selected model produces an action within an acceptable delay" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="341" y="402" width="737" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="33" value="ESP32 sensor reading and serial/status test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="402" width="350" height="40" as="geometry" />
+        <mxCell id="33" value="Latency logging" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1078" y="402" width="259" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="34" value="Distance values are received by the RDK X5 and can trigger stop behavior" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="402" width="589" height="40" as="geometry" />
+        <mxCell id="34" value="Delay is acceptable for slow indoor testing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1337" y="402" width="564" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="35" value="Controller communication" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="442" width="293" height="40" as="geometry" />
+        <mxCell id="35" value="Ultrasonic sensing" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="40" y="442" width="301" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="36" value="RDK X5 receives ESP32 obstacle status and sends motor commands to the STM32 robot control board" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="333" y="442" width="733" height="40" as="geometry" />
+        <mxCell id="36" value="ESP32 reads ultrasonic sensors and reports basic proximity status in physical approaches" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="341" y="442" width="737" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="37" value="Serial or command log inspection" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="442" width="350" height="40" as="geometry" />
+        <mxCell id="37" value="ESP32 serial/status test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1078" y="442" width="259" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="38" value="ESP32 status and STM32 command strings are received correctly" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="442" width="589" height="40" as="geometry" />
+        <mxCell id="38" value="Distance values are received and can trigger stop behavior" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1337" y="442" width="564" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="39" value="Motor control" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="482" width="293" height="40" as="geometry" />
+        <mxCell id="39" value="Motor-driver control" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="482" width="301" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="40" value="STM32 robot control board controls the motors according to command" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="333" y="482" width="733" height="40" as="geometry" />
+        <mxCell id="40" value="ESP32 sends valid output to the motor driver in physical approaches" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="341" y="482" width="737" height="40" as="geometry" />
         </mxCell>
         <mxCell id="41" value="Movement test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="482" width="350" height="40" as="geometry" />
+          <mxGeometry x="1078" y="482" width="259" height="40" as="geometry" />
         </mxCell>
         <mxCell id="42" value="Robot performs the intended basic motion" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="482" width="589" height="40" as="geometry" />
+          <mxGeometry x="1337" y="482" width="564" height="40" as="geometry" />
         </mxCell>
         <mxCell id="43" value="Safety validation" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="40" y="522" width="293" height="40" as="geometry" />
+          <mxGeometry x="40" y="522" width="301" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="44" value="Uncertain or invalid AI output is not executed directly" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="333" y="522" width="733" height="40" as="geometry" />
+        <mxCell id="44" value="Uncertain, invalid, or unsafe AI output is not executed directly" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="341" y="522" width="737" height="40" as="geometry" />
         </mxCell>
         <mxCell id="45" value="Failure-case test" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1066" y="522" width="350" height="40" as="geometry" />
+          <mxGeometry x="1078" y="522" width="259" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="46" value="Robot stops or requests refinement instead of moving unsafely" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
-          <mxGeometry x="1416" y="522" width="589" height="40" as="geometry" />
+        <mxCell id="46" value="System stops or refuses uncertain action instead of moving unsafely" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+          <mxGeometry x="1337" y="522" width="564" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

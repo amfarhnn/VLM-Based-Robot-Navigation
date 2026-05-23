@@ -53,32 +53,32 @@
         <mxCell id="17" value="Allows consistent metric reporting" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
           <mxGeometry x="1366" y="282" width="481" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="18" value="`T_total = T_prompt + T_capture + T_grounding + T_sensor + T_serial`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="18" value="`T_total = T_prompt + T_capture + T_grounding + T_sensor + T_comm`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="40" y="335" width="663" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="19" value="Total response time from instruction input to command output" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="19" value="Total response time from instruction input to action output" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="703" y="335" width="663" height="40" as="geometry" />
         </mxCell>
         <mxCell id="20" value="Measures system latency" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="1366" y="335" width="481" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="21" value="`a_exec = stop if invalid output, high uncertainty, unsafe distance, or invalid action; otherwise a_selected`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+        <mxCell id="21" value="`a_exec = stop if invalid output, high uncertainty, unsafe distance, timeout, or invalid action; otherwise a_selected`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
           <mxGeometry x="40" y="375" width="663" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="22" value="Safety validation rule before motor command execution" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
+        <mxCell id="22" value="Safety validation rule before displaying or executing an action" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
           <mxGeometry x="703" y="375" width="663" height="53" as="geometry" />
         </mxCell>
         <mxCell id="23" value="Prevents uncertain AI output from becoming unsafe movement" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#f8f9fa;" vertex="1" parent="1">
           <mxGeometry x="1366" y="375" width="481" height="53" as="geometry" />
         </mxCell>
         <mxCell id="24" value="`Movement Success Rate = N_success / N_scenarios * 100 percent`" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="428" width="663" height="40" as="geometry" />
+          <mxGeometry x="40" y="428" width="663" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="25" value="Percentage of indoor scenarios where the robot performs the intended simple action" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="703" y="428" width="663" height="40" as="geometry" />
+        <mxCell id="25" value="Percentage of indoor scenarios where the robot or human-followed test performs the intended simple action" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="703" y="428" width="663" height="53" as="geometry" />
         </mxCell>
-        <mxCell id="26" value="Measures physical robot performance" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="1366" y="428" width="481" height="40" as="geometry" />
+        <mxCell id="26" value="Measures scenario performance" style="shape=rectangle;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacing=8;strokeColor=#666666;fontSize=11;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1366" y="428" width="481" height="53" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

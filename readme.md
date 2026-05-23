@@ -4,6 +4,10 @@
 
 `Prompt Engineering for Mobile Robot Navigation` is a research project focused on language-guided mobile robot navigation using large pre-trained models.
 
+![3D model photo of the mobile robot navigation prototype](main.png)
+
+*3D model photo of the proposed mobile robot navigation prototype.*
+
 This project is centered on one primary paper:
 - `LM-Nav: Robotic Navigation with Large Pre-Trained Models of Language, Vision, and Action`
 
@@ -29,6 +33,16 @@ The goal of this project is to study how a robot can follow natural language nav
 |---|---|
 | [Chapter 2 Literature Review](https://docs.google.com/document/d/1kwpJmBAQByh0q103gmgsgumgGNn6tCbL2_T7v8mcL6s/edit?usp=sharing) | Formal literature review chapter covering `LM-Nav` and related papers. |
 | [Chapter 3 Methodology](chapter_3_methodology.md) | Formal methodology chapter following the university FYP chapter format. |
+
+## Proposed Implementation Approaches
+
+Because the earlier single-board plan is no longer available, the project now documents three practical implementation approaches.
+
+| Approach | Guide | Purpose |
+|---|---|---|
+| Raspberry Pi, ESP32, webcam, and remote GPU laptop/PC | [Approach 1 Guide](docs/approach_1_raspberry_pi_esp32_remote_gpu.md) | Real robot prototype where the Raspberry Pi handles robot-side control and the GPU computer runs the heavy model over WiFi. |
+| Google Dev Board, ESP32, and webcam | [Approach 2 Guide](docs/approach_2_google_dev_board_esp32.md) | More standalone embedded robot design using a Google Dev Board for onboard AI and ESP32 for motor and ultrasonic control. |
+| Laptop-only feasibility test | [Approach 3 Guide](docs/approach_3_laptop_only_model_test.md) | Early low-cost test where the laptop camera and GPU are used to evaluate model latency and live action selection before building the physical robot. |
 
 ## Core Idea
 
@@ -90,19 +104,20 @@ The reviewed papers do not all use the same hardware. Some are real-robot system
 | `VLMnav` | Habitat/ObjectNav/GOAT-style simulated embodied agent | VLM inference through API/model calls; no physical robot board reported | RGB-D image, pose, voxel map, action-choice visual prompt |
 | `VLM-Nav` | AirSim multirotor UAV simulation | Simulation PC / AirSim environment; physical flight controller board not reported | Monocular RGB image, zero-shot depth estimation, left/right distance sensors, relative heading angle |
 
-For this FYP, the current proposed hardware is a low-cost indoor mobile robot prototype using an RDK X5 development board with 8GB RAM as the onboard computing unit, a ROS Robot Control Board V3.0 with STM32F103RCT6 for low-level motor control, an ESP32 for reading four ultrasonic sensors, an unbranded 1080p USB webcam for RGB visual input, four DC motors, a chassis, and four 18650 batteries. In the proposed architecture, the RDK X5 handles prompt processing, webcam capture, visual grounding, and high-level decision logic; the ESP32 reports obstacle or distance status; and the STM32 board executes validated motor commands. RGB-D sensors such as RealSense or Azure Kinect, LiDAR, scene-graph mapping, and stronger learned navigation policies can be considered later if the project expands toward spatial mapping or more robust navigation.
+For this FYP, the current hardware direction is organized into three approaches. The first approach uses a Raspberry Pi on the robot with an ESP32 for motor-driver and ultrasonic control, while a GPU laptop or desktop runs the heavy model over WiFi. The second approach uses a Google Dev Board with an ESP32 for a more standalone physical robot. The third approach is a laptop-only feasibility test, using the built-in laptop camera and local GPU to test real-time model processing before investing further in physical robot hardware. RGB-D sensors such as RealSense or Azure Kinect, LiDAR, scene-graph mapping, and stronger learned navigation policies can be considered later if the project expands toward spatial mapping or more robust navigation.
 
 ## Baseline Implementation Code
 
-The starter implementation files are organized by hardware role:
+The current implementation guides are organized by approach:
 
 | Path | Purpose |
 |---|---|
-| `src/rdk_x5/robot_navigation_controller.py` | Baseline RDK X5 Python controller for prompt parsing, webcam capture, ESP32 status reading, action validation, STM32 command sending, and logging. |
-| `src/rdk_x5/config.example.json` | Example serial-port, webcam, threshold, and logging configuration. |
-| `firmware/esp32_ultrasonic_hub/esp32_ultrasonic_hub.ino` | ESP32 firmware for reading four ultrasonic sensors and sending JSON distance/status output. |
-| `firmware/stm32_motor_controller/stm32_motor_controller_arduino.ino` | Pin-configurable STM32 motor-command template if custom firmware is required. |
-| `docs/circuit_wiring_guide.md` | Text-form circuit and wiring guide for the proposed hardware architecture. |
+| `docs/approach_1_raspberry_pi_esp32_remote_gpu.md` | Full guide for a Raspberry Pi robot with ESP32 motor and ultrasonic control plus remote GPU inference. |
+| `docs/approach_2_google_dev_board_esp32.md` | Full guide for a Google Dev Board robot with ESP32 motor and ultrasonic control. |
+| `docs/approach_3_laptop_only_model_test.md` | Full guide for laptop-only camera, GPU, prompt, and live action-selection feasibility testing. |
+| `firmware/esp32_robot_controller/esp32_robot_controller.ino` | ESP32 firmware template for ultrasonic sensing and motor-driver command control. |
+| `firmware/esp32_ultrasonic_hub/esp32_ultrasonic_hub.ino` | Optional ESP32 sensor-only test firmware for reading four ultrasonic sensors and sending JSON distance/status output. |
+| `docs/circuit_wiring_guide.md` | Text-form circuit and wiring guide for the updated ESP32-based physical robot architecture. |
 
 ## Methodology Notes
 
