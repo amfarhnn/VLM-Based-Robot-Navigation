@@ -20,7 +20,7 @@
         <mxCell id="6" value="Prompt-Based Action Selection&#10;VLMnav" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="560" y="520" width="420" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="7" value="Low-Cost FYP Prototype&#10;Laptop-only test, Raspberry Pi + remote GPU, or Google Dev Board&#10;ESP32 motor and ultrasonic control for physical robot approaches" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=15;" vertex="1" parent="1">
+        <mxCell id="7" value="Low-Cost Physical FYP Prototype&#10;Coral Dev Board onboard compute&#10;ESP32 sensor, safety, and motor control" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=15;" vertex="1" parent="1">
           <mxGeometry x="560" y="710" width="420" height="140" as="geometry" />
         </mxCell>
         <mxCell id="8" value="Simple Indoor Action Set&#10;move_forward, turn_left, turn_right, stop, search" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">

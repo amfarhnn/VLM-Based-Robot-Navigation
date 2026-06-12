@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laptop Expected-Results Navigation Demo</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { margin: 0; background: #101720; color: #eef4fa; }
+    main { max-width: 1100px; margin: auto; padding: 24px; }
+    .controls, .status { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+    input, button { padding: 10px 14px; border-radius: 8px; border: 1px solid #52677c; font-size: 16px; }
+    input { min-width: 280px; background: #192532; color: white; }
+    button { cursor: pointer; background: #1f6feb; color: white; font-weight: 700; }
+    button.stop { background: #b42318; }
+    .views { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+    video, img { width: 100%; background: black; border: 1px solid #52677c; border-radius: 10px; }
+    .action { font-size: 28px; font-weight: 800; color: #68d391; }
+    pre { white-space: pre-wrap; background: #192532; padding: 14px; border-radius: 10px; }
+    canvas { display: none; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Docker Laptop Expected-Results Demo</h1>
+  <p>The browser captures the webcam. The Docker container performs Python/OpenCV processing.</p>
+  <div class="controls">
+    <input id="instruction" value="find the green marker" aria-label="Navigation instruction">
+    <button id="start">Start Camera</button>
+    <button id="stop" class="stop">Stop</button>
+  </div>
+  <div class="status">
+    <span>Action:</span><span id="action" class="action">STOP</span>
+  </div>
+  <div class="views">
+    <section><h2>Browser Webcam</h2><video id="video" autoplay playsinline muted></video></section>
+    <section><h2>Container Result</h2><img id="result" alt="Processed result"></section>
+  </div>
+  <h2>Structured Goal</h2>
+  <pre id="goal">{}</pre>
+  <canvas id="canvas" width="640" height="480"></canvas>
+</main>
+<script>
+  const video = document.getElementById("video");
+  const canvas = document.getElementById("canvas");
+  const result = document.getElementById("result");
+  const action = document.getElementById("action");
+  const goal = document.getElementById("goal");
+  const instruction = document.getElementById("instruction");
+  let stream = null;
+  let timer = null;
+  let busy = false;
+
+  async function processFrame() {
+    if (!stream || busy || video.videoWidth === 0) return;
+    busy = true;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext("2d").drawImage(video, 0, 0);
+    canvas.toBlob(async blob => {
+      try {
+        const form = new FormData();
+        form.append("instruction", instruction.value);
+        form.append("frame", blob, "frame.jpg");
+        const response = await fetch("/api/process", { method: "POST", body: form });
+        const data = await response.json();
+        action.textContent = data.action || data.error || "STOP";
+        goal.textContent = JSON.stringify(data.goal || {}, null, 2);
+        if (data.annotated_frame) result.src = `data:image/jpeg;base64,${data.annotated_frame}`;
+      } finally {
+        busy = false;
+      }
+    }, "image/jpeg", 0.82);
+  }
+
+  document.getElementById("start").onclick = async () => {
+    if (stream) return;
+    stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    video.srcObject = stream;
+    timer = setInterval(processFrame, 250);
+  };
+
+  document.getElementById("stop").onclick = () => {
+    if (timer) clearInterval(timer);
+    if (stream) stream.getTracks().forEach(track => track.stop());
+    timer = null;
+    stream = null;
+    action.textContent = "STOP";
+  };
+</script>
+</body>
+</html>

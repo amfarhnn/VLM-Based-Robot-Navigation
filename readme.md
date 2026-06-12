@@ -2,167 +2,143 @@
 
 # Prompt Engineering for Mobile Robot Navigation
 
-`Prompt Engineering for Mobile Robot Navigation` is a research project focused on language-guided mobile robot navigation using large pre-trained models.
+This Final Year Project develops one low-cost physical robot that connects a
+simple natural-language goal with webcam perception and safe movement.
 
-![3D model photo of the mobile robot navigation prototype](main.png)
+## Finalized Project Purpose
 
-*3D model photo of the proposed mobile robot navigation prototype.*
+The only physical implementation uses:
 
-This project is centered on one primary paper:
-- `LM-Nav: Robotic Navigation with Large Pre-Trained Models of Language, Vision, and Action`
+- Coral Dev Board for onboard structured prompt processing, USB-webcam capture,
+  Edge TPU-compatible target detection, action selection, and logging
+- ESP32 for ultrasonic and GY-291 sensing, deterministic safety, UART
+  communication, and four-motor control
+- two MX1508 motor drivers and four DC gear motors
+- the completed protected battery and power system
 
-## Project Focus
+The first prototype targets a basic goal such as:
 
-The goal of this project is to study how a robot can follow natural language navigation instructions without relying on a language-annotated robot navigation dataset.
+```text
+find the chair
+```
 
-`LM-Nav` is a strong reference because it combines separate pre-trained models for:
-- language understanding
-- image-language grounding
-- visual navigation
-- long-horizon mobile robot navigation
+The approved action set is:
 
-## Selected Paper
+```text
+move_forward, turn_left, turn_right, search, stop
+```
 
-| Paper | Authors | Venue | Publication | Code |
-|---|---|---|---|---|
-| LM-Nav: Robotic Navigation with Large Pre-Trained Models of Language, Vision, and Action | Dhruv Shah, Blazej Osinski, Brian Ichter, Sergey Levine | CoRL / PMLR 2023 | [Paper](https://proceedings.mlr.press/v205/shah23b) | [Code](https://github.com/blazejosinski/lm_nav) |
+The laptop-only Docker demo is an FYP1 expected-results aid. A browser captures
+the webcam, a local Docker container processes frames, and the interface
+displays actions for manual laptop movement. It is not another physical project
+approach.
 
-## Project Documents
+## Finalized Architecture
 
-| Document | Description |
+```text
+Simple natural-language goal
+        |
+        v
+Coral Dev Board
+  - structured prompt parser
+  - USB webcam
+  - Edge TPU target detector
+  - restricted action selection and logging
+        |
+        | UART3 /dev/ttymxc2, 115200 baud
+        v
+ESP32
+  - two HC-SR04 sensors
+  - GY-291 / ADXL345
+  - obstacle and timeout safety
+  - two MX1508 motor drivers
+        |
+        v
+Four DC gear motors
+```
+
+## First Prototype Behaviour
+
+| Condition | Action |
 |---|---|
-| [Chapter 2 Literature Review](https://docs.google.com/document/d/1kwpJmBAQByh0q103gmgsgumgGNn6tCbL2_T7v8mcL6s/edit?usp=sharing) | Formal literature review chapter covering `LM-Nav` and related papers. |
-| [Chapter 3 Methodology](chapter_3_methodology.md) | Formal methodology chapter following the university FYP chapter format. |
+| Unsupported or unclear target | `stop` |
+| Target not visible | `search` |
+| Target on left or right | `turn_left` or `turn_right` |
+| Target centred and not close | `move_forward` |
+| Target reaches the goal-size threshold | `stop` |
+| Obstacle, invalid command, or command timeout | ESP32 forces `stop` |
 
-## Proposed Implementation Approaches
+## Key Guides
 
-Because the earlier single-board plan is no longer available, the project now documents three practical implementation approaches.
+| Document | Purpose |
+|---|---|
+| [Coral Full Software Setup](docs/coral_dev_board_full_software_setup.md) | Mendel Linux installation through the first physical navigation result |
+| [Coral, ESP32, and MX1508 Wiring Guide](docs/circuit_wiring_guide.md) | Exact UART, sensor, and motor-driver signal wiring |
+| [Docker Laptop-Only Expected-Results Setup](docs/laptop_only_expected_results_setup.md) | Containerized on-screen action demonstration for FYP1 |
+| [Chapter 1 Introduction](chapter_1_introduction.md) | Finalized problem, objectives, and Coral-only scope |
+| [Chapter 2 Literature Review](literature_review.md) | Related language-guided navigation research |
+| [Chapter 3 Methodology](chapter_3_methodology.md) | Coral-only physical implementation methodology |
+| [Chapter 4 Expected Results](chapter_4_results_and_discussion.md) | Expected FYP1 outcomes and required FYP2 measurements |
 
-| Approach | Guide | Purpose |
-|---|---|---|
-| Raspberry Pi, ESP32, webcam, and remote GPU laptop/PC | [Approach 1 Guide](docs/approach_1_raspberry_pi_esp32_remote_gpu.md) | Real robot prototype where the Raspberry Pi handles robot-side control and the GPU computer runs the heavy model over WiFi. |
-| Google Dev Board, ESP32, and webcam | [Approach 2 Guide](docs/approach_2_google_dev_board_esp32.md) | More standalone embedded robot design using a Google Dev Board for onboard AI and ESP32 for motor and ultrasonic control. |
-| Laptop-only feasibility test | [Approach 3 Guide](docs/approach_3_laptop_only_model_test.md) | Early low-cost test where the laptop camera and GPU are used to evaluate model latency and live action selection before building the physical robot. |
-
-## Core Idea
-
-`LM-Nav` builds a navigation system from three major components:
-
-1. `GPT-3` extracts landmark names from a natural language instruction.
-2. `CLIP` grounds those landmarks in visual observations from the environment.
-3. `ViNG` navigates toward the grounded landmarks using a vision-based navigation policy.
-
-This allows the robot to follow high-level language instructions while still using visual navigation models trained on large, unannotated trajectory datasets.
-
-## Further Research
-
-The papers below are useful for studying how `LM-Nav` can be extended or improved.
-
-| Paper | Research Direction | How it relates to LM-Nav |
-|---|---|---|
-| [VLMaps: Visual Language Maps for Robot Navigation](https://vlmaps.github.io/) | Open-vocabulary spatial mapping | Improves language grounding by building maps that connect natural language queries to spatial locations. |
-| [ViNT: A Foundation Model for Visual Navigation](https://proceedings.mlr.press/v229/shah23a.html) | Visual navigation foundation models | Provides a stronger modern navigation backbone that could replace older visual navigation modules such as ViNG. |
-| [NoMaD: Goal Masked Diffusion Policies for Navigation and Exploration](https://general-navigation-models.github.io/nomad/) | Diffusion-based navigation policies | Improves goal-directed navigation and exploration, especially in unseen environments. |
-| [NaVid: Video-based VLM Plans the Next Step for Vision-and-Language Navigation](https://roboticsconference.org/2024/program/papers/79/) | VLM-based action planning | Uses video history and a VLM to plan next-step navigation actions from language instructions. |
-| [Uni-NaVid: A Video-based Vision-Language-Action Model for Unifying Embodied Navigation Tasks](https://roboticsconference.org/program/papers/13/) | Vision-language-action navigation | Extends VLM navigation toward a unified model for instruction following, object search, tracking, and embodied question answering. |
-| [NaVILA: Legged Robot Vision-Language-Action Model for Navigation](https://roboticsproceedings.org/rss21/p018.html) | Real-robot VLA navigation | Converts vision-language reasoning into movement commands for legged robot navigation. |
-| [HOV-SG: Hierarchical Open-Vocabulary 3D Scene Graphs for Language-Grounded Robot Navigation](https://hovsg.github.io/) | 3D scene graph grounding | Improves long-horizon grounding by organizing rooms, objects, and floors into an open-vocabulary 3D scene graph. |
-| [VLN-Zero](https://arxiv.org/abs/2509.18592) | Zero-shot navigation | Uses VLM-guided exploration and scene-graph memory to reduce repeated model calls and improve transfer. |
-| [VLMnav: End-to-End Navigation with Vision Language Models](https://arxiv.org/abs/2411.05755) | Prompt-based action selection | Frames navigation as VLM question answering, which is closely related to prompt engineering for robot decisions. |
-| [VLM-Nav: Mapless UAV Navigation Using Monocular Vision Driven by Vision-Language Models](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0345778) | Mapless VLM navigation | Explores recent VLM-based navigation for UAVs using monocular vision and zero-shot reasoning. |
-
-## Research Roadmap
-
-This project treats `LM-Nav` as the baseline system design. Its central pipeline is:
-
-1. an LLM extracts landmarks from a natural language instruction
-2. CLIP grounds those landmarks in visual observations
-3. a navigation model executes movement toward the grounded goals
-
-The further research papers are organized around possible improvements to this baseline:
-
-- `VLMaps` and `HOV-SG` are used to study stronger spatial grounding. These methods improve how language is connected to maps, objects, rooms, and 3D scene structure.
-- `ViNT` and `NoMaD` are used to study stronger navigation and action models. These methods provide more capable visual navigation backbones that could replace or extend the execution component in `LM-Nav`.
-- `NaVid`, `Uni-NaVid`, and `NaVILA` are used to study the latest VLM and VLA navigation direction. These works move toward models that reason over vision, language, and action in a more integrated way.
-- `VLMnav` is used as the main prompt-engineering reference because it studies how a vision-language model can choose navigation actions through a question-answering formulation.
-
-## Hardware Summary
-
-The reviewed papers do not all use the same hardware. Some are real-robot systems, while others mainly evaluate navigation models using simulators, image streams, or action-selection frameworks.
-
-| Paper | Hardware or Platform Reported | Board / Compute Reported | Main Sensor / Input |
-|---|---|---|---|
-| `LM-Nav` | Clearpath Jackal UGV | Exact onboard computer board not stated; VNM runs onboard; LLM/VLM queries are pre-computed on a remote workstation | Front and rear RGB cameras with 170-degree FOV, GPS, wheel encoders, 6-DoF IMU |
-| `VLMaps` | Simulation environments and real robot demonstrations; Toyota HSR is acknowledged in project materials | Exact board not stated | RGB-D image stream, camera pose/odometry, RGB-D SLAM / RTAB-Map |
-| `HOV-SG` | Boston Dynamics Spot in a real multi-floor building; Habitat-Sim for simulation | Exact board not stated | Calibrated Azure Kinect RGB-D camera and 3D LiDAR |
-| `ViNT` | Multiple robots including LoCoBot, Vizbot, Unitree Go1, and Clearpath Jackal | Official deployment code was tested on LoCoBot with NVIDIA Jetson Orin Nano | RGB/fisheye camera observations; some datasets use odometry |
-| `NoMaD` | LoCoBot real-world experiments | Paper notes suitability for lower-power onboard compute such as NVIDIA Jetson Orin; official deployment stack follows the ViNT/GNM robot setup | RGB observation history and optional goal image |
-| `NaVid` | Simulation and real-world navigation experiments | Exact robot board not stated | Monocular RGB video stream only; no map, odometer, or depth input |
-| `Uni-NaVid` | Unitree Go2 robotic dog for real-world deployment | Remote server with NVIDIA A100 GPU; robot communicates through portable Wi-Fi | RealSense D455 RGB camera at 640 x 480, 90-degree HFOV; Unitree LiDAR-L1 for local motion planning |
-| `NaVILA` | Legged robot demonstrations including Unitree Go2 and humanoid platforms; Isaac Sim / Isaac Lab benchmarks | VLA runs through a server-based pipeline; exact server board/GPU not stated in the project summary | RGB video frames for VLA; LiDAR/height-map and proprioception for low-level locomotion |
-| `VLN-Zero` | Unitree Go2 quadruped in an apartment demonstration; Habitat-Sim for benchmark evaluation | Compute with API access to a VLM; exact onboard board not stated | Intel RealSense D456 RGB-D camera, camera/IMU/odometry, scene-graph map |
-| `VLMnav` | Habitat/ObjectNav/GOAT-style simulated embodied agent | VLM inference through API/model calls; no physical robot board reported | RGB-D image, pose, voxel map, action-choice visual prompt |
-| `VLM-Nav` | AirSim multirotor UAV simulation | Simulation PC / AirSim environment; physical flight controller board not reported | Monocular RGB image, zero-shot depth estimation, left/right distance sensors, relative heading angle |
-
-For this FYP, the current hardware direction is organized into three approaches. The first approach uses a Raspberry Pi on the robot with an ESP32 for motor-driver and ultrasonic control, while a GPU laptop or desktop runs the heavy model over WiFi. The second approach uses a Google Dev Board with an ESP32 for a more standalone physical robot. The third approach is a laptop-only feasibility test, using the built-in laptop camera and local GPU to test real-time model processing before investing further in physical robot hardware. RGB-D sensors such as RealSense or Azure Kinect, LiDAR, scene-graph mapping, and stronger learned navigation policies can be considered later if the project expands toward spatial mapping or more robust navigation.
-
-## Baseline Implementation Code
-
-The current implementation guides are organized by approach:
+## Implementation Files
 
 | Path | Purpose |
 |---|---|
-| `docs/approach_1_raspberry_pi_esp32_remote_gpu.md` | Full guide for a Raspberry Pi robot with ESP32 motor and ultrasonic control plus remote GPU inference. |
-| `docs/approach_2_google_dev_board_esp32.md` | Full guide for a Google Dev Board robot with ESP32 motor and ultrasonic control. |
-| `docs/approach_3_laptop_only_model_test.md` | Full guide for laptop-only camera, GPU, prompt, and live action-selection feasibility testing. |
-| `firmware/esp32_robot_controller/esp32_robot_controller.ino` | ESP32 firmware template for ultrasonic sensing and motor-driver command control. |
-| `firmware/esp32_ultrasonic_hub/esp32_ultrasonic_hub.ino` | Optional ESP32 sensor-only test firmware for reading four ultrasonic sensors and sending JSON distance/status output. |
-| `docs/circuit_wiring_guide.md` | Text-form circuit and wiring guide for the updated ESP32-based physical robot architecture. |
+| `src/coral_robot/robot_controller.py` | Coral prompt parser, Edge TPU detection, action selection, UART, and logging |
+| `firmware/esp32_robot_controller/esp32_robot_controller.ino` | ESP32 UART, sensor, safety, and four-motor firmware |
+| `src/laptop_expected_results/laptop_navigation_demo.py` | Shared structured-goal and action-selection logic for the laptop demo |
+| `src/laptop_expected_results/web_app.py` | Docker browser-webcam processing service |
+| `docker-compose.laptop-demo.yml` | Builds and runs the laptop expected-results container |
+| `simulations/` | Expected obstacle-stop and timeout simulations |
+| `STL/` | Printable robot components |
+| `VLM Robot Photos/` | Latest robot renders and design sources |
 
-## Methodology Notes
+## Critical Wiring Summary
 
-The main methodology for this project is based on [`LM-Nav: Robotic Navigation with Large Pre-Trained Models of Language, Vision, and Action`](https://proceedings.mlr.press/v205/shah23b).
+```text
+Coral UART3 TX pin 7  -> ESP32 GPIO 16 / UART2 RX
+Coral UART3 RX pin 11 <- ESP32 GPIO 17 / UART2 TX
+Coral GND pin 9       -> ESP32 GND
 
-`LM-Nav` provides a clear modular approach for language-guided robot navigation:
+Rear-right motor control: ESP32 GPIO 19 and GPIO 23
+```
 
-1. use an LLM to extract landmark goals from natural language instructions
-2. use CLIP to ground the extracted landmarks in visual observations
-3. use a visual navigation model to execute movement toward the selected landmark
+Use level shifting on both 5 V HC-SR04 Echo signals. Never connect motor power
+to Coral or ESP32 logic pins.
 
-This methodology is suitable as the baseline because it connects prompt engineering, language understanding, image-text grounding, and mobile robot navigation in one complete pipeline.
+## Generated Thesis Files
 
-Supporting methodology references:
+- `thesis_tables.xlsx`
+- `chapter_1_introduction.docx`
+- `chapter_2_literature_review.docx`
+- `chapter_3_methodology.docx`
+- `chapter_4_results_and_discussion.docx`
+- `thesis_chapters_1_to_4.docx`
+- `thesis_chapters_1_to_4.pdf`
 
-| Paper | Methodology Role | Link |
-|---|---|---|
-| LM-Nav: Robotic Navigation with Large Pre-Trained Models of Language, Vision, and Action | Main baseline methodology for landmark extraction, visual grounding, and navigation execution. | [Paper](https://proceedings.mlr.press/v205/shah23b) |
-| VLMnav: End-to-End Navigation with Vision Language Models | Prompt-engineering methodology for choosing robot navigation actions through a VLM question-answering formulation. | [Paper](https://arxiv.org/abs/2411.05755) |
-| VLMaps: Visual Language Maps for Robot Navigation | Spatial grounding methodology using open-vocabulary visual-language maps. | [Project](https://vlmaps.github.io/) |
-| HOV-SG: Hierarchical Open-Vocabulary 3D Scene Graphs for Language-Grounded Robot Navigation | Spatial reasoning methodology using hierarchical 3D scene graphs. | [Project](https://hovsg.github.io/) |
-| ViNT: A Foundation Model for Visual Navigation | Navigation model methodology for stronger visual navigation execution. | [Paper](https://proceedings.mlr.press/v229/shah23a.html) |
-| NoMaD: Goal Masked Diffusion Policies for Navigation and Exploration | Navigation policy methodology using diffusion-based goal-directed navigation. | [Project](https://general-navigation-models.github.io/nomad/) |
+Tables are maintained in `thesis_tables.xlsx` for manual Word insertion. The
+generated DOCX files retain table captions without embedding table images.
 
-## Research Direction
+Regenerate the Excel workbook and DOCX files with:
 
-This project will use `LM-Nav` as the main reference for understanding:
-- how natural language instructions can be converted into landmark-based navigation goals
-- how vision-language models can connect text landmarks to visual observations
-- how pre-trained models can be combined without fine-tuning
-- how long-horizon robot navigation can be performed from language commands
-- how newer VLM, VLA, mapping, and navigation-policy methods can improve the original `LM-Nav` pipeline
+```powershell
+uv run --with openpyxl --with pillow python scripts\build_chapter_docx.py
+```
 
-## Project Goals
+Run the laptop-only expected-results demo with:
 
-Possible goals for this repository include:
-- summarizing the `LM-Nav` method and architecture
-- reproducing a simplified version of the language-to-landmark pipeline
-- experimenting with image-text grounding using CLIP or a modern VLM
-- documenting the navigation pipeline, assumptions, and limitations
-- comparing landmark-based navigation with simpler goal-selection baselines
-- reviewing later research papers that improve landmark grounding, spatial reasoning, or navigation execution
+```powershell
+docker compose -f docker-compose.laptop-demo.yml up --build
+```
 
-## Notes
+Then open `http://localhost:8000`.
 
-- This README is intentionally focused on the selected `LM-Nav` paper.
-- Additional papers can be added later only if they directly support this research direction.
-- The original paper appears in `Proceedings of Machine Learning Research`, volume 205, pages 492-504.
+## Development Priority
+
+1. Complete and verify the Coral-to-ESP32 and ESP32-to-MX1508 wiring.
+2. Confirm `PING`, sensor JSON, `STOP`, and raised-wheel motor actions.
+3. Install and verify Mendel Linux, webcam capture, and Edge TPU inference.
+4. Run the Coral controller in dry-run mode.
+5. Demonstrate supervised `find the chair` physical movement.
+6. Record measured results before adding custom landmark classes or more
+   complex instructions.

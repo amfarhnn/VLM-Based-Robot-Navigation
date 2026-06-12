@@ -10,8 +10,10 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "drawio"
 SOURCE_FILES = [
+    ROOT / "chapter_1_introduction.md",
     ROOT / "literature_review.md",
     ROOT / "chapter_3_methodology.md",
+    ROOT / "chapter_4_results_and_discussion.md",
 ]
 
 FIGURE_RE = re.compile(r"\*\*Figure\s+(\d+\.\d+):\s*(.+?)\*\*")
@@ -245,7 +247,7 @@ def render_figure_2_3(name: str, out_path: Path) -> None:
         90,
     )
     prototype = builder.add_vertex(
-        "Low-Cost FYP Prototype\nLaptop-only test, Raspberry Pi + remote GPU, or Google Dev Board\nESP32 motor and ultrasonic control for physical robot approaches",
+        "Low-Cost Physical FYP Prototype\nCoral Dev Board onboard compute\nESP32 sensor, safety, and motor control",
         "rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=15;",
         560,
         710,
@@ -272,125 +274,98 @@ def render_figure_2_3(name: str, out_path: Path) -> None:
 def render_figure_3_1(name: str, out_path: Path) -> None:
     builder = DrawioBuilder(name, page_width=1500, page_height=1900)
     schema = builder.add_vertex(
-        "Define Action Set\nand Prompt Schema",
+        "Define Prompt Schema,\nActions, Scenarios, and Metrics",
         VERTEX_STYLE,
         360,
         40,
         330,
-        70,
+        90,
     )
-    laptop = builder.add_vertex(
-        "Run Laptop-Only\nFeasibility Test",
+    hardware = builder.add_vertex(
+        "Complete Coral, ESP32,\nSensor, and Motor Wiring",
         VERTEX_STYLE,
         360,
-        140,
+        170,
         330,
         70,
     )
-    latency = builder.add_vertex(
-        "Measure Model Latency\nand Prompt Validity",
+    low_level = builder.add_vertex(
+        "Validate ESP32 Sensors,\nSafety, and Motor Control",
         VERTEX_STYLE,
         360,
-        240,
+        280,
         330,
         80,
     )
-    compare = builder.add_vertex(
-        "Compare Physical\nRobot Approaches",
+    coral = builder.add_vertex(
+        "Install Mendel Linux and Verify\nCoral Edge TPU Inference",
         VERTEX_STYLE,
         360,
-        340,
+        410,
         330,
-        70,
-    )
-    select = builder.add_vertex(
-        "Select Practical\nImplementation Path",
-        VERTEX_STYLE,
-        360,
-        450,
-        330,
-        70,
+        80,
     )
     integrate = builder.add_vertex(
-        "Integrate Webcam, ESP32,\nMotor Driver, and Model Output",
+        "Integrate Webcam, Prompt Parser,\nDetector, UART, and Logging",
         VERTEX_STYLE,
         360,
-        560,
+        540,
         330,
         80,
     )
-    validate = builder.add_vertex(
-        "Validate Action with\nObstacle Status",
+    scenarios = builder.add_vertex(
+        "Run Equivalent Controlled\nIndoor Scenarios",
         VERTEX_STYLE,
         360,
-        680,
+        670,
         330,
         70,
     )
     valid = builder.add_vertex(
-        "Is output valid,\nfast, and safe?",
+        "Is Output Valid,\nResponsive, and Safe?",
         DECISION_STYLE,
         410,
-        800,
+        790,
         230,
         110,
     )
-    command = builder.add_vertex(
-        "Execute or\nDisplay Action",
+    evaluate = builder.add_vertex(
+        "Measure Prompt Quality, Detection,\nLatency, Safety, and Movement",
         VERTEX_STYLE,
         360,
-        960,
+        950,
+        330,
+        90,
+    )
+    analysis = builder.add_vertex(
+        "Analyse Failures and\nReport Results",
+        VERTEX_STYLE,
+        360,
+        1090,
         330,
         70,
     )
-    evaluation = builder.add_vertex(
-        "Evaluate Scenario Result",
-        VERTEX_STYLE,
-        360,
-        1070,
-        330,
-        60,
-    )
-    pi = builder.add_vertex(
-        "Approach 1:\nRaspberry Pi + Remote GPU",
-        VERTEX_STYLE,
-        80,
-        360,
-        330,
-        80,
-    )
-    google = builder.add_vertex(
-        "Approach 2:\nGoogle Dev Board + ESP32",
-        VERTEX_STYLE,
-        760,
-        360,
-        330,
-        80,
-    )
     stop = builder.add_vertex(
-        "Stop, Log Failure,\nand Adjust Prompt, Model, or Hardware",
+        "Stop, Log Failure, and Adjust\nPrompt, Model, Safety, or Hardware",
         NOTE_STYLE,
         810,
-        820,
+        800,
         330,
         100,
     )
 
     for source, target in [
-        (schema, laptop),
-        (laptop, latency),
-        (latency, compare),
-        (compare, select),
-        (select, integrate),
-        (integrate, validate),
-        (validate, valid),
-        (command, evaluation),
+        (schema, hardware),
+        (hardware, low_level),
+        (low_level, coral),
+        (coral, integrate),
+        (integrate, scenarios),
+        (scenarios, valid),
+        (evaluate, analysis),
     ]:
         builder.add_edge(source, target)
 
-    builder.add_edge(compare, pi)
-    builder.add_edge(compare, google)
-    builder.add_edge(valid, command, value="Yes")
+    builder.add_edge(valid, evaluate, value="Yes")
     builder.add_edge(valid, stop, value="No", style=FEEDBACK_EDGE_STYLE)
     builder.add_edge(stop, schema, style=FEEDBACK_EDGE_STYLE)
     builder.write(out_path)
@@ -420,20 +395,21 @@ def render_placeholder_figure(name: str, out_path: Path, message: str) -> None:
     builder.write(out_path)
 
 
-def render_figure_3_4(name: str, out_path: Path) -> None:
+def render_figure_3_7(name: str, out_path: Path) -> None:
     builder = DrawioBuilder(name, page_width=1700, page_height=1200)
-    battery = builder.add_vertex("Battery Pack", VERTEX_STYLE, 680, 40, 300, 80)
+    battery = builder.add_vertex("3S 18650\nBattery Pack", VERTEX_STYLE, 680, 40, 300, 80)
     switch = builder.add_vertex("Main Power\nSwitch and Fuse", VERTEX_STYLE, 680, 170, 300, 80)
-    motor_rail = builder.add_vertex("Motor Power Rail", NOTE_STYLE, 120, 340, 300, 80)
-    regulator = builder.add_vertex("Regulated Logic\nSupply", NOTE_STYLE, 680, 340, 300, 80)
-    motor_driver = builder.add_vertex("Motor Driver", VERTEX_STYLE, 120, 500, 300, 90)
-    motors = builder.add_vertex("Four DC Motors\nand Wheels", VERTEX_STYLE, 120, 690, 300, 90)
-    compute = builder.add_vertex("Raspberry Pi or\nGoogle Dev Board", VERTEX_STYLE, 680, 500, 300, 90)
-    webcam = builder.add_vertex("USB Webcam", VERTEX_STYLE, 500, 710, 260, 80)
-    esp32 = builder.add_vertex("ESP32\nUltrasonic Hub", VERTEX_STYLE, 1060, 500, 300, 90)
-    sensors = builder.add_vertex("Ultrasonic Sensors\nFront, Left, Right, Rear", VERTEX_STYLE, 1060, 710, 300, 90)
+    motor_buck = builder.add_vertex("Adjustable Motor\nBuck Converter", NOTE_STYLE, 140, 340, 300, 80)
+    power_module = builder.add_vertex("3S-Compatible Power-Bank\nCharging / Output Module", NOTE_STYLE, 680, 340, 300, 90)
+    drivers = builder.add_vertex("Two MX1508 Motor Drivers\nPower from motor buck\nControl from ESP32", VERTEX_STYLE, 140, 520, 300, 110)
+    motors = builder.add_vertex("Four DC Gear Motors\nand Wheels", VERTEX_STYLE, 140, 730, 300, 90)
+    compute = builder.add_vertex("Coral Dev Board\nOnboard Compute", VERTEX_STYLE, 680, 520, 300, 90)
+    webcam = builder.add_vertex("USB Webcam", VERTEX_STYLE, 520, 730, 260, 80)
+    esp32 = builder.add_vertex("ESP32\nSensor + Motor Control", VERTEX_STYLE, 1060, 520, 300, 90)
+    sensors = builder.add_vertex("Two HC-SR04 Sensors\nFront Left + Front Right", VERTEX_STYLE, 1000, 730, 300, 90)
+    imu = builder.add_vertex("GY-291 / ADXL345\nAcceleration, Roll/Pitch,\nMotion + Vibration", VERTEX_STYLE, 1340, 730, 260, 110)
     ground = builder.add_vertex(
-        "Common Ground Between Compute Board, ESP32, Sensors, Motor Driver, and Battery System",
+        "Common Ground Between Battery, Power Modules, Compute Board, ESP32, Sensors, and Both MX1508 Drivers",
         (
             "rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;"
             "strokeColor=#666666;fontStyle=1;fontSize=14;"
@@ -446,22 +422,63 @@ def render_figure_3_4(name: str, out_path: Path) -> None:
 
     for source, target in [
         (battery, switch),
-        (switch, motor_rail),
-        (switch, regulator),
-        (motor_rail, motor_driver),
-        (motor_driver, motors),
-        (regulator, compute),
-        (regulator, esp32),
+        (switch, motor_buck),
+        (switch, power_module),
+        (motor_buck, drivers),
+        (drivers, motors),
+        (power_module, compute),
+        (power_module, esp32),
         (compute, webcam),
         (esp32, sensors),
+        (esp32, imu),
     ]:
         builder.add_edge(source, target)
 
-    builder.add_edge(compute, esp32, value="USB/UART status and command")
-    builder.add_edge(esp32, motor_driver, value="motor control pins")
-    builder.add_edge(motor_driver, ground, style=FEEDBACK_EDGE_STYLE)
+    builder.add_edge(compute, esp32, value="UART3 to UART2")
+    builder.add_edge(drivers, ground, style=FEEDBACK_EDGE_STYLE)
     builder.add_edge(compute, ground, style=FEEDBACK_EDGE_STYLE)
     builder.add_edge(esp32, ground, style=FEEDBACK_EDGE_STYLE)
+    builder.write(out_path)
+
+
+def render_figure_3_8(name: str, out_path: Path) -> None:
+    builder = DrawioBuilder(name, page_width=1700, page_height=1200)
+    coral = builder.add_vertex(
+        "Coral Dev Board UART3\nPin 7 TX, Pin 11 RX, Pin 9 GND",
+        VERTEX_STYLE,
+        650,
+        100,
+        400,
+        100,
+    )
+    esp32 = builder.add_vertex(
+        "ESP32\nSensor, Safety, UART, and Motor Controller",
+        "rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=15;",
+        650,
+        430,
+        400,
+        120,
+    )
+    left_sensor = builder.add_vertex("Front-Left HC-SR04\nTRIG 5, ECHO 34", VERTEX_STYLE, 100, 130, 320, 90)
+    right_sensor = builder.add_vertex("Front-Right HC-SR04\nTRIG 18, ECHO 35", VERTEX_STYLE, 100, 330, 320, 90)
+    imu = builder.add_vertex("GY-291 / ADXL345\nSDA 21, SCL 22", VERTEX_STYLE, 100, 530, 320, 90)
+    driver1 = builder.add_vertex("MX1508 Driver 1\nFront-Left 25/26\nRear-Left 32/33", VERTEX_STYLE, 1250, 180, 320, 120)
+    driver2 = builder.add_vertex("MX1508 Driver 2\nFront-Right 27/14\nRear-Right 19/23", VERTEX_STYLE, 1250, 430, 320, 120)
+    safety = builder.add_vertex(
+        "Local Safety\nObstacle, Timeout, Unknown Command -> STOP",
+        NOTE_STYLE,
+        650,
+        720,
+        400,
+        110,
+    )
+    builder.add_edge(coral, esp32, value="UART3 <-> UART2\nESP32 RX16 / TX17")
+    builder.add_edge(left_sensor, esp32, value="level-shift Echo")
+    builder.add_edge(right_sensor, esp32, value="level-shift Echo")
+    builder.add_edge(imu, esp32, value="I2C")
+    builder.add_edge(esp32, driver1, value="PWM/DIR inputs")
+    builder.add_edge(esp32, driver2, value="PWM/DIR inputs")
+    builder.add_edge(esp32, safety)
     builder.write(out_path)
 
 
@@ -538,7 +555,7 @@ def extract_items(path: Path) -> list[dict[str, object]]:
         if figure_match:
             number, title = figure_match.groups()
             cursor = index + 1
-            while cursor < len(lines) and not lines[cursor].startswith("```"):
+            while cursor < len(lines) and not lines[cursor].strip():
                 cursor += 1
             block: list[str] = []
             if cursor < len(lines) and lines[cursor].startswith("```"):
@@ -598,20 +615,13 @@ def main() -> None:
         chapter_folder = f"chapter_{number.split('.')[0]}"
         kind = str(item["kind"])
         title = str(item["title"])
+        if kind == "table":
+            continue
         output_dir = OUT_DIR / chapter_folder
         output_dir.mkdir(parents=True, exist_ok=True)
         filename = f"{kind}_{number.replace('.', '_')}_{slugify(title)}.drawio"
         output_path = output_dir / filename
         generated.append(output_path)
-
-        if kind == "table":
-            render_table(
-                f"Table {number}: {title}",
-                list(item["header"]),
-                list(item["rows"]),
-                output_path,
-            )
-            continue
 
         figure_name = f"Figure {number}: {title}"
         if number == "2.3":
@@ -622,15 +632,35 @@ def main() -> None:
             render_placeholder_figure(
                 figure_name,
                 output_path,
-                "Insert Fusion 360 3D model image here.\n\nLeave this space for the final chassis render, including board, sensor, webcam, motor, and battery placement.",
+                "Static finalized component collage is embedded from figures/chapter_3/figure_3_3_main_hardware_components.png.\n\nThis Draw.io placeholder is kept only so the generated asset list remains complete.",
             )
         elif number == "3.4":
-            render_figure_3_4(figure_name, output_path)
+            render_placeholder_figure(
+                figure_name,
+                output_path,
+                "The finalized Fusion 360 robot overview is embedded from figures/chapter_3.\n\nThis Draw.io placeholder is kept only so the generated asset list remains complete.",
+            )
         elif number == "3.5":
             render_placeholder_figure(
                 figure_name,
                 output_path,
-                "Insert final circuit diagram picture here.\n\nLeave this space for the completed wiring diagram showing power, serial communication, ESP32 ultrasonic sensors, motor driver control, and common ground.",
+                "The finalized Fusion 360 multi-view layout is embedded from figures/chapter_3.\n\nThis Draw.io placeholder is kept only so the generated asset list remains complete.",
+            )
+        elif number == "3.6":
+            render_placeholder_figure(
+                figure_name,
+                output_path,
+                "The finalized dimensioned mechanical sketch is embedded from figures/chapter_3.\n\nThis Draw.io placeholder is kept only so the generated asset list remains complete.",
+            )
+        elif number == "3.7":
+            render_figure_3_7(figure_name, output_path)
+        elif number == "3.8":
+            render_figure_3_8(figure_name, output_path)
+        elif number in {"4.1", "4.2"}:
+            render_placeholder_figure(
+                figure_name,
+                output_path,
+                "The expected-result safety simulation is embedded from figures/chapter_4.\n\nThis Draw.io placeholder is kept only so the generated asset list remains complete.",
             )
         else:
             steps = [

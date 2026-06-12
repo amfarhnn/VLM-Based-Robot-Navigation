@@ -1,23 +1,25 @@
 /*
-  ESP32 robot controller for the FYP project:
-  Prompt Engineering for Mobile Robot Navigation.
+  ESP32 robot controller for the Coral Dev Board FYP prototype.
 
-  Role:
-  - Read four ultrasonic sensors.
-  - Publish JSON distance/status data over USB serial.
+  ESP32 responsibilities:
+  - Read two front HC-SR04 ultrasonic sensors.
+  - Read a GY-291 / ADXL345 accelerometer over I2C.
+  - Publish JSON sensor status to the Coral Dev Board over UART2.
   - Receive high-level movement commands.
-  - Drive a motor driver for four DC motors.
+  - Control four DC motors through two MX1508 dual H-bridge modules.
+  - Stop on obstacle, unknown command, or command timeout.
 
-  The high-level controller can be a Raspberry Pi, Google Dev Board, or a
-  development laptop during serial testing.
-
-  Wiring note:
-  If HC-SR04-style sensors are powered at 5 V, the Echo pins can output 5 V.
-  Use a voltage divider or level shifter before connecting Echo to ESP32 GPIO.
-
-  Pin definitions below are placeholders. Change them to match the selected
-  ESP32 board and motor driver.
+  Hardware notes:
+  - Use level shifting on each 5 V HC-SR04 Echo signal.
+  - GY-291 / ADXL345 provides acceleration, roll/pitch tilt, and
+    motion/vibration/shock observations.
+  - MX1508 channels use two PWM-capable inputs per motor.
+  - Coral UART3 and ESP32 UART2 both use 3.3 V logic.
+  - USB Serial remains available for ESP32 debugging.
+  - Confirm all pins and electrical ratings before physical testing.
 */
+
+#include <Wire.h>
 
 const unsigned long BAUD_RATE = 115200;
 const unsigned long MEASURE_INTERVAL_MS = 100;
@@ -28,34 +30,62 @@ const int BASE_SPEED = 90;
 const int TURN_SPEED = 80;
 const int SEARCH_SPEED = 65;
 
-const int SENSOR_COUNT = 4;
-const char* SENSOR_NAMES[SENSOR_COUNT] = {"front", "left", "right", "rear"};
+const int SENSOR_COUNT = 2;
+const char* SENSOR_NAMES[SENSOR_COUNT] = {"front_left", "front_right"};
+const int TRIG_PINS[SENSOR_COUNT] = {5, 18};
+const int ECHO_PINS[SENSOR_COUNT] = {34, 35};
 
-const int TRIG_PINS[SENSOR_COUNT] = {5, 18, 19, 23};
-const int ECHO_PINS[SENSOR_COUNT] = {34, 35, 32, 33};
+const int I2C_SDA_PIN = 21;
+const int I2C_SCL_PIN = 22;
+const int CORAL_UART_RX_PIN = 16;
+const int CORAL_UART_TX_PIN = 17;
+const uint8_t ADXL345_ADDRESS = 0x53;
+const float MOTION_THRESHOLD_G = 0.08;
+const float VIBRATION_DELTA_THRESHOLD_G = 0.05;
+const float SHOCK_THRESHOLD_G = 1.50;
 
 struct MotorPins {
-  int pwm;
-  int in1;
-  int in2;
+  int input1;
+  int input2;
 };
 
-// Placeholder motor-driver pins. Confirm safe pins for the final ESP32 board.
-MotorPins frontLeft  = {25, 12, 13};
-MotorPins frontRight = {26, 16, 17};
-MotorPins rearLeft   = {27, 21, 22};
-MotorPins rearRight  = {14, 4, 2};
+// Two MX1508 modules provide four two-input motor channels.
+MotorPins frontLeft  = {25, 26};
+MotorPins frontRight = {27, 14};
+MotorPins rearLeft   = {32, 33};
+MotorPins rearRight  = {19, 23};
+
+HardwareSerial CoralSerial(2);
 
 float safeDistanceCm = 25.0;
-float latestDistances[SENSOR_COUNT] = {-1.0, -1.0, -1.0, -1.0};
+float latestDistances[SENSOR_COUNT] = {-1.0, -1.0};
 float latestMinCm = -1.0;
 bool latestObstacle = false;
+bool latestSensorFault = true;
+
+bool adxl345Available = false;
+float accelXG = 0.0;
+float accelYG = 0.0;
+float accelZG = 0.0;
+float accelMagnitudeG = 0.0;
+float previousAccelMagnitudeG = 1.0;
+float rollDeg = 0.0;
+float pitchDeg = 0.0;
+bool motionDetected = false;
+bool vibrationDetected = false;
+bool shockDetected = false;
 
 unsigned long lastMeasureMs = 0;
 unsigned long lastCommandMs = 0;
 
 void setup() {
   Serial.begin(BAUD_RATE);
+  CoralSerial.begin(
+    BAUD_RATE,
+    SERIAL_8N1,
+    CORAL_UART_RX_PIN,
+    CORAL_UART_TX_PIN
+  );
 
   for (int i = 0; i < SENSOR_COUNT; i++) {
     pinMode(TRIG_PINS[i], OUTPUT);
@@ -68,6 +98,10 @@ void setup() {
   setupMotor(rearLeft);
   setupMotor(rearRight);
   stopAll();
+
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+  adxl345Available = setupAdxl345();
+  lastCommandMs = millis();
 }
 
 void loop() {
@@ -76,26 +110,26 @@ void loop() {
   unsigned long now = millis();
   if (now - lastMeasureMs >= MEASURE_INTERVAL_MS) {
     lastMeasureMs = now;
-    updateDistances();
-    publishDistances();
+    updateSensors();
+    publishSensorStatus();
   }
 
-  if (latestObstacle || (now - lastCommandMs > COMMAND_TIMEOUT_MS)) {
+  if (latestObstacle || latestSensorFault || (now - lastCommandMs > COMMAND_TIMEOUT_MS)) {
     stopAll();
   }
 }
 
 void handleSerialCommand() {
-  if (!Serial.available()) {
+  if (!CoralSerial.available()) {
     return;
   }
 
-  String command = Serial.readStringUntil('\n');
+  String command = CoralSerial.readStringUntil('\n');
   command.trim();
   command.toUpperCase();
 
   if (command == "PING") {
-    Serial.println("{\"status\":\"ok\",\"device\":\"esp32_robot_controller\"}");
+    CoralSerial.println("{\"status\":\"ok\",\"device\":\"esp32_robot_controller\"}");
     return;
   }
 
@@ -103,9 +137,9 @@ void handleSerialCommand() {
     float value = command.substring(10).toFloat();
     if (value > 0.0 && value < 500.0) {
       safeDistanceCm = value;
-      Serial.print("{\"status\":\"threshold_updated\",\"safe_distance_cm\":");
-      Serial.print(safeDistanceCm, 1);
-      Serial.println("}");
+      CoralSerial.print("{\"status\":\"threshold_updated\",\"safe_distance_cm\":");
+      CoralSerial.print(safeDistanceCm, 1);
+      CoralSerial.println("}");
     }
     return;
   }
@@ -115,31 +149,31 @@ void handleSerialCommand() {
 }
 
 void executeCommand(String command) {
-  if (latestObstacle && command != "STOP") {
+  if ((latestObstacle || latestSensorFault) && command != "STOP") {
     stopAll();
-    Serial.println("ACK:STOP:OBSTACLE");
+    CoralSerial.println(latestObstacle ? "ACK:STOP:OBSTACLE" : "ACK:STOP:SENSOR_FAULT");
     return;
   }
 
   if (command == "FWD") {
     moveForward(BASE_SPEED);
-    Serial.println("ACK:FWD");
+    CoralSerial.println("ACK:FWD");
   } else if (command == "LEFT") {
     turnLeft(TURN_SPEED);
-    Serial.println("ACK:LEFT");
+    CoralSerial.println("ACK:LEFT");
   } else if (command == "RIGHT") {
     turnRight(TURN_SPEED);
-    Serial.println("ACK:RIGHT");
+    CoralSerial.println("ACK:RIGHT");
   } else if (command == "SEARCH") {
     turnLeft(SEARCH_SPEED);
-    Serial.println("ACK:SEARCH");
+    CoralSerial.println("ACK:SEARCH");
   } else {
     stopAll();
-    Serial.println("ACK:STOP");
+    CoralSerial.println("ACK:STOP");
   }
 }
 
-void updateDistances() {
+void updateSensors() {
   float minDistance = 9999.0;
 
   for (int i = 0; i < SENSOR_COUNT; i++) {
@@ -150,31 +184,62 @@ void updateDistances() {
   }
 
   latestMinCm = minDistance >= 9999.0 ? -1.0 : minDistance;
+  latestSensorFault = latestMinCm < 0.0;
   latestObstacle = latestMinCm > 0.0 && latestMinCm < safeDistanceCm;
+
+  if (adxl345Available) {
+    adxl345Available = readAdxl345();
+  }
 }
 
-void publishDistances() {
-  Serial.print("{");
+void publishSensorStatus() {
+  CoralSerial.print("{");
   for (int i = 0; i < SENSOR_COUNT; i++) {
-    Serial.print("\"");
-    Serial.print(SENSOR_NAMES[i]);
-    Serial.print("_cm\":");
+    CoralSerial.print("\"");
+    CoralSerial.print(SENSOR_NAMES[i]);
+    CoralSerial.print("_cm\":");
     if (latestDistances[i] < 0.0) {
-      Serial.print("null");
+      CoralSerial.print("null");
     } else {
-      Serial.print(latestDistances[i], 1);
+      CoralSerial.print(latestDistances[i], 1);
     }
-    Serial.print(",");
+    CoralSerial.print(",");
   }
-  Serial.print("\"min_cm\":");
+
+  CoralSerial.print("\"min_cm\":");
   if (latestMinCm < 0.0) {
-    Serial.print("null");
+    CoralSerial.print("null");
   } else {
-    Serial.print(latestMinCm, 1);
+    CoralSerial.print(latestMinCm, 1);
   }
-  Serial.print(",\"obstacle\":");
-  Serial.print(latestObstacle ? "true" : "false");
-  Serial.println("}");
+
+  CoralSerial.print(",\"obstacle\":");
+  CoralSerial.print(latestObstacle ? "true" : "false");
+  CoralSerial.print(",\"sensor_fault\":");
+  CoralSerial.print(latestSensorFault ? "true" : "false");
+  CoralSerial.print(",\"accel_g\":");
+  if (!adxl345Available) {
+    CoralSerial.print("null");
+  } else {
+    CoralSerial.print("{\"x\":");
+    CoralSerial.print(accelXG, 3);
+    CoralSerial.print(",\"y\":");
+    CoralSerial.print(accelYG, 3);
+    CoralSerial.print(",\"z\":");
+    CoralSerial.print(accelZG, 3);
+    CoralSerial.print("}");
+  }
+  CoralSerial.print(",\"roll_deg\":");
+  CoralSerial.print(adxl345Available ? String(rollDeg, 1) : "null");
+  CoralSerial.print(",\"pitch_deg\":");
+  CoralSerial.print(adxl345Available ? String(pitchDeg, 1) : "null");
+  CoralSerial.print(",\"motion_detected\":");
+  CoralSerial.print(motionDetected ? "true" : "false");
+  CoralSerial.print(",\"vibration_detected\":");
+  CoralSerial.print(vibrationDetected ? "true" : "false");
+  CoralSerial.print(",\"shock_detected\":");
+  CoralSerial.print(shockDetected ? "true" : "false");
+  CoralSerial.println("}");
 }
 
 float readDistanceCm(int trigPin, int echoPin) {
@@ -192,10 +257,61 @@ float readDistanceCm(int trigPin, int echoPin) {
   return duration / 58.0;
 }
 
+bool setupAdxl345() {
+  Wire.beginTransmission(ADXL345_ADDRESS);
+  Wire.write(0x2D);  // POWER_CTL
+  Wire.write(0x08);  // Measurement mode
+  if (Wire.endTransmission() != 0) {
+    return false;
+  }
+
+  Wire.beginTransmission(ADXL345_ADDRESS);
+  Wire.write(0x31);  // DATA_FORMAT
+  Wire.write(0x08);  // Full resolution, +/-2 g
+  return Wire.endTransmission() == 0;
+}
+
+bool readAdxl345() {
+  Wire.beginTransmission(ADXL345_ADDRESS);
+  Wire.write(0x32);  // DATAX0
+  if (Wire.endTransmission(false) != 0) {
+    return false;
+  }
+
+  if (Wire.requestFrom(ADXL345_ADDRESS, (uint8_t)6) != 6) {
+    return false;
+  }
+
+  int16_t rawX = (int16_t)(Wire.read() | (Wire.read() << 8));
+  int16_t rawY = (int16_t)(Wire.read() | (Wire.read() << 8));
+  int16_t rawZ = (int16_t)(Wire.read() | (Wire.read() << 8));
+
+  const float scaleGPerLsb = 0.0039;
+  accelXG = rawX * scaleGPerLsb;
+  accelYG = rawY * scaleGPerLsb;
+  accelZG = rawZ * scaleGPerLsb;
+
+  accelMagnitudeG = sqrt(
+    accelXG * accelXG + accelYG * accelYG + accelZG * accelZG
+  );
+  rollDeg = atan2(accelYG, accelZG) * 180.0 / PI;
+  pitchDeg = atan2(
+    -accelXG,
+    sqrt(accelYG * accelYG + accelZG * accelZG)
+  ) * 180.0 / PI;
+
+  motionDetected = abs(accelMagnitudeG - 1.0) > MOTION_THRESHOLD_G;
+  vibrationDetected =
+    abs(accelMagnitudeG - previousAccelMagnitudeG) >
+    VIBRATION_DELTA_THRESHOLD_G;
+  shockDetected = accelMagnitudeG > SHOCK_THRESHOLD_G;
+  previousAccelMagnitudeG = accelMagnitudeG;
+  return true;
+}
+
 void setupMotor(MotorPins motor) {
-  pinMode(motor.pwm, OUTPUT);
-  pinMode(motor.in1, OUTPUT);
-  pinMode(motor.in2, OUTPUT);
+  pinMode(motor.input1, OUTPUT);
+  pinMode(motor.input2, OUTPUT);
 }
 
 void moveForward(int speedValue) {
@@ -230,17 +346,13 @@ void setMotor(MotorPins motor, int speedValue) {
   speedValue = constrain(speedValue, -255, 255);
 
   if (speedValue > 0) {
-    digitalWrite(motor.in1, HIGH);
-    digitalWrite(motor.in2, LOW);
-    analogWrite(motor.pwm, speedValue);
+    analogWrite(motor.input1, speedValue);
+    analogWrite(motor.input2, 0);
   } else if (speedValue < 0) {
-    digitalWrite(motor.in1, LOW);
-    digitalWrite(motor.in2, HIGH);
-    analogWrite(motor.pwm, -speedValue);
+    analogWrite(motor.input1, 0);
+    analogWrite(motor.input2, -speedValue);
   } else {
-    digitalWrite(motor.in1, LOW);
-    digitalWrite(motor.in2, LOW);
-    analogWrite(motor.pwm, 0);
+    analogWrite(motor.input1, 0);
+    analogWrite(motor.input2, 0);
   }
 }
-

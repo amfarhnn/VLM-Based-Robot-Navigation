@@ -20,6 +20,32 @@ MARKDOWN_PATH = ROOT / "chapter_3_methodology.md"
 DRAWIO_DIR = ROOT / "drawio" / "chapter_3"
 EXPORT_DIR = DRAWIO_DIR / "exported"
 DOCX_PATH = ROOT / "chapter_3_methodology.docx"
+STATIC_FIGURE_IMAGES = {
+    "figure 3.3: main hardware components for the finalized coral dev board robot": ROOT
+    / "figures"
+    / "chapter_3"
+    / "figure_3_3_main_hardware_components.png",
+    "figure 3.4: finalized fusion 360 physical robot model": ROOT
+    / "figures"
+    / "chapter_3"
+    / "figure_3_4_finalized_fusion_360_robot_model.png",
+    "figure 3.5: finalized fusion 360 robot multi-view layout": ROOT
+    / "figures"
+    / "chapter_3"
+    / "figure_3_5_fusion_360_robot_multi_view.png",
+    "figure 3.6: finalized mechanical design sketch and dimensions": ROOT
+    / "figures"
+    / "chapter_3"
+    / "figure_3_6_mechanical_design_sketch_and_dimensions.png",
+    "figure 4.1: expected obstacle-stop response at the planned 25 cm threshold": ROOT
+    / "figures"
+    / "chapter_4"
+    / "figure_4_1_expected_obstacle_stop_response.png",
+    "figure 4.2: expected motor response when the command timeout exceeds 1,000 ms": ROOT
+    / "figures"
+    / "chapter_4"
+    / "figure_4_2_expected_command_timeout_response.png",
+}
 
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -420,17 +446,31 @@ def render_all_drawio() -> dict[str, Path]:
         diagram = tree.getroot().find("diagram")
         caption = diagram.attrib.get("name", drawio.stem) if diagram is not None else drawio.stem
         out_path = EXPORT_DIR / f"{drawio.stem}.png"
-        render_drawio(drawio, out_path)
-        caption_to_image[caption.lower()] = out_path
+        caption_key = caption.lower()
+        static_path = STATIC_FIGURE_IMAGES.get(caption_key)
+        if static_path and static_path.exists():
+            shutil.copy2(static_path, out_path)
+        else:
+            render_drawio(drawio, out_path)
+        caption_to_image[caption_key] = out_path
+    markdown_text = MARKDOWN_PATH.read_text(encoding="utf-8").lower()
+    for caption, image_path in STATIC_FIGURE_IMAGES.items():
+        if image_path.exists() and caption in markdown_text and caption not in caption_to_image:
+            caption_to_image[caption] = image_path
     return caption_to_image
 
 
 class DocxBuilder:
-    def __init__(self) -> None:
+    def __init__(self, page_number_start: int = 1) -> None:
         self.relationships: list[tuple[str, str, str]] = []
         self.media: list[tuple[Path, str]] = []
         self.image_counter = 1
         self.elements: list[ET.Element] = []
+        self.page_number_start = page_number_start
+        self.footer_rel_id = self.add_relationship(
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer",
+            "footer1.xml",
+        )
 
     def add_relationship(self, rel_type: str, target: str) -> str:
         rel_id = f"rId{len(self.relationships) + 1}"
@@ -506,6 +546,12 @@ class DocxBuilder:
             t.text = line
         self.elements.append(paragraph)
 
+    def add_page_break(self) -> None:
+        paragraph = ET.Element(qn("w", "p"))
+        run = ET.SubElement(paragraph, qn("w", "r"))
+        ET.SubElement(run, qn("w", "br"), {attr("w", "type"): "page"})
+        self.elements.append(paragraph)
+
     def add_image(self, image_path: Path, max_width_inches: float = 6.27) -> None:
         media_name = f"image{self.image_counter}{image_path.suffix.lower()}"
         self.image_counter += 1
@@ -570,6 +616,12 @@ class DocxBuilder:
         for element in self.elements:
             body.append(element)
         sect_pr = ET.SubElement(body, qn("w", "sectPr"))
+        ET.SubElement(
+            sect_pr,
+            qn("w", "footerReference"),
+            {attr("w", "type"): "default", attr("r", "id"): self.footer_rel_id},
+        )
+        ET.SubElement(sect_pr, qn("w", "pgNumType"), {attr("w", "start"): str(self.page_number_start)})
         ET.SubElement(sect_pr, qn("w", "pgSz"), {attr("w", "w"): "11906", attr("w", "h"): "16838"})
         ET.SubElement(
             sect_pr,
@@ -593,6 +645,7 @@ class DocxBuilder:
             docx.writestr("word/document.xml", self.build_document_xml())
             docx.writestr("word/styles.xml", styles_xml())
             docx.writestr("word/settings.xml", settings_xml())
+            docx.writestr("word/footer1.xml", footer_xml())
             docx.writestr("word/_rels/document.xml.rels", document_relationships_xml(self.relationships))
             for image_path, media_name in self.media:
                 docx.write(image_path, f"word/media/{media_name}")
@@ -617,9 +670,19 @@ def strip_markdown_emphasis(text: str) -> str:
 CAPTION_RE = re.compile(r"^\*\*((?:Figure|Table)\s+\d+\.\d+:\s+.+?)\*\*$")
 
 
-def build_docx(caption_to_image: dict[str, Path]) -> int:
-    builder = DocxBuilder()
-    lines = MARKDOWN_PATH.read_text(encoding="utf-8").splitlines()
+def append_markdown(
+    builder: DocxBuilder,
+    markdown_path: Path,
+    caption_to_image: dict[str, Path],
+    *,
+    start_heading: str | None = None,
+    stop_heading: str | None = None,
+) -> set[Path]:
+    lines = markdown_path.read_text(encoding="utf-8").splitlines()
+    if start_heading and start_heading in lines:
+        lines = lines[lines.index(start_heading) :]
+    if stop_heading and stop_heading in lines:
+        lines = lines[: lines.index(stop_heading)]
     used_images: set[Path] = set()
     i = 0
     pending_skip: str | None = None
@@ -642,6 +705,10 @@ def build_docx(caption_to_image: dict[str, Path]) -> int:
                 i += 1
             if i < len(lines):
                 i += 1
+            pending_skip = None
+            continue
+        if pending_skip == "figure" and stripped.startswith("!["):
+            i += 1
             pending_skip = None
             continue
         pending_skip = None
@@ -690,9 +757,26 @@ def build_docx(caption_to_image: dict[str, Path]) -> int:
             i += 1
             continue
 
-        if stripped.startswith("- "):
-            builder.add_text_paragraph(stripped, style="Normal", indent_left=360, spacing_after=80)
+        if stripped.startswith("- ") or re.match(r"^\d+\.\s+", stripped):
+            item_lines = [stripped]
             i += 1
+            while i < len(lines):
+                continuation = lines[i].strip()
+                if (
+                    not continuation
+                    or continuation.startswith(("#", "- ", "|", "```", "!["))
+                    or CAPTION_RE.match(continuation)
+                    or re.match(r"^\d+\.\s+", continuation)
+                ):
+                    break
+                item_lines.append(continuation)
+                i += 1
+            builder.add_text_paragraph(
+                " ".join(item_lines),
+                style="Normal",
+                indent_left=360,
+                spacing_after=80,
+            )
             continue
 
         if stripped.startswith("|"):
@@ -700,9 +784,27 @@ def build_docx(caption_to_image: dict[str, Path]) -> int:
                 i += 1
             continue
 
-        builder.add_text_paragraph(strip_markdown_emphasis(stripped), style="Normal")
+        paragraph_lines = [strip_markdown_emphasis(stripped)]
         i += 1
+        while i < len(lines):
+            continuation = lines[i].strip()
+            if (
+                not continuation
+                or continuation.startswith(("#", "- ", "|", "```", "!["))
+                or CAPTION_RE.match(continuation)
+                or re.match(r"^\d+\.\s+", continuation)
+            ):
+                break
+            paragraph_lines.append(strip_markdown_emphasis(continuation))
+            i += 1
+        builder.add_text_paragraph(" ".join(paragraph_lines), style="Normal")
 
+    return used_images
+
+
+def build_docx(caption_to_image: dict[str, Path], page_number_start: int = 1) -> int:
+    builder = DocxBuilder(page_number_start=page_number_start)
+    used_images = append_markdown(builder, MARKDOWN_PATH, caption_to_image)
     unused = [path for path in caption_to_image.values() if path not in used_images]
     if unused:
         builder.add_text_paragraph("Additional Draw.io Assets", style="Heading1", bold=True)
@@ -734,6 +836,7 @@ def content_types_xml(media: list[tuple[Path, str]]) -> bytes:
     )
     ET.SubElement(root, f"{{{CT_NS}}}Override", {"PartName": "/word/styles.xml", "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"})
     ET.SubElement(root, f"{{{CT_NS}}}Override", {"PartName": "/word/settings.xml", "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"})
+    ET.SubElement(root, f"{{{CT_NS}}}Override", {"PartName": "/word/footer1.xml", "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"})
     return xml_bytes(root)
 
 
@@ -774,6 +877,29 @@ def document_relationships_xml(relationships: list[tuple[str, str, str]]) -> byt
     for rel_id, rel_type, target in relationships:
         ET.SubElement(root, f"{{{REL_NS}}}Relationship", {"Id": rel_id, "Type": rel_type, "Target": target})
     return xml_bytes(root)
+
+
+def footer_xml() -> bytes:
+    footer = ET.Element(qn("w", "ftr"))
+    paragraph = ET.SubElement(footer, qn("w", "p"))
+    ppr = ET.SubElement(paragraph, qn("w", "pPr"))
+    ET.SubElement(ppr, qn("w", "jc"), {attr("w", "val"): "center"})
+
+    begin_run = ET.SubElement(paragraph, qn("w", "r"))
+    ET.SubElement(begin_run, qn("w", "fldChar"), {attr("w", "fldCharType"): "begin"})
+
+    instruction_run = ET.SubElement(paragraph, qn("w", "r"))
+    instruction = ET.SubElement(instruction_run, qn("w", "instrText"))
+    instruction.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
+    instruction.text = " PAGE "
+
+    separate_run = ET.SubElement(paragraph, qn("w", "r"))
+    ET.SubElement(separate_run, qn("w", "fldChar"), {attr("w", "fldCharType"): "separate"})
+    number_run = ET.SubElement(paragraph, qn("w", "r"))
+    ET.SubElement(number_run, qn("w", "t")).text = "1"
+    end_run = ET.SubElement(paragraph, qn("w", "r"))
+    ET.SubElement(end_run, qn("w", "fldChar"), {attr("w", "fldCharType"): "end"})
+    return xml_bytes(footer)
 
 
 def styles_xml() -> bytes:

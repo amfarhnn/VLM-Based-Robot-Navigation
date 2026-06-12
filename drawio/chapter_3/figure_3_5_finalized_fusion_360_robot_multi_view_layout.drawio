@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<mxfile host="app.diagrams.net" modified="2026-05-09T00:00:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="figure_3_5_finalized_fusion_360_robot_multi_view_layout" name="Figure 3.5: Finalized Fusion 360 robot multi-view layout">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="Figure 3.5: Finalized Fusion 360 robot multi-view layout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="80" y="60" width="1000" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="The finalized Fusion 360 multi-view layout is embedded from figures/chapter_3.&#10;&#10;This Draw.io placeholder is kept only so the generated asset list remains complete." style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;fillColor=#f8f9fa;strokeColor=#666666;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="920" height="560" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

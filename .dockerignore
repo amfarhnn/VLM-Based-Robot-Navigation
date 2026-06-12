@@ -1,0 +1,11 @@
+.git
+*.docx
+*.pdf
+*.xlsx
+VLM Robot Photos/
+STL/
+drawio/
+figures/
+logs/
+__pycache__/
+*.pyc
