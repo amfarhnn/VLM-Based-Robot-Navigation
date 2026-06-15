@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PHOTO_DIR = ROOT / "VLM Robot Photos"
+PHOTO_DIR = ROOT / "cad" / "design_sources"
 OUT_DIR = ROOT / "figures" / "chapter_3"
 
 OVERVIEW_SOURCE = PHOTO_DIR / "FYP_2_2026-Jun-10_09-44-41PM-000_CustomizedView7494680794.png"

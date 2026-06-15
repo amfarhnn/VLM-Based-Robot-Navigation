@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Runtime output
+logs/*.jsonl
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+~$*
+*.tmp
+*.bak
+*.bkp

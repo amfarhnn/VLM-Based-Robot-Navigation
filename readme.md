@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Header.jpg" alt="Prompt Engineering for Mobile Robot Navigation" width="100%">
+  <img src="assets/branding/Header.jpg" alt="Prompt Engineering for Mobile Robot Navigation" width="100%">
 </p>
 
 # Prompt Engineering for Mobile Robot Navigation
@@ -10,41 +10,50 @@
 </p>
 
 <p align="center">
-  <img alt="Raspberry Pi 4" src="https://img.shields.io/badge/Raspberry%20Pi%204-Physical%20Robot-C51A4A">
+  <img alt="Raspberry Pi 4" src="https://img.shields.io/badge/Raspberry%20Pi%204-High--Level%20Controller-C51A4A">
   <img alt="ESP32" src="https://img.shields.io/badge/ESP32-Safety%20%26%20Motor%20Control-1F6FEB">
   <img alt="OpenCV" src="https://img.shields.io/badge/OpenCV-Visual%20Grounding-5C3EE8">
   <img alt="Docker" src="https://img.shields.io/badge/Docker-Laptop%20Demo-2496ED">
-  <img alt="Status" src="https://img.shields.io/badge/Status-FYP%20Prototype-F59E0B">
+  <img alt="Status" src="https://img.shields.io/badge/Status-FYP1%20Complete%20%7C%20FYP2%20Planned-F59E0B">
 </p>
 
-## Prototype Model
+## Final Thesis
+
+The final FYP1 thesis, covering Chapters 1 to 5, is available here:
+
+- [2115617_2_AmirFarhanGhaffar.pdf.docx](2115617_2_AmirFarhanGhaffar.pdf.docx)
+
+The thesis is the source of truth for the finalized project scope, methodology,
+AI-model research plan, Docker results, limitations, and planned FYP2 work.
+
+## Prototype
 
 <p align="center">
   <img src="figures/chapter_3/figure_3_4_finalized_fusion_360_robot_model.png" alt="Finalized Fusion 360 Raspberry Pi robot model" width="900">
 </p>
 
-The finalized prototype uses a Raspberry Pi 4 for high-level processing and an
-ESP32 for deterministic sensor, safety, and motor control. Its four-wheel
-chassis carries a front USB webcam, two front ultrasonic sensors, a
-GY-291/ADXL345 accelerometer, two MX1508 motor drivers, and a protected power
-system.
+The physical prototype uses:
 
-<p align="center">
-  <img src="figures/chapter_3/figure_3_5_fusion_360_robot_multi_view.png" alt="Finalized robot model from multiple views" width="900">
-</p>
+- Raspberry Pi 4 for prompt processing, webcam perception, action selection,
+  validation, and logging
+- ESP32 for ultrasonic sensing, local safety, USB serial, and motor control
+- USB webcam, two HC-SR04 sensors, and GY-291/ADXL345 accelerometer
+- two MX1508 drivers and four DC gear motors
+- protected 3S battery system, regulated power rails, main switch, and fuse
 
-## What It Does
+The GY-291/ADXL345 supports acceleration, roll/pitch, motion, vibration, and
+shock observations. It does not provide yaw heading.
 
-The project studies a practical language-to-vision-to-action pipeline:
+## Navigation Pipeline
 
 ```text
-Natural-language goal
+Natural-language instruction
         |
         v
-Structured prompt output
+Structured goal and approved action set
         |
         v
-Webcam visual grounding
+USB-webcam visual grounding
         |
         v
 Restricted action selection
@@ -53,111 +62,75 @@ Restricted action selection
 ESP32 safety validation and motor control
 ```
 
-The approved action set is deliberately small:
+Approved actions:
 
 ```text
-move_forward | turn_left | turn_right | search | stop
+search | turn_left | turn_right | move_forward | stop
 ```
 
-The ESP32 can independently force `STOP` when it detects an obstacle, sensor
-fault, invalid command, or command timeout.
+The ESP32 independently forces `STOP` for obstacles, sensor faults, invalid
+commands, or a command timeout.
 
 ## Current Results
 
-### Docker Door-Navigation Demonstration
-
-The working Docker laptop demonstration accepts:
+The completed Docker laptop demonstration accepts:
 
 ```text
 find the door
 ```
 
-It converts the instruction into a structured goal and uses an OpenCV
-colour-and-shape detector tuned to the project's grey-blue corridor doors. The
-browser captures the webcam while the container processes each frame and
-displays the selected action.
+It uses a fixed-schema prompt result and an OpenCV colour-and-shape detector
+tuned to the grey-blue corridor doors used in the test area.
 
 <p align="center">
-  <img src="Expected_result_simulation/Screenshot%202026-06-15%20101741.png" alt="Docker demo selecting TURN RIGHT for a door on the right" width="820">
+  <img src="results/docker_demo_screenshots/Screenshot%202026-06-15%20101741.png" alt="Docker demonstration selecting TURN RIGHT for a door on the right" width="820">
 </p>
 
-Observed screenshot evidence currently demonstrates:
+Observed screenshot evidence demonstrates:
 
 | Observed condition | Displayed action |
 |---|---|
-| No valid door region detected | `SEARCH` |
-| Door detected on the right side | `TURN RIGHT` |
-| Door occupies the configured goal-size area | `STOP` |
+| No valid door region | `SEARCH` |
+| Door detected on the right | `TURN RIGHT` |
+| Door reaches the configured apparent-size threshold | `STOP` |
 
-The Docker demo is a high-level software demonstration. The laptop is moved
-manually and no physical motor command is executed.
+The Docker demonstration validates the high-level software interface. The
+laptop was moved manually, and these results are not physical robot movement.
 
-### Physical Robot Baseline
+## AI Research Plan
 
-The first Raspberry Pi physical baseline uses a coloured marker as a
-repeatable visual landmark while the Raspberry Pi-to-ESP32 wiring and physical
-movement tests are completed.
+The implemented deterministic parser, OpenCV detector, and rule-based action
+selector form the measurable baseline. The thesis proposes three AI candidates
+for later comparison:
 
-```text
-find the green marker
-```
+| Candidate | Research role |
+|---|---|
+| Quantized TinyLlama | Convert instructions into the fixed navigation schema |
+| MobileNetV2-SSD Lite TensorFlow Lite | Lightweight custom indoor-object grounding |
+| VLM-NAV-inspired neural classifier | Compare learned and rule-based action selection |
 
-This simpler baseline allows camera processing, USB serial communication,
-ultrasonic safety, motor directions, latency, and movement success to be
-measured before transferring the door detector or a stronger vision model to
-the physical robot.
-
-## System Architecture
-
-```text
-User instruction
-      |
-      v
-Raspberry Pi 4
-  - fixed-schema prompt parser
-  - USB webcam capture
-  - OpenCV visual grounding
-  - action selection and JSONL logging
-      |
-      | USB serial at 115200 baud
-      v
-ESP32
-  - 2 x HC-SR04 obstacle sensors
-  - GY-291 / ADXL345 observations
-  - obstacle, sensor-fault, and timeout safety
-  - 2 x MX1508 motor drivers
-      |
-      v
-4 x DC gear motors
-```
-
-<p align="center">
-  <img src="figures/chapter_3/figure_3_3_main_hardware_components.png" alt="Main Raspberry Pi robot hardware components" width="900">
-</p>
+Model output must pass deterministic validation and cannot bypass ESP32 safety.
 
 ## Project Status
 
 | Area | Status |
 |---|---|
-| Fusion 360 robot design and printable mounts | Complete |
+| Final FYP1 thesis, Chapters 1-5 | Complete |
+| Fusion 360 design and printable mounts | Complete |
 | Mechanical chassis and protected power system | Built |
-| Docker `find the door` visual demonstration | Working |
+| Docker `find the door` demonstration | Working |
 | Raspberry Pi controller and ESP32 firmware | Implemented |
-| Raspberry Pi, ESP32, sensor, and motor-driver signal wiring | In progress |
-| Raised-wheel and controlled-floor movement validation | Pending |
-| Final physical navigation measurements | Planned for FYP2 |
-
-This repository is an active research prototype. The Docker screenshots are
-real software results, but final robot-navigation claims require repeated
-physical testing.
+| Final Raspberry Pi, ESP32, sensor, and motor wiring | In progress |
+| Raised-wheel and controlled-floor validation | Planned for FYP2 |
+| AI-model comparison and physical navigation measurements | Planned for FYP2 |
 
 ## Quick Start: Docker Demo
 
 Requirements:
 
 - Docker Desktop using Linux containers
-- A browser with webcam permission
-- Local port `8000`
+- browser webcam permission
+- local port `8000`
 
 Run from the repository root:
 
@@ -168,13 +141,14 @@ docker compose -f docker-compose.laptop-demo.yml up --build
 Open <http://localhost:8000>, select **Start Camera**, and enter
 `find the door`.
 
-Stop the demo:
+Stop the demonstration:
 
 ```powershell
 docker compose -f docker-compose.laptop-demo.yml down
 ```
 
-Full instructions: [Docker Laptop Demonstration Setup](docs/laptop_only_expected_results_setup.md)
+Full instructions:
+[Docker Laptop Demonstration Setup](docs/laptop_only_expected_results_setup.md)
 
 ## Physical Robot Setup
 
@@ -196,55 +170,53 @@ python3 src/raspberry_pi_robot/robot_controller.py \
   --serial-device /dev/ttyUSB0
 ```
 
-The controller always sends `STOP` unless the `--execute` flag is explicitly
-provided.
+The controller always sends `STOP` unless `--execute` is explicitly provided.
 
 ## Safety
 
 - Never power motors from Raspberry Pi or ESP32 logic pins.
 - Level-shift both 5 V HC-SR04 Echo signals before ESP32 GPIO.
-- Keep a common ground between the ESP32, sensors, motor drivers, and power
-  system.
-- For the first prototype, power the ESP32 only through the Raspberry Pi USB
-  cable.
-- Begin all motor tests with the wheels raised and the main switch reachable.
-- The GY-291/ADXL345 provides acceleration and roll/pitch observations; it does
-  not provide yaw heading.
+- Keep a common ground between the battery system, power modules, ESP32,
+  sensors, and motor drivers.
+- Begin motor tests with all wheels raised and the main switch reachable.
+- Verify `STOP`, obstacle, sensor-fault, invalid-command, and timeout behaviour
+  before any controlled-floor test.
 
-## Repository Guide
+## Repository Structure
 
 | Path | Purpose |
 |---|---|
+| [`2115617_2_AmirFarhanGhaffar.pdf.docx`](2115617_2_AmirFarhanGhaffar.pdf.docx) | Final FYP1 thesis, Chapters 1-5 |
 | [`src/raspberry_pi_robot/`](src/raspberry_pi_robot/) | Raspberry Pi prompt, camera, action, serial, and logging controller |
-| [`firmware/esp32_robot_controller/`](firmware/esp32_robot_controller/) | ESP32 sensor, safety, USB serial, and four-motor firmware |
-| [`src/laptop_expected_results/`](src/laptop_expected_results/) | Docker browser-webcam door-navigation demonstration |
-| [`Expected_result_simulation/`](Expected_result_simulation/) | Captured Docker result screenshots |
-| [`docs/`](docs/) | Wiring, software setup, and research method guides |
-| [`STL/`](STL/) | Printable robot mounting components |
-| [`figures/`](figures/) | Prototype, hardware, and report figures |
+| [`src/laptop_expected_results/`](src/laptop_expected_results/) | Docker browser-webcam demonstration |
+| [`firmware/`](firmware/) | Main ESP32 controller and sensor-only test firmware |
+| [`docs/`](docs/) | Wiring, setup, method-selection, and presentation guides |
+| [`results/docker_demo_screenshots/`](results/docker_demo_screenshots/) | Captured Docker result screenshots |
+| [`simulations/`](simulations/) | Assumption-based obstacle and timeout safety simulations |
+| [`figures/`](figures/) | Final report and public-view figures |
+| [`drawio/`](drawio/) | Editable and exported report diagrams |
+| [`cad/design_sources/`](cad/design_sources/) | Fusion 360 renders, drawing, and design source |
+| [`cad/stl/`](cad/stl/) | Printable robot mounts |
+| [`assets/`](assets/) | README branding and hardware-component image sources |
+| [`scripts/`](scripts/) | Reproducible figure-generation utilities |
 | [`github-research-papers/`](github-research-papers/) | Related research implementations used for method study |
 
-## Research and Documentation
+## Supporting Documentation
 
-The project is inspired by modular language-guided navigation methods such as
-LM-Nav and prompt-based action selection such as VLMnav. Advanced mapping,
-scene graphs, learned navigation policies, and large VLM/VLA models are studied
-as future extensions rather than claimed as current baseline capabilities.
-
+- [FYP1 15-Minute Presentation Script](docs/fyp1_15_minute_presentation_script.md)
 - [Research-Paper Method Selection](docs/research_paper_method_selection.md)
-- [Chapter 1: Introduction](chapter_1_introduction.md)
-- [Chapter 2: Literature Review](literature_review.md)
-- [Chapter 3: Methodology](chapter_3_methodology.md)
-- [Latest Chapter 4 Results DOCX](chapter_4_results_and_discussion.docx)
+- [Docker Laptop Demonstration Setup](docs/laptop_only_expected_results_setup.md)
+- [Raspberry Pi 4 Full Software Setup](docs/raspberry_pi_4_full_software_setup.md)
+- [Circuit Wiring Guide](docs/circuit_wiring_guide.md)
 
 ## Limitations
 
-- The current Docker door detector is tuned to grey-blue doors in one corridor
-  and is not a general semantic door-recognition model.
+- The Docker detector is tuned to grey-blue doors in one corridor and is not a
+  general semantic door-recognition model.
 - Door stopping uses apparent image area, not measured physical distance.
-- The first physical baseline uses coloured-marker grounding.
 - Two ultrasonic sensors provide limited obstacle coverage.
-- Physical robot results and complete action validation are still pending.
+- The first physical baseline uses coloured-marker grounding.
+- Complete physical action validation and AI-model comparison remain FYP2 work.
 
 ## Author
 

@@ -1,11 +1,14 @@
 .git
+.venv/
 *.docx
 *.pdf
 *.xlsx
-VLM Robot Photos/
-STL/
+assets/
+cad/
 drawio/
 figures/
+github-research-papers/
 logs/
+results/
 __pycache__/
 *.pyc

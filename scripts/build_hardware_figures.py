@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
+SRC = ROOT / "assets" / "hardware_components"
 OUT = ROOT / "figures" / "chapter_3" / "figure_3_3_main_hardware_components.png"
 
 WIDTH = 1800
