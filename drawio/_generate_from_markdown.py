@@ -247,7 +247,7 @@ def render_figure_2_3(name: str, out_path: Path) -> None:
         90,
     )
     prototype = builder.add_vertex(
-        "Low-Cost Physical FYP Prototype\nCoral Dev Board onboard compute\nESP32 sensor, safety, and motor control",
+        "Low-Cost Physical FYP Prototype\nRaspberry Pi 4 onboard compute\nESP32 sensor, safety, and motor control",
         "rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=15;",
         560,
         710,
@@ -282,7 +282,7 @@ def render_figure_3_1(name: str, out_path: Path) -> None:
         90,
     )
     hardware = builder.add_vertex(
-        "Complete Coral, ESP32,\nSensor, and Motor Wiring",
+        "Complete Raspberry Pi, ESP32,\nSensor, and Motor Wiring",
         VERTEX_STYLE,
         360,
         170,
@@ -297,8 +297,8 @@ def render_figure_3_1(name: str, out_path: Path) -> None:
         330,
         80,
     )
-    coral = builder.add_vertex(
-        "Install Mendel Linux and Verify\nCoral Edge TPU Inference",
+    pi = builder.add_vertex(
+        "Install Raspberry Pi OS and Verify\nWebcam and USB Serial",
         VERTEX_STYLE,
         360,
         410,
@@ -306,7 +306,7 @@ def render_figure_3_1(name: str, out_path: Path) -> None:
         80,
     )
     integrate = builder.add_vertex(
-        "Integrate Webcam, Prompt Parser,\nDetector, UART, and Logging",
+        "Integrate Webcam, Prompt Parser,\nOpenCV Grounding, and Logging",
         VERTEX_STYLE,
         360,
         540,
@@ -357,8 +357,8 @@ def render_figure_3_1(name: str, out_path: Path) -> None:
     for source, target in [
         (schema, hardware),
         (hardware, low_level),
-        (low_level, coral),
-        (coral, integrate),
+        (low_level, pi),
+        (pi, integrate),
         (integrate, scenarios),
         (scenarios, valid),
         (evaluate, analysis),
@@ -403,9 +403,23 @@ def render_figure_3_7(name: str, out_path: Path) -> None:
     power_module = builder.add_vertex("3S-Compatible Power-Bank\nCharging / Output Module", NOTE_STYLE, 680, 340, 300, 90)
     drivers = builder.add_vertex("Two MX1508 Motor Drivers\nPower from motor buck\nControl from ESP32", VERTEX_STYLE, 140, 520, 300, 110)
     motors = builder.add_vertex("Four DC Gear Motors\nand Wheels", VERTEX_STYLE, 140, 730, 300, 90)
-    compute = builder.add_vertex("Coral Dev Board\nOnboard Compute", VERTEX_STYLE, 680, 520, 300, 90)
+    compute = builder.add_vertex(
+        "Raspberry Pi 4\nOnboard Compute\nUSB power + serial to ESP32",
+        VERTEX_STYLE,
+        680,
+        520,
+        300,
+        100,
+    )
     webcam = builder.add_vertex("USB Webcam", VERTEX_STYLE, 520, 730, 260, 80)
-    esp32 = builder.add_vertex("ESP32\nSensor + Motor Control", VERTEX_STYLE, 1060, 520, 300, 90)
+    esp32 = builder.add_vertex(
+        "ESP32\nSensor + Motor Control\nUSB-powered; no second 5 V source",
+        VERTEX_STYLE,
+        1060,
+        520,
+        300,
+        100,
+    )
     sensors = builder.add_vertex("Two HC-SR04 Sensors\nFront Left + Front Right", VERTEX_STYLE, 1000, 730, 300, 90)
     imu = builder.add_vertex("GY-291 / ADXL345\nAcceleration, Roll/Pitch,\nMotion + Vibration", VERTEX_STYLE, 1340, 730, 260, 110)
     ground = builder.add_vertex(
@@ -427,14 +441,13 @@ def render_figure_3_7(name: str, out_path: Path) -> None:
         (motor_buck, drivers),
         (drivers, motors),
         (power_module, compute),
-        (power_module, esp32),
         (compute, webcam),
         (esp32, sensors),
         (esp32, imu),
     ]:
         builder.add_edge(source, target)
 
-    builder.add_edge(compute, esp32, value="UART3 to UART2")
+    builder.add_edge(compute, esp32)
     builder.add_edge(drivers, ground, style=FEEDBACK_EDGE_STYLE)
     builder.add_edge(compute, ground, style=FEEDBACK_EDGE_STYLE)
     builder.add_edge(esp32, ground, style=FEEDBACK_EDGE_STYLE)
@@ -443,8 +456,8 @@ def render_figure_3_7(name: str, out_path: Path) -> None:
 
 def render_figure_3_8(name: str, out_path: Path) -> None:
     builder = DrawioBuilder(name, page_width=1700, page_height=1200)
-    coral = builder.add_vertex(
-        "Coral Dev Board UART3\nPin 7 TX, Pin 11 RX, Pin 9 GND",
+    pi = builder.add_vertex(
+        "Raspberry Pi 4\nUSB port to ESP32 USB data + power cable",
         VERTEX_STYLE,
         650,
         100,
@@ -452,7 +465,7 @@ def render_figure_3_8(name: str, out_path: Path) -> None:
         100,
     )
     esp32 = builder.add_vertex(
-        "ESP32\nSensor, Safety, UART, and Motor Controller",
+        "ESP32\nSensor, Safety, USB Serial, and Motor Controller",
         "rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=15;",
         650,
         430,
@@ -463,7 +476,7 @@ def render_figure_3_8(name: str, out_path: Path) -> None:
     right_sensor = builder.add_vertex("Front-Right HC-SR04\nTRIG 18, ECHO 35", VERTEX_STYLE, 100, 330, 320, 90)
     imu = builder.add_vertex("GY-291 / ADXL345\nSDA 21, SCL 22", VERTEX_STYLE, 100, 530, 320, 90)
     driver1 = builder.add_vertex("MX1508 Driver 1\nFront-Left 25/26\nRear-Left 32/33", VERTEX_STYLE, 1250, 180, 320, 120)
-    driver2 = builder.add_vertex("MX1508 Driver 2\nFront-Right 27/14\nRear-Right 19/23", VERTEX_STYLE, 1250, 430, 320, 120)
+    driver2 = builder.add_vertex("MX1508 Driver 2\nFront-Right 27/14\nRear-Right 16/17", VERTEX_STYLE, 1250, 430, 320, 120)
     safety = builder.add_vertex(
         "Local Safety\nObstacle, Timeout, Unknown Command -> STOP",
         NOTE_STYLE,
@@ -472,7 +485,7 @@ def render_figure_3_8(name: str, out_path: Path) -> None:
         400,
         110,
     )
-    builder.add_edge(coral, esp32, value="UART3 <-> UART2\nESP32 RX16 / TX17")
+    builder.add_edge(pi, esp32, value="USB power + serial\n115200 baud")
     builder.add_edge(left_sensor, esp32, value="level-shift Echo")
     builder.add_edge(right_sensor, esp32, value="level-shift Echo")
     builder.add_edge(imu, esp32, value="I2C")

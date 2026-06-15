@@ -1,79 +1,63 @@
-# Coral Dev Board, ESP32, and MX1508 Wiring Guide
+# Raspberry Pi 4, ESP32, and MX1508 Wiring Guide
 
-This guide covers the remaining signal wiring for the finalized Coral Dev Board
+This guide covers the remaining signal wiring for the finalized Raspberry Pi 4
 physical prototype. The power system is assumed to be already assembled and
 verified. Do not connect power until every signal connection has been checked.
-
-This guide assumes the **standard Coral Dev Board** shown in the project
-component image, not the Dev Board Mini or Dev Board Micro.
 
 ## 1. Final Signal Architecture
 
 ```text
-USB webcam
-    |
-    v
-Coral Dev Board
-  UART3 TX pin 7  ----------> ESP32 GPIO 16 / UART2 RX
-  UART3 RX pin 11 <---------- ESP32 GPIO 17 / UART2 TX
-  GND pin 9       ----------- ESP32 GND
-                                  |
-                                  +--> two HC-SR04 sensors
-                                  +--> GY-291 / ADXL345
-                                  +--> two MX1508 drivers
+USB webcam --------------------------> Raspberry Pi 4 USB port
+ESP32 USB data + power cable <------> Raspberry Pi 4 USB port
                                             |
-                                            +--> four DC gear motors
+                                            v
+                                           ESP32
+                                            |
+                     +----------------------+----------------------+
+                     |                      |                      |
+              two HC-SR04             GY-291 / ADXL345       two MX1508
+                                                                  |
+                                                          four DC motors
 ```
 
-UART is the finalized Coral-to-ESP32 interface because it leaves the Coral
-USB-A host port available for the USB webcam.
+USB serial is the finalized Raspberry Pi-to-ESP32 interface. It provides
+communication and makes the ESP32 easy to flash and debug without consuming
+Raspberry Pi or ESP32 UART GPIO pins.
 
 ## 2. Safety Before Wiring
 
 - Switch off and disconnect the battery.
-- Verify the motor rail and logic/compute rail voltages with a multimeter.
-- Never connect motor power to the Coral or ESP32 logic pins.
-- Coral and ESP32 signal pins use 3.3 V logic.
+- Verify the motor and logic/compute rail voltages with a multimeter.
+- Power the Raspberry Pi through a stable regulated USB-C supply.
+- For the first prototype, power the ESP32 only from the Raspberry Pi USB data + power
+  cable. Do not simultaneously connect a separate ESP32 5 V supply.
+- Never connect motor power to Raspberry Pi or ESP32 logic pins.
 - HC-SR04 Echo is normally 5 V and must be level-shifted before ESP32 GPIO.
-- Keep a common ground between Coral, ESP32, both MX1508 drivers, sensors, and
-  the power-system ground.
+- Keep a common ground between ESP32, both MX1508 drivers, sensors, and the
+  power-system ground.
 - Begin motor testing with all wheels raised.
 
-## 3. Coral Dev Board to ESP32 UART
+## 3. Raspberry Pi 4 to ESP32
 
-Use Coral **UART3**, not UART1. UART1 is shared with the Linux serial console.
+Connect an ESP32 USB data + power cable to any Raspberry Pi USB port.
 
-| Coral 40-Pin Header | Coral Function | Connect To | Direction |
-|---:|---|---|---|
-| Pin 7 | UART3 TXD, `/dev/ttymxc2` | ESP32 GPIO 16, UART2 RX | Coral to ESP32 |
-| Pin 11 | UART3 RXD, `/dev/ttymxc2` | ESP32 GPIO 17, UART2 TX | ESP32 to Coral |
-| Pin 9 | Ground | ESP32 GND | Common reference |
+| Raspberry Pi Connection | ESP32 Connection | Purpose |
+|---|---|---|
+| USB port | ESP32 USB port | Commands, sensor JSON, flashing, and debugging |
 
-Important:
+The ESP32 normally appears as `/dev/ttyUSB0` or `/dev/ttyACM0`.
 
-- TX connects to RX.
-- RX connects to TX.
-- Do not connect Coral 5 V or 3.3 V header power to the ESP32 when the ESP32 is
-  already powered by the robot's regulated supply.
-- Do not use an RS-232 adapter; this is direct 3.3 V TTL UART.
-- Both devices use `115200 8N1`.
+Do not also connect direct UART wires during the first prototype. USB serial is
+the only Raspberry Pi-to-ESP32 control connection required.
 
-Coral UART test:
-
-```bash
-ls -l /dev/ttymxc2
-pinout
-```
+The normal USB cable also powers the ESP32. If the final robot must power the
+ESP32 from a separate regulated supply, use a verified data-only USB cable or a
+USB power blocker so the Raspberry Pi and external 5 V outputs are not joined.
 
 ## 4. ESP32 Final Pin Assignment
 
-The firmware file
-`firmware/esp32_robot_controller/esp32_robot_controller.ino` uses this mapping:
-
 | Function | ESP32 Pin |
 |---|---:|
-| ESP32 UART2 receive from Coral | GPIO 16 |
-| ESP32 UART2 transmit to Coral | GPIO 17 |
 | Front-left HC-SR04 Trigger | GPIO 5 |
 | Front-left HC-SR04 Echo through level shifting | GPIO 34 |
 | Front-right HC-SR04 Trigger | GPIO 18 |
@@ -83,23 +67,19 @@ The firmware file
 | Front-left motor inputs | GPIO 25 and GPIO 26 |
 | Front-right motor inputs | GPIO 27 and GPIO 14 |
 | Rear-left motor inputs | GPIO 32 and GPIO 33 |
-| Rear-right motor inputs | GPIO 19 and GPIO 23 |
+| Rear-right motor inputs | GPIO 16 and GPIO 17 |
 
-GPIO 16 and GPIO 17 were reserved for Coral communication. Therefore, the
-rear-right motor channel uses GPIO 19 and GPIO 23.
+GPIO 16 and GPIO 17 return to the rear-right motor channel because Raspberry
+Pi communication uses USB serial.
 
 ## 5. ESP32 to Two MX1508 Drivers
-
-Each MX1508 module controls two motors. Module labels differ by supplier; verify
-which terminals are motor outputs and which terminals are logic inputs before
-powering the system.
 
 | Driver | Channel | Motor | ESP32 Inputs |
 |---|---|---|---|
 | MX1508 Driver 1 | Channel A | Front-left | GPIO 25 and GPIO 26 |
 | MX1508 Driver 1 | Channel B | Rear-left | GPIO 32 and GPIO 33 |
 | MX1508 Driver 2 | Channel A | Front-right | GPIO 27 and GPIO 14 |
-| MX1508 Driver 2 | Channel B | Rear-right | GPIO 19 and GPIO 23 |
+| MX1508 Driver 2 | Channel B | Rear-right | GPIO 16 and GPIO 17 |
 
 For each MX1508:
 
@@ -110,8 +90,8 @@ For each MX1508:
 | Channel input pins | Assigned ESP32 GPIO pins |
 | Channel output terminals | Corresponding DC motor |
 
-Do not power a motor from the ESP32. Confirm motor stall current remains within
-the MX1508 module rating.
+Do not power motors from the ESP32 or Raspberry Pi. Confirm motor stall current
+remains within the MX1508 module rating.
 
 ## 6. ESP32 to HC-SR04 Sensors
 
@@ -126,7 +106,7 @@ the MX1508 module rating.
 | Front-right HC-SR04 | Trigger | ESP32 GPIO 18 |
 | Front-right HC-SR04 | Echo | Level shifter or resistor divider, then GPIO 35 |
 
-A common resistor-divider example for each Echo signal is:
+Example Echo resistor divider:
 
 ```text
 HC-SR04 Echo ---- 1 kOhm ----+---- ESP32 Echo GPIO
@@ -135,8 +115,6 @@ HC-SR04 Echo ---- 1 kOhm ----+---- ESP32 Echo GPIO
                              |
                             GND
 ```
-
-This reduces a 5 V Echo signal to approximately 3.3 V.
 
 ## 7. ESP32 to GY-291 / ADXL345
 
@@ -154,48 +132,43 @@ shock observations. It does not provide yaw or compass heading.
 
 1. Disconnect battery power.
 2. Connect all common-ground wires.
-3. Connect Coral UART3 TX/RX to ESP32 UART2 RX/TX.
-4. Connect GY-291 I2C signals.
-5. Connect HC-SR04 Trigger and level-shifted Echo signals.
-6. Connect ESP32 control signals to both MX1508 drivers.
-7. Connect each motor to its assigned MX1508 output channel.
-8. Recheck continuity and verify there is no short between supply and ground.
-9. Power only the logic rail and test Coral-to-ESP32 communication.
-10. Power the motor rail with wheels raised and test one motor channel at a
-    time.
+3. Connect GY-291 I2C signals.
+4. Connect HC-SR04 Trigger and level-shifted Echo signals.
+5. Connect ESP32 control signals to both MX1508 drivers.
+6. Connect each motor to its assigned MX1508 output channel.
+7. Recheck continuity and verify there is no short between supply and ground.
+8. Power only the logic rail.
+9. Confirm no separate ESP32 5 V supply is connected, then connect the ESP32
+   and webcam to Raspberry Pi USB ports.
+10. Test Raspberry Pi-to-ESP32 USB serial.
+11. Power the motor rail with wheels raised and test one action at a time.
 
-## 9. Coral-to-ESP32 Communication Test
-
-After flashing the ESP32 firmware, run this on the Coral:
+## 9. Raspberry Pi-to-ESP32 Communication Test
 
 ```bash
+python3 -m serial.tools.list_ports -v
 python3 - <<'PY'
 import serial, time
-port = serial.Serial('/dev/ttymxc2', 115200, timeout=1)
+port = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
 port.write(b'PING\n')
 time.sleep(0.2)
-print(port.readline().decode(errors='ignore').strip())
+for _ in range(5):
+    print(port.readline().decode(errors='ignore').strip())
 port.write(b'STOP\n')
 port.close()
 PY
 ```
 
-Expected response:
-
-```json
-{"status":"ok","device":"esp32_robot_controller"}
-```
-
-The ESP32 also forces `STOP` if both ultrasonic readings are unavailable.
+Change `/dev/ttyUSB0` if the ESP32 appears as another device.
 
 ## 10. Motor Direction Test
 
-Keep wheels raised and send one command at a time:
+Keep wheels raised:
 
 ```bash
 python3 - <<'PY'
 import serial, time
-port = serial.Serial('/dev/ttymxc2', 115200, timeout=1)
+port = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
 for command in ('FWD', 'STOP', 'LEFT', 'STOP', 'RIGHT', 'STOP'):
     print('sending', command)
     port.write((command + '\n').encode())
@@ -206,19 +179,18 @@ PY
 ```
 
 If one wheel rotates in the wrong direction, switch off power and reverse only
-that motor's two output wires. Do not change several motors at once.
+that motor's two output wires.
 
 ## 11. Final Checklist
 
-- [ ] Coral pin 7 connects to ESP32 GPIO 16.
-- [ ] Coral pin 11 connects to ESP32 GPIO 17.
-- [ ] Coral pin 9 connects to ESP32 ground.
-- [ ] Both UART ends use 115200 baud.
+- [ ] Raspberry Pi uses a stable regulated USB-C supply.
+- [ ] ESP32 uses only Raspberry Pi USB power, or the USB 5 V wire is safely
+      isolated before separate ESP32 power is used.
+- [ ] Webcam and ESP32 are connected to separate Raspberry Pi USB ports.
+- [ ] ESP32 USB serial appears as `/dev/ttyUSB0` or `/dev/ttyACM0`.
 - [ ] HC-SR04 Echo signals are level-shifted.
-- [ ] Rear-right motor control uses ESP32 GPIO 19 and GPIO 23.
+- [ ] Rear-right motor control uses ESP32 GPIO 16 and GPIO 17.
 - [ ] All MX1508 grounds share the control-system ground.
-- [ ] Motor power does not enter Coral or ESP32 logic pins.
+- [ ] Motor power does not enter Raspberry Pi or ESP32 logic pins.
 - [ ] Wheels are raised during the first movement test.
 - [ ] `STOP` works before any floor test.
-
-Official Coral pinout reference: <https://coral.ai/docs/dev-board/gpio/>

@@ -21,7 +21,7 @@ DRAWIO_DIR = ROOT / "drawio" / "chapter_3"
 EXPORT_DIR = DRAWIO_DIR / "exported"
 DOCX_PATH = ROOT / "chapter_3_methodology.docx"
 STATIC_FIGURE_IMAGES = {
-    "figure 3.3: main hardware components for the finalized coral dev board robot": ROOT
+    "figure 3.3: main hardware components for the finalized raspberry pi 4 robot": ROOT
     / "figures"
     / "chapter_3"
     / "figure_3_3_main_hardware_components.png",

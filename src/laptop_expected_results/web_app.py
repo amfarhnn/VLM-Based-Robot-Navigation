@@ -12,7 +12,11 @@ import cv2
 import numpy as np
 from flask import Flask, jsonify, render_template, request
 
-from laptop_navigation_demo import HSV_RANGES, append_log, parse_instruction, select_action
+from laptop_navigation_demo import (
+    append_log,
+    parse_instruction,
+    process_navigation_frame,
+)
 
 
 app = Flask(__name__)
@@ -33,25 +37,27 @@ def health():
 
 @app.post("/api/process")
 def process_frame():
-    instruction = request.form.get("instruction", "find the green marker")
+    instruction = request.form.get("instruction", "find the door")
     image_file = request.files.get("frame")
     if image_file is None:
         return jsonify({"error": "frame is required"}), 400
 
     goal = parse_instruction(instruction)
-    target = str(goal["target"] or "").split()[0]
-    if target not in HSV_RANGES:
-        return jsonify({"goal": goal, "action": "STOP: unsupported target", "error": "Use green, blue, or yellow."})
+    if goal["target"] is None:
+        return jsonify(
+            {
+                "goal": goal,
+                "action": "STOP: unsupported target",
+                "error": "Use door, green, blue, or yellow.",
+            }
+        )
 
     image_bytes = np.frombuffer(image_file.read(), dtype=np.uint8)
     frame = cv2.imdecode(image_bytes, cv2.IMREAD_COLOR)
     if frame is None:
         return jsonify({"error": "invalid image frame"}), 400
 
-    lower, upper = HSV_RANGES[target]
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, np.array(lower), np.array(upper))
-    action, box = select_action(mask)
+    action, box, _mask = process_navigation_frame(frame, goal)
 
     if box:
         x, y, width, height = box

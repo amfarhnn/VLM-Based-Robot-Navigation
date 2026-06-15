@@ -5,39 +5,39 @@
 ## 4.1 Introduction
 
 This chapter presents the expected results for FYP1. The expectations are based
-on the finalized Coral Dev Board architecture, structured prompt design,
-completed physical hardware, ESP32 safety logic, laptop-only expected-results
+on the finalized Raspberry Pi 4 architecture, structured prompt design,
+completed physical hardware, ESP32 safety logic, Docker laptop expected-results
 demonstration, and planned physical validation. Final measured robot results
 will be presented during FYP2.
 
 ## 4.2 Expected Basic Prototype Result
 
-The first Coral Dev Board prototype is expected to complete one simple and
-repeatable goal such as `find the chair`. The instruction should be converted
-into a structured target and approved action set. The Edge TPU-compatible
-detector should identify the chair in the webcam view and select an action from
-its image position.
+The first Raspberry Pi 4 prototype is expected to complete the simple and
+repeatable goal `find the green marker`. The instruction should be converted
+into a structured target and approved action set. OpenCV colour grounding
+should locate the marker in the webcam view and select an action from its image
+position.
 
 **Table 4.1: Summary of Expected Basic Prototype Results**
 
 | Condition | Expected Result |
 |---|---|
-| Clear supported instruction | Produces a valid structured target and low uncertainty |
+| Clear supported marker instruction | Produces a valid structured target and low uncertainty |
 | Unsupported or unclear instruction | Stops safely |
-| Target not visible | Selects `search` |
-| Target visible on left or right | Selects the corresponding turn action |
-| Target centred and not close | Selects `move_forward` |
-| Target reaches configured goal size | Selects `stop` |
+| Marker not visible | Selects `search` |
+| Marker visible on left or right | Selects the corresponding turn action |
+| Marker centred and not close | Selects `move_forward` |
+| Marker reaches configured goal size | Selects `stop` |
 | Ultrasonic obstacle, sensor fault, or command timeout | ESP32 forces `stop` |
 
-## 4.3 Expected Laptop-Only Demonstration
+## 4.3 Expected Docker Laptop Demonstration
 
-The laptop-only Docker demonstration is expected to show the planned action
-interface before physical robot testing. A browser captures a coloured target
-through the laptop webcam and sends frames to the containerized Python/OpenCV
-service. The application displays `TURN LEFT`, `TURN RIGHT`, `MOVE FORWARD`,
-`SEARCH`, or `STOP`, and the user manually moves the laptop according to the
-displayed action.
+The laptop-only Docker demonstration is expected to show the same planned
+action interface before physical robot testing. A browser captures a coloured
+marker through the laptop webcam and sends frames to the containerized
+Python/OpenCV service. The application displays `TURN LEFT`, `TURN RIGHT`,
+`MOVE FORWARD`, `SEARCH`, or `STOP`, and the user manually moves the laptop
+according to the displayed action.
 
 This demonstration provides expected-results evidence only. It is not a second
 physical implementation and is not used as the final robot result.
@@ -71,16 +71,14 @@ repeated testing during FYP2.
 
 ## 4.5 Required FYP2 Results
 
-FYP2 will replace these expectations with measured results from the completed
-Coral Dev Board robot.
-
 **Table 4.2: Required FYP2 Measurements**
 
 | Evaluation Area | Required Measurement |
 |---|---|
 | Prompt engineering | Structured output validity and supported-target extraction accuracy |
-| Visual grounding | Target detection correctness and safe missing-target behaviour |
-| Coral performance | Edge TPU inference and end-to-end action latency |
+| Visual grounding | Marker-grounding correctness and safe missing-target behaviour |
+| Raspberry Pi performance | OpenCV processing and end-to-end action latency |
+| USB communication | Command and sensor-status reliability |
 | Sensors and safety | Ultrasonic error, GY-291 response, timeout, and safe-stop success |
 | Robot movement | Action correctness and simple-goal completion rate |
 | Power system | Voltage stability, resets, current, and operating duration |
@@ -89,19 +87,20 @@ Coral Dev Board robot.
 
 The expected results suggest that structured prompt engineering can provide a
 simple interface between a natural-language goal and a restricted robot action
-set. The Coral Dev Board is expected to provide efficient visual inference for
-a compatible detector, while the ESP32 independently prevents movement during
-obstacle, timeout, and invalid-command conditions.
+set. The Raspberry Pi 4 is expected to provide a flexible environment for
+Python, OpenCV, USB devices, logging, and later model experiments, while the
+ESP32 independently prevents movement during obstacle, sensor-fault, timeout,
+and invalid-command conditions.
 
-The basic single-target goal is intentionally limited. Demonstrating it
-reliably is more valuable than claiming complex navigation without sufficient
-sensor coverage, mapping, or model capability. Once the baseline is verified,
-the project can extend to custom indoor-landmark classes and more complex
+The basic marker goal is intentionally limited. Demonstrating it reliably is
+more valuable than claiming complex navigation without sufficient sensor
+coverage, mapping, or model capability. Once the baseline is verified, the
+project can extend to object detection for indoor landmarks and more complex
 instructions.
 
 ## 4.7 Summary
 
-This chapter presented the expected FYP1 outcomes for the Coral Dev Board
-prototype, laptop-only expected-results demonstration, and safety logic. Final
-physical results will measure whether the robot can safely find and approach a
-supported indoor target.
+This chapter presented the expected FYP1 outcomes for the Raspberry Pi 4
+prototype, Docker laptop expected-results demonstration, and safety logic.
+Final physical results will measure whether the robot can safely find and
+approach a supported visual landmark.

@@ -2,7 +2,7 @@
 
 This setup is a separate FYP1 feasibility and expected-results demonstration.
 It is **not** another physical robot implementation and does not change the
-finalized Coral Dev Board hardware purpose.
+finalized Raspberry Pi 4 hardware purpose.
 
 The browser captures the laptop webcam and sends frames to a local Docker
 container. The container performs the Python/OpenCV processing and returns
@@ -32,15 +32,22 @@ Use this option before the physical robot is ready to demonstrate:
 
 ## First Demo Goal
 
-Use a large coloured paper or object as the target:
+Use the grey-blue corridor door shown in the selected project test area:
 
 ```text
-find the green marker
+find the door
 ```
 
-The included baseline supports green, blue, and yellow markers. Colour
-segmentation is intentionally used because it is easy to reproduce and does
-not require downloading a large model.
+The structured output identifies the target as `door`. OpenCV detects this
+specific door using its grey-blue colour, tall rectangular shape, area, and
+vertical position. The detector is intentionally tuned to this test door and
+must not be presented as a general door-recognition model. This lightweight
+method is easy to reproduce and does not require downloading a large model.
+
+If corridor lighting changes significantly, tune `DOOR_HSV_LOWER` and
+`DOOR_HSV_UPPER` in
+`src/laptop_expected_results/laptop_navigation_demo.py`. Keep the door visible
+from top to bottom during the first tests so its vertical shape can be checked.
 
 ## Requirements
 
@@ -70,8 +77,8 @@ Open:
 http://localhost:8000
 ```
 
-Select **Start Camera** and allow browser camera access. Hold or place the
-selected coloured marker in front of the webcam.
+Select **Start Camera** and allow browser camera access, then point and manually
+move the laptop toward the grey-blue test door.
 
 The container health endpoint is:
 
@@ -98,11 +105,11 @@ docker compose -f docker-compose.laptop-demo.yml up
 
 | Webcam Result | Displayed Instruction | Manual User Action |
 |---|---|---|
-| Target not detected | `SEARCH` | Rotate or move the laptop slowly |
-| Target appears on left | `TURN LEFT` | Move the laptop view left |
-| Target appears on right | `TURN RIGHT` | Move the laptop view right |
-| Target is centred | `MOVE FORWARD` | Carry the laptop toward the target |
-| Target fills a large image area | `STOP` | Stop moving |
+| Door not detected | `SEARCH` | Rotate or move the laptop slowly |
+| Door appears on left | `TURN LEFT` | Move the laptop view left |
+| Door appears on right | `TURN RIGHT` | Move the laptop view right |
+| Door is centred | `MOVE FORWARD` | Carry the laptop toward the door |
+| Door fills a large image area | `STOP` | Stop moving |
 
 ## Docker Files
 
@@ -160,5 +167,5 @@ docker compose -f docker-compose.laptop-demo.yml ps
 ```
 
 This evidence supports the expected result that the planned restricted action
-interface behaves logically. Final FYP2 claims must use the physical Coral Dev
-Board robot and measured robot results.
+interface behaves logically. Final FYP2 claims must use the physical Raspberry
+Pi 4 robot and measured robot results.

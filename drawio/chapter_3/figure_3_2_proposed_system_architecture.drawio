@@ -8,7 +8,7 @@
         <mxCell id="2" value="User simple natural-language goal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="340" y="40" width="300" height="63" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="Coral Dev Board" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="3" value="Raspberry Pi 4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="340" y="139" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="2" target="3">
@@ -26,56 +26,56 @@
         <mxCell id="8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="5" target="7">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="9" value="- Edge TPU-compatible target detection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="421" width="300" height="63" as="geometry" />
+        <mxCell id="9" value="- OpenCV visual grounding" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="340" y="421" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="7" target="9">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="11" value="- restricted action selection and logging" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="520" width="300" height="63" as="geometry" />
+          <mxGeometry x="340" y="515" width="300" height="63" as="geometry" />
         </mxCell>
         <mxCell id="12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="9" target="11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="13" value="| UART3 /dev/ttymxc2, 115200 baud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="619" width="300" height="63" as="geometry" />
+        <mxCell id="13" value="| USB serial, 115200 baud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="340" y="614" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="11" target="13">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="15" value="ESP32" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="718" width="300" height="58" as="geometry" />
+          <mxGeometry x="340" y="708" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="13" target="15">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="17" value="- two HC-SR04 sensors" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="812" width="300" height="58" as="geometry" />
+          <mxGeometry x="340" y="802" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="15" target="17">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="19" value="- GY-291 / ADXL345" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="906" width="300" height="58" as="geometry" />
+          <mxGeometry x="340" y="896" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="17" target="19">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="21" value="- obstacle and command-timeout safety" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="1000" width="300" height="63" as="geometry" />
+        <mxCell id="21" value="- obstacle, sensor-fault, and command-timeout safety" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="340" y="990" width="300" height="63" as="geometry" />
         </mxCell>
         <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="19" target="21">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="23" value="- two MX1508 motor drivers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="1099" width="300" height="58" as="geometry" />
+          <mxGeometry x="340" y="1089" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="21" target="23">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="25" value="Four DC gear motors with wheels" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="340" y="1193" width="300" height="58" as="geometry" />
+          <mxGeometry x="340" y="1183" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="23" target="25">
           <mxGeometry relative="1" as="geometry" />

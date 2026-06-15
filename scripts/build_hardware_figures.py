@@ -36,8 +36,8 @@ SMALL_FONT = ImageFont.truetype(str(font_path()), 17)
 
 
 COMPONENTS: list[tuple[str, str | None, str | None]] = [
-    ("Coral Dev Board", "CoralDevBoard.png", "Only onboard high-level compute"),
-    ("ESP32 Controller", "esp32.png", "Sensor, safety, UART, and motor control"),
+    ("Raspberry Pi 4", None, "Only onboard high-level compute"),
+    ("ESP32 Controller", "esp32.png", "Sensor, safety, USB serial, and motor control"),
     ("USB Webcam", "webcam_camera.png", "Front RGB input"),
     ("2 x HC-SR04", "hc-sr04_ultrasonic_sensor.png", "Front-left and front-right"),
     ("GY-291 / ADXL345", None, "Acceleration, roll/pitch, motion, vibration"),
@@ -45,7 +45,7 @@ COMPONENTS: list[tuple[str, str | None, str | None]] = [
     ("4 x Gear Motors + Wheels", "dc_gear_motor_with_wheel.png", "Four-wheel movement"),
     ("3S 18650 Battery Pack", "18650_battery.png", "Three matched cells in series"),
     ("Adjustable Motor Buck", "5v_usb_buck_converter.png", "Regulated motor-driver rail"),
-    ("3S-Compatible Power Module", "powerbank_battery.jpg", "Compute-board and ESP32 supply"),
+    ("3S-Compatible Power Module", "powerbank_battery.jpg", "Raspberry Pi supply; ESP32 via Pi USB"),
     ("Main Switch + Fuse", None, "Manual isolation and protection"),
 ]
 
@@ -85,10 +85,10 @@ def build() -> None:
     canvas = Image.new("RGB", (WIDTH, HEIGHT), "white")
     draw = ImageDraw.Draw(canvas)
 
-    draw.text((50, 35), "Main Hardware Components for the Finalized Coral Robot", font=TITLE_FONT, fill="#193858")
+    draw.text((50, 35), "Main Hardware Components for the Finalized Raspberry Pi Robot", font=TITLE_FONT, fill="#193858")
     draw.text(
         (50, 95),
-        "The Coral Dev Board is the only high-level physical compute platform.",
+        "The Raspberry Pi 4 is the only high-level physical compute platform.",
         font=SUBTITLE_FONT,
         fill="#555555",
     )
@@ -115,7 +115,12 @@ def build() -> None:
             canvas.paste(component, (px, py), component)
         else:
             draw.rounded_rectangle(image_box, radius=14, fill="#e8eef5", outline="#b3c0ce", width=2)
-            placeholder = "GY-291\nADXL345" if "GY-291" in label else "SWITCH\n+\nFUSE"
+            if "GY-291" in label:
+                placeholder = "GY-291\nADXL345"
+            elif "Raspberry" in label:
+                placeholder = "RASPBERRY\nPI 4"
+            else:
+                placeholder = "SWITCH\n+\nFUSE"
             draw_centered_text(draw, image_box, placeholder, LABEL_FONT, "#46627c")
 
         draw_centered_text(

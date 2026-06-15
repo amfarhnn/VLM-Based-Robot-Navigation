@@ -23,14 +23,14 @@
         <mxCell id="7" value="Four DC Gear Motors&#10;and Wheels" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="140" y="730" width="300" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="8" value="Coral Dev Board&#10;Onboard Compute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="680" y="520" width="300" height="90" as="geometry" />
+        <mxCell id="8" value="Raspberry Pi 4&#10;Onboard Compute&#10;USB power + serial to ESP32" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="680" y="520" width="300" height="100" as="geometry" />
         </mxCell>
         <mxCell id="9" value="USB Webcam" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="520" y="730" width="260" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="10" value="ESP32&#10;Sensor + Motor Control" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="1060" y="520" width="300" height="90" as="geometry" />
+        <mxCell id="10" value="ESP32&#10;Sensor + Motor Control&#10;USB-powered; no second 5 V source" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="520" width="300" height="100" as="geometry" />
         </mxCell>
         <mxCell id="11" value="Two HC-SR04 Sensors&#10;Front Left + Front Right" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="1000" y="730" width="300" height="90" as="geometry" />
@@ -59,28 +59,25 @@
         <mxCell id="19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="5" target="8">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="5" target="10">
+        <mxCell id="20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="8" target="9">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="8" target="9">
+        <mxCell id="21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="10" target="11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="10" target="11">
+        <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="10" target="12">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="10" target="12">
+        <mxCell id="23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="8" target="10">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="8" target="10" value="UART3 to UART2">
+        <mxCell id="24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;dashed=1;strokeColor=#d79b00;" edge="1" parent="1" source="6" target="13">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;dashed=1;strokeColor=#d79b00;" edge="1" parent="1" source="6" target="13">
+        <mxCell id="25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;dashed=1;strokeColor=#d79b00;" edge="1" parent="1" source="8" target="13">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;dashed=1;strokeColor=#d79b00;" edge="1" parent="1" source="8" target="13">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;dashed=1;strokeColor=#d79b00;" edge="1" parent="1" source="10" target="13">
+        <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;dashed=1;strokeColor=#d79b00;" edge="1" parent="1" source="10" target="13">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>

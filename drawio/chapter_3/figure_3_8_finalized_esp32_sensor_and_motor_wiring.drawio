@@ -5,10 +5,10 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="2" value="Coral Dev Board UART3&#10;Pin 7 TX, Pin 11 RX, Pin 9 GND" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="2" value="Raspberry Pi 4&#10;USB port to ESP32 USB data + power cable" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="650" y="100" width="400" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="ESP32&#10;Sensor, Safety, UART, and Motor Controller" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=15;" vertex="1" parent="1">
+        <mxCell id="3" value="ESP32&#10;Sensor, Safety, USB Serial, and Motor Controller" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=15;" vertex="1" parent="1">
           <mxGeometry x="650" y="430" width="400" height="120" as="geometry" />
         </mxCell>
         <mxCell id="4" value="Front-Left HC-SR04&#10;TRIG 5, ECHO 34" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
@@ -23,13 +23,13 @@
         <mxCell id="7" value="MX1508 Driver 1&#10;Front-Left 25/26&#10;Rear-Left 32/33" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="1250" y="180" width="320" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="8" value="MX1508 Driver 2&#10;Front-Right 27/14&#10;Rear-Right 19/23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="8" value="MX1508 Driver 2&#10;Front-Right 27/14&#10;Rear-Right 16/17" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="1250" y="430" width="320" height="120" as="geometry" />
         </mxCell>
         <mxCell id="9" value="Local Safety&#10;Obstacle, Timeout, Unknown Command -&gt; STOP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="650" y="720" width="400" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="2" target="3" value="UART3 &lt;-&gt; UART2&#10;ESP32 RX16 / TX17">
+        <mxCell id="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="2" target="3" value="USB power + serial&#10;115200 baud">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" parent="1" source="4" target="3" value="level-shift Echo">

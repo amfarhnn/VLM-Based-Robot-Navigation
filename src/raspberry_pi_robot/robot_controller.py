@@ -1,9 +1,8 @@
-"""Basic Coral Dev Board prompt-engineered robot navigation prototype.
+"""Basic Raspberry Pi 4 prompt-engineered robot navigation prototype.
 
-The first prototype intentionally supports simple goals that are labels in the
-selected Edge TPU detector, such as "find the chair". The Coral chooses a safe
-action from a fixed set; the ESP32 remains responsible for obstacle and timeout
-safety.
+The first physical milestone uses a large green, blue, or yellow marker as a
+repeatable indoor landmark. The Raspberry Pi selects a restricted action while
+the ESP32 remains responsible for obstacle, sensor-fault, and timeout safety.
 """
 
 from __future__ import annotations
@@ -15,6 +14,11 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+import cv2
+import numpy as np
+import serial
+from serial.tools import list_ports
+
 
 ACTION_TO_COMMAND = {
     "move_forward": "FWD",
@@ -22,6 +26,12 @@ ACTION_TO_COMMAND = {
     "turn_right": "RIGHT",
     "search": "SEARCH",
     "stop": "STOP",
+}
+
+HSV_RANGES = {
+    "green marker": ((35, 70, 50), (85, 255, 255)),
+    "blue marker": ((90, 70, 50), (130, 255, 255)),
+    "yellow marker": ((20, 80, 80), (35, 255, 255)),
 }
 
 
@@ -43,15 +53,10 @@ class TargetDetection:
     area_ratio: float
 
 
-def parse_instruction(instruction: str, available_labels: set[str]) -> Goal:
+def parse_instruction(instruction: str) -> Goal:
     """Convert a simple instruction into the project's fixed prompt schema."""
     normalized = instruction.lower().strip()
-    targets = sorted(
-        (label for label in available_labels if label and label in normalized),
-        key=len,
-        reverse=True,
-    )
-    target = targets[0] if targets else None
+    target = next((label for label in HSV_RANGES if label in normalized), None)
     if not target:
         return Goal(
             instruction=instruction,
@@ -61,75 +66,58 @@ def parse_instruction(instruction: str, available_labels: set[str]) -> Goal:
             action_goal="stop because the target is unsupported or unclear",
             uncertainty="high",
         )
-
-    relation = None
-    for phrase in ("near", "beside", "left of", "right of", "in front of"):
-        if phrase in normalized:
-            relation = phrase
-            break
-
     return Goal(
         instruction=instruction,
         target=target,
         landmarks=[target],
-        spatial_relation=relation,
+        spatial_relation=None,
         action_goal=f"find and approach the {target}",
         uncertainty="low",
     )
 
 
-class EdgeTpuDetector:
-    def __init__(self, model_path: Path, labels_path: Path, threshold: float) -> None:
-        import cv2
-        from pycoral.adapters import common, detect
-        from pycoral.utils.dataset import read_label_file
-        from pycoral.utils.edgetpu import make_interpreter
+def find_marker(frame: Any, target: str | None) -> TargetDetection | None:
+    if target not in HSV_RANGES:
+        return None
+    lower, upper = HSV_RANGES[target]
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, np.array(lower), np.array(upper))
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
+        return None
+    contour = max(contours, key=cv2.contourArea)
+    area = float(cv2.contourArea(contour))
+    frame_height, frame_width = frame.shape[:2]
+    if area < 800:
+        return None
+    x, _, width, height = cv2.boundingRect(contour)
+    return TargetDetection(
+        label=target,
+        score=min(1.0, area / (frame_width * frame_height * 0.15)),
+        center_x=(x + width / 2) / frame_width,
+        area_ratio=(width * height) / (frame_width * frame_height),
+    )
 
-        self.cv2 = cv2
-        self.common = common
-        self.detect = detect
-        self.interpreter = make_interpreter(str(model_path))
-        self.interpreter.allocate_tensors()
-        self.labels = read_label_file(str(labels_path))
-        self.threshold = threshold
-        self.input_size = self.common.input_size(self.interpreter)
 
-    @property
-    def available_labels(self) -> set[str]:
-        return {str(value).lower() for value in self.labels.values()}
-
-    def find_target(self, frame: Any, target: str | None) -> TargetDetection | None:
-        if not target:
-            return None
-
-        rgb = self.cv2.cvtColor(frame, self.cv2.COLOR_BGR2RGB)
-        resized = self.cv2.resize(rgb, self.input_size)
-        self.common.set_input(self.interpreter, resized)
-        self.interpreter.invoke()
-
-        width, height = self.input_size
-        matches: list[TargetDetection] = []
-        for item in self.detect.get_objects(self.interpreter, self.threshold):
-            label = str(self.labels.get(item.id, item.id)).lower()
-            if label != target:
-                continue
-            bbox = item.bbox
-            matches.append(
-                TargetDetection(
-                    label=label,
-                    score=float(item.score),
-                    center_x=float((bbox.xmin + bbox.xmax) / 2 / width),
-                    area_ratio=float(bbox.width * bbox.height / (width * height)),
-                )
-            )
-        return max(matches, key=lambda item: item.score, default=None)
+def discover_esp32_device() -> str:
+    candidates = [
+        port.device
+        for port in list_ports.comports()
+        if any(name in (port.description or "").lower() for name in ("cp210", "ch340", "usb serial", "uart"))
+    ]
+    if len(candidates) == 1:
+        return candidates[0]
+    raise RuntimeError(
+        "Unable to uniquely identify the ESP32 USB serial device. "
+        "Run `python3 -m serial.tools.list_ports -v` and pass --serial-device."
+    )
 
 
 class Esp32Bridge:
-    def __init__(self, device: str, baud: int) -> None:
-        import serial
-
-        self.port = serial.Serial(device, baudrate=baud, timeout=0)
+    def __init__(self, device: str | None, baud: int) -> None:
+        self.device = device or discover_esp32_device()
+        self.port = serial.Serial(self.device, baudrate=baud, timeout=0)
         self.buffer = ""
         self.latest_sensor: dict[str, Any] = {}
 
@@ -169,8 +157,6 @@ def choose_action(
         return "stop", "ESP32 sensor status is unavailable"
     if sensors.get("sensor_fault") is True:
         return "stop", "ESP32 reports unavailable ultrasonic sensing"
-    if sensors.get("front_left_cm") is None and sensors.get("front_right_cm") is None:
-        return "stop", "both ultrasonic readings are unavailable"
     if sensors.get("obstacle") is True:
         return "stop", "ESP32 reports a front obstacle"
     if target is None:
@@ -191,19 +177,14 @@ def append_log(path: Path, record: dict[str, Any]) -> None:
 
 
 def main() -> None:
-    import cv2
-
     parser = argparse.ArgumentParser()
-    parser.add_argument("--instruction", required=True, help='For example: "find the chair"')
-    parser.add_argument("--model", required=True, type=Path)
-    parser.add_argument("--labels", required=True, type=Path)
+    parser.add_argument("--instruction", default="find the green marker")
     parser.add_argument("--camera", type=int, default=0)
-    parser.add_argument("--serial-device", default="/dev/ttymxc2")
+    parser.add_argument("--serial-device", help="Example: /dev/ttyUSB0 or /dev/ttyACM0")
     parser.add_argument("--baud", type=int, default=115200)
-    parser.add_argument("--threshold", type=float, default=0.50)
     parser.add_argument("--stop-area-ratio", type=float, default=0.32)
     parser.add_argument("--loop-delay", type=float, default=0.20)
-    parser.add_argument("--log", type=Path, default=Path("logs/coral_navigation.jsonl"))
+    parser.add_argument("--log", type=Path, default=Path("logs/raspberry_pi_navigation.jsonl"))
     parser.add_argument(
         "--execute",
         action="store_true",
@@ -211,11 +192,11 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    detector = EdgeTpuDetector(args.model, args.labels, args.threshold)
-    goal = parse_instruction(args.instruction, detector.available_labels)
+    goal = parse_instruction(args.instruction)
     print(json.dumps({"structured_goal": asdict(goal)}, indent=2))
 
     bridge = Esp32Bridge(args.serial_device, args.baud)
+    print(f"Using ESP32 serial device: {bridge.device}")
     camera = cv2.VideoCapture(args.camera)
     if not camera.isOpened():
         bridge.close()
@@ -230,7 +211,7 @@ def main() -> None:
                 raise RuntimeError("Camera frame capture failed")
 
             sensors = bridge.poll()
-            target = detector.find_target(frame, goal.target)
+            target = find_marker(frame, goal.target)
             action, reason = choose_action(goal, target, sensors, args.stop_area_ratio)
             command = ACTION_TO_COMMAND[action] if args.execute else "STOP"
             bridge.send(command)
